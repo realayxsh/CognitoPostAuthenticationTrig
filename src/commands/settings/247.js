@@ -1,5 +1,8 @@
 const { PermissionsBitField, EmbedBuilder } = require("discord.js");
-const AvonCommand = require("../../structures/avonCommand")
+const AvonCommand = require("../../structures/avonCommand");
+const api = require('@top-gg/sdk');
+const { topggapi } = require('../../../config.json');
+const vote = new api.Api(topggapi);
 
 class twentyfourseven extends AvonCommand{
     get name(){
@@ -11,6 +14,11 @@ class twentyfourseven extends AvonCommand{
     get vote(){
         return true;
     }
+    async run(client,message,args,prefix){
+        let voted = await vote.hasVoted(message.author.id);
+        if(!voted && this.vote){
+            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setDescription(`${client.emoji.cross} | You need to vote me to use this command.\n[Click Here](https://top.gg/bot/1097475016880304180/vote) to vote me.`)]})
+        }
     get cat(){
         return 'set'
     }
