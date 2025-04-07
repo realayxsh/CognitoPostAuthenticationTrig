@@ -1,7 +1,7 @@
 const { Collection , ButtonBuilder , ActionRowBuilder , ButtonStyle , EmbedBuilder, PermissionsBitField , WebhookClient } = require('discord.js');
 const EventEmitter = require('events');
 const { readdirSync } = require('fs');
-const web = new WebhookClient({url : `https://discord.com/api/webhooks/1187938434275360838/HioLiEoXIbOh1ClCgyeHFBXHn2iWub_8x2nohjJ-cprWA5AnqvdHbw0qQT4wCBipTW9Z`});
+const web = new WebhookClient({url : `https://discord.com/api/webhooks/1358654024626339840/p344Oh_YuIjtHbtY_QF12mhk1Bi8XmyBQFlgHkndEk4wzgkELeVb_E3-kDH3r56uupnD`});
 const ascii = require(`ascii-table`);
 const config = require(`../../config.json`);
 const table = new ascii().setHeading('Avon Commands','Status');

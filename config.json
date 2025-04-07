@@ -1,21 +1,21 @@
 {
-    "token": "",
+    "token": "MTA5NzQ3NTAxNjg4MDMwNDE4MA.G-P-2v.h08CZnTXzJwCcXpSEDGBMwfNazRsm7onASPUnw",
     "prefix" : "+",
     "color" : "#2f3136",
-    "owners" : ["871770313564753950"],
-    "mongourl" : "mongodb+srv://xyz:xyz@cluster0.14a1pfi.mongodb.net/?retryWrites=true&w=majority",
-    "errors" : "https://discord.com/api/webhooks/1187938434275360838/HioLiEoXIbOh1ClCgyeHFBXHn2iWub_8x2nohjJ-cprWA5AnqvdHbw0qQT4wCBipTW9Z", 
+    "owners" : ["282494845753491456"],
+    "mongourl" : "mongodb+srv://realayxsh:xyz@radio.gue1mow.mongodb.net/?retryWrites=true&w=majority",
+    "errors" : "https://discord.com/api/webhooks/1358654024626339840/p344Oh_YuIjtHbtY_QF12mhk1Bi8XmyBQFlgHkndEk4wzgkELeVb_E3-kDH3r56uupnD", 
     "spotifyId" : "ada2f0339dd340df9aa14c76f33f84f3",
     "noprefix" : "871770313564753950",
-    "mongourl2" : "mongodb+srv://xyz:xyz@cluster0.14a1pfi.mongodb.net/?retryWrites=true&w=majority",
+    "mongourl2" : "mongodb+srv://realayxsh:xyz@radio.gue1mow.mongodb.net/?retryWrites=true&w=majority",
     "spotifySecret" : "9fd6d604c0f343b4a998839f43ef88c7",
-    "topggapi" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwOTc0NzUwMTY4ODAzMDQxODAiLCJib3QiOnRydWUsImlhdCI6MTY5OTA3NTYyOX0.0fsnN7UnTQzGSyBoneyR0e_keHQgjUojIFan8XUhG5A",
+    "topggapi" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwOTc0NzUwMTY4ODAzMDQxODAiLCJib3QiOnRydWUsImlhdCI6MTcwNjc4NzMzN30.nvphHRcVxU5iQee_LHXDnNeUVvLMXWkyU1KJOOoyDog",
     "server" : "https://discord.com/invite/pMuDkCcppJ",
     "nodes" : [
         {
         "name" : "Radio",
-        "url" : "lava.link:80",
-        "auth" : "anypasswordwillwork",
+        "url" : "lava-v3.ajieblogs.eu.org:80",
+        "auth" : "https://dsc.gg/ajidevserver",
         "secure" : false
         }
     ]

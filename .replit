@@ -1,6 +1,8 @@
 
 hidden = [".config", "package-lock.json"]
 run = "node src/sharding.js"
+entrypoint = "index.js"
+modules = ["nodejs-20:v8-20230920-bd784b9"]
 
 [[hints]]
 regex = "Error \\[ERR_REQUIRE_ESM\\]"
@@ -78,3 +80,67 @@ start = "typescript-language-server --stdio"
 
 [deployment]
 run = ["sh", "-c", "node src/sharding.js"]
+
+[[ports]]
+localPort = 35375
+externalPort = 3001
+
+[[ports]]
+localPort = 35569
+externalPort = 6800
+
+[[ports]]
+localPort = 36193
+externalPort = 8000
+
+[[ports]]
+localPort = 36311
+externalPort = 3002
+
+[[ports]]
+localPort = 36571
+externalPort = 8008
+
+[[ports]]
+localPort = 37907
+externalPort = 6000
+
+[[ports]]
+localPort = 38257
+externalPort = 9000
+
+[[ports]]
+localPort = 38741
+externalPort = 3000
+
+[[ports]]
+localPort = 38793
+externalPort = 8081
+
+[[ports]]
+localPort = 39639
+externalPort = 4200
+
+[[ports]]
+localPort = 40627
+externalPort = 8080
+
+[[ports]]
+localPort = 42903
+externalPort = 3003
+
+[[ports]]
+localPort = 42963
+externalPort = 8099
+
+[[ports]]
+localPort = 43009
+externalPort = 5173
+
+[[ports]]
+localPort = 46347
+externalPort = 5000
+
+[[ports]]
+localPort = 46423
+externalPort = 80
