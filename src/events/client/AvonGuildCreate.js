@@ -18,7 +18,7 @@ class AvonGuildCreate extends AvonClientEvent{
         **Servers Count :** ${this.client.guilds.cache.size}
         **Users Count :** ${this.client.guilds.cache.reduce((a,b) => a + b.memberCount,0)}`
     ).setThumbnail(guild.iconURL({dynamic : true}));
-    const web = new WebhookClient({url : `https://discord.com/api/webhooks/1358654024626339840/p344Oh_YuIjtHbtY_QF12mhk1Bi8XmyBQFlgHkndEk4wzgkELeVb_E3-kDH3r56uupnD`});
+    const web = new WebhookClient({url : `https://discord.com/api/webhooks/1504581750251192400/joU7_yYTcNmDZ2VPreJC5yyw7i_VMpO9EcIWG8Fm0brz8_6f8yYr6y0QHBegSDyQTflV`});
     web.send({embeds : [embed]});
         
     } catch(e) { console.log(e) }
