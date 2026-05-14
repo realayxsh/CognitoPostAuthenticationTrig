@@ -1,19 +1,19 @@
-require('dotenv').config(); // Add this to the very top
+require('dotenv').config();
 const { ClusterManager } = require("discord-hybrid-sharding");
 
-// We no longer require the config.json for the token
 const manager = new ClusterManager('./src/index.js', {
-    token: process.env.token, // Changed this line
-    totalClusters: 2,
-    totalShards: 10,
-    shardsPerClusters: 5
+token: process.env.DISCORD_TOKEN,
+totalClusters: 2,
+totalShards: 2,
+shardsPerClusters: 1
 });
 
-manager.spawn({delay: 10000, timeout: -1, amount: manager.totalShards});
-manager.on('clusterCreate', (cluster) => { 
-    console.log([CLUSTER] => Cluster Launched ${cluster.id});
+manager.on('clusterCreate', (cluster) => {
+console.log("Cluster Launched: " + cluster.id);
 });
 
-manager.on('clusterReady', (cluster) => { 
-    console.log([CLUSTER] => Cluster is Ready ${cluster.id});
+manager.on('clusterReady', (cluster) => {
+console.log("Cluster Ready: " + cluster.id);
 });
+
+manager.spawn({ delay: 7000, timeout: -1 });
