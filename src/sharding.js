@@ -3,7 +3,7 @@ const { ClusterManager } = require("discord-hybrid-sharding");
 
 // We no longer require the config.json for the token
 const manager = new ClusterManager(./src/index.js, {
-    token: process.env.DISCORD_TOKEN, // Changed this line
+    token: process.env.token, // Changed this line
     totalClusters: 2,
     totalShards: 10,
     shardsPerClusters: 5
