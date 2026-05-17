@@ -23,9 +23,9 @@ class Avon extends Client {
             }
         });
         this.cluster = new ClusterClient(this);
-        this.data = new Database(config.mongourl);
+        this.data = new Database(config.mongourl, { writeConcern: { w: 'majority' } });
         this.data.connect();
-        this.data2 = new Database(config.mongourl2);
+        this.data2 = new Database(config.mongourl2, { writeConcern: { w: 'majority' } });
         this.data2.connect();
         this.poru = new Shoukaku(this);   
         this.lavasfy = new Lavasfy(this);
