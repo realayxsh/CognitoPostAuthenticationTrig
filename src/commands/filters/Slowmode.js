@@ -22,6 +22,9 @@ class Slowmode extends AvonCommand{
     get player(){
         return true;
     }
+    get premium(){
+        return true;
+    }
     async run(client,message,args,prefix,player){
        let db = player.data.get(`slow`);
        if(!db || db === false || db === undefined)

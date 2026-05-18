@@ -22,6 +22,9 @@ class Vibrato extends AvonCommand{
     get player(){
         return true;
     }
+    get premium(){
+        return true;
+    }
     async run(client,message,args,prefix,player){
         try{
         let db = player.data.get(`vib`);
@@ -41,6 +44,7 @@ class Vibrato extends AvonCommand{
         if(db === true)
         {
             player.send({guildId : message.guild.id, op : 'filters'});
+            player.data.set(`vib`,false);
             return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Disabled Vibrato mode of the player`,iconURL : message.author.displayAvatarURL({dynamic : true})})]})
         }
     } catch(e) {

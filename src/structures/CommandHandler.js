@@ -110,6 +110,15 @@ class AvonCommands extends EventEmitter {
                 return message.channel.send({embeds : [new EmbedBuilder().setColor(config.color).setDescription(`${this.client.emoji.tick} | [Vote](https://top.gg/bot/1097475016880304180/vote) Required Click [here](https://top.gg/bot/1097475016880304180/vote)`)],components : [new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Vote`).setURL(`https://top.gg/bot/1097475016880304180/vote`))]})
             }
         }
+        if(avonCommand.premium){
+            let isPremium = await client.data.get(`premium_${message.guild.id}`);
+            if(!isPremium && !client.config.owners.includes(message.author.id)){
+                return message.channel.send({embeds: [new EmbedBuilder().setColor(config.color)
+                    .setAuthor({name: `| Premium Required`, iconURL: message.author.displayAvatarURL({dynamic: true})})
+                    .setDescription(`${client.emoji.cross} | This command is **Premium Only!**\n\nAsk the bot owner for a premium code and use \`${prefix}redeem <code>\` to unlock all filters for this server.\n\nCheck your status with \`${prefix}premium\``)
+                ]});
+            }
+        }
         let player = client.poru.players.get(message.guild.id);
         if(avonCommand.player){
             if(!player || !player.queue.current){

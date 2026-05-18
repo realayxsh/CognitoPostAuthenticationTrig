@@ -22,6 +22,9 @@ class Vaporwave extends AvonCommand{
     get player(){
         return true;
     }
+    get premium(){
+        return true;
+    }
     async run(client,message,args,prefix,player){
         let data = player.data.get(`vapor`);
         if(!data || data === false || data === undefined)

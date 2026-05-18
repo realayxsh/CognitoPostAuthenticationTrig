@@ -17,6 +17,9 @@ class Rotation extends AvonCommand{
     get cat(){
         return 'filters'
     }
+    get premium(){
+        return true;
+    }
     get inVoice(){
         return true
     }

@@ -22,6 +22,9 @@ class China extends AvonCommand{
     get player(){
         return true;
     }
+    get premium(){
+        return true;
+    }
     async run(client,message,args,prefix,player){
         let db = player.data.get(`china`);
         if(!db || db === undefined || db === false){

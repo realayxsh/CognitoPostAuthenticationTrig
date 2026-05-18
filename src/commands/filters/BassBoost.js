@@ -22,6 +22,9 @@ class BassBoost extends AvonCommand{
     get player(){
         return true;
     }
+    get premium(){
+        return true;
+    }
     async run(client,message,args,prefix,player){
         try{
             let db = player.data.get(`bass`);
@@ -50,7 +53,7 @@ class BassBoost extends AvonCommand{
                 player.data.set(`bass`,true);
                 return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Enabled BassBoost mode of the player`,iconURL : message.author.displayAvatarURL({dynamic : true})})]})
             }
-            if(data === true)
+            if(db === true)
             {
                 player.send({
                     op : 'filters',

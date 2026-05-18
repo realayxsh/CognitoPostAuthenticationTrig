@@ -1,5 +1,5 @@
 const AvonCommand = require("../../structures/avonCommand");
-
+const { EmbedBuilder } = require(`discord.js`);
 class Chipmunk extends AvonCommand{
     get name(){
         return 'chipmunk';
@@ -17,6 +17,9 @@ class Chipmunk extends AvonCommand{
         return 'filters';
     }
     get player(){
+        return true;
+    }
+    get premium(){
         return true;
     }
     async run(client,message,args,prefix,player){

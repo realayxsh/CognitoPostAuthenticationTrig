@@ -2,10 +2,10 @@ const AvonCommand = require("../../structures/avonCommand");
 const { EmbedBuilder } = require(`discord.js`);
 class clearFilters extends AvonCommand{
     get name(){
-        return 'rotation'
+        return 'clearfilters'
     }
     get aliases(){
-        return null;
+        return ['cf','clearfilter']
     }
     get inVoice(){
         return true;
@@ -20,6 +20,9 @@ class clearFilters extends AvonCommand{
         return 'filters'
     }
     get player(){
+        return true;
+    }
+    get premium(){
         return true;
     }
     async run(client,message,args,prefix,player){
