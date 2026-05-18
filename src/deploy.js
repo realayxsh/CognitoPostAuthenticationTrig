@@ -42,7 +42,6 @@ const commands = [
     new SlashCommandBuilder().setName('autoplay').setDescription('Toggle autoplay mode'),
     new SlashCommandBuilder().setName('premium').setDescription('Check this server\'s premium status'),
     new SlashCommandBuilder().setName('redeem').setDescription('Redeem a premium code for this server').addStringOption(o => o.setName('code').setDescription('Premium activation code').setRequired(true)),
-    new SlashCommandBuilder().setName('automod').setDescription('Set up AutoMod protection').addStringOption(o => o.setName('option').setDescription('What to set up').addChoices({name:'All Protections',value:'all'},{name:'Anti-Spam',value:'spam'},{name:'Anti Mass-Mention',value:'mentions'},{name:'Link Filter',value:'links'},{name:'List Rules',value:'list'},{name:'Disable All',value:'disable'},{name:'Help',value:'help'})),
 ].map(c => c.toJSON());
 
 const rest = new REST({ version: '10' }).setToken(process.env.token);
