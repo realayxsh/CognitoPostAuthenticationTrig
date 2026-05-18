@@ -12,9 +12,9 @@ class Lavasfy extends LavasfyClient{
         },[
             {
                 id : "Radio",
-                host : "89.106.84.59",
+                host : "lavalink.devamop.in",
                 port : 443,
-                password : "heavencloud.in",
+                password : "devamop.in",
                 secure : true
             }
         ]);
