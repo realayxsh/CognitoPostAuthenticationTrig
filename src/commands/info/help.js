@@ -24,11 +24,11 @@ class Help extends AvonCommand{
                 .addFields({
                     name: `Command Categories`,
                     value:
-                        `${client.emoji.premium} \`:\` Premium\n` +
                         `${client.emoji.music} \`:\` Music\n` +
                         `${client.emoji.filters} \`:\` Filters\n` +
                         `${client.emoji.settings} \`:\` Settings\n` +
                         `${client.emoji.info} \`:\` Information\n` +
+                        `${client.emoji.premium} \`:\` Premium\n` +
                         `${client.emoji.allCommands} \`:\` All Commands`
                 })
                 .setFooter({text: `Developed By Radio Development`, iconURL: message.guild.iconURL({dynamic: true})})
@@ -93,25 +93,25 @@ class Help extends AvonCommand{
                 .setThumbnail(message.author.displayAvatarURL({dynamic: true}))
                 .setFooter({text: `Developed By Radio Development`, iconURL: message.guild.iconURL({dynamic: true})});
 
-            // Buttons — premium first, then categories, all commands on second row
-            let b6 = new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`m6`);
-            if(client.emoji.premium) b6.setEmoji(client.emoji.premium); else b6.setLabel(`Premium`);
+            // Buttons — Music, Filters, Settings, Info, Premium in row 1 | All Commands in row 2
             let b1 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m1`).setEmoji(client.emoji.music);
             let b2 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m2`).setEmoji(client.emoji.filters);
             let b3 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m3`).setEmoji(client.emoji.settings);
             let b4 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m4`).setEmoji(client.emoji.info);
+            let b6 = new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`m6`);
+            if(client.emoji.premium) b6.setEmoji(client.emoji.premium); else b6.setLabel(`Premium`);
             let b5 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m5`).setEmoji(client.emoji.allCommands);
-            let ro  = new ActionRowBuilder().addComponents(b6, b1, b2, b3, b4);
+            let ro  = new ActionRowBuilder().addComponents(b1, b2, b3, b4, b6);
             let ro3 = new ActionRowBuilder().addComponents(b5);
 
-            // Select menu — premium first
+            // Select menu — same order as categories
             let select = new SelectMenuBuilder().setCustomId(`ok`).setPlaceholder(`❯ ${client.user.username} is Love`).addOptions([
                 {label: `Help Home`,    emoji: `${client.emoji.home}`,        value: `ok1`},
-                {label: `Premium`,      emoji: client.emoji.premium || `🎵`,  value: `ok7`},
                 {label: `Music`,        emoji: `${client.emoji.music}`,       value: `ok2`},
                 {label: `Filters`,      emoji: `${client.emoji.filters}`,     value: `ok3`},
                 {label: `Settings`,     emoji: `${client.emoji.settings}`,    value: `ok4`},
                 {label: `Information`,  emoji: `${client.emoji.info}`,        value: `ok5`},
+                {label: `Premium`,      emoji: client.emoji.premium || `🎵`,  value: `ok7`},
                 {label: `All Commands`, emoji: `${client.emoji.allCommands}`, value: `ok6`},
             ]);
             let ro2 = new ActionRowBuilder().addComponents(select);
