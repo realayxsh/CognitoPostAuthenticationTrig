@@ -30,6 +30,7 @@ const commands = [
     new SlashCommandBuilder().setName('tremolo').setDescription('[Premium] Toggle tremolo filter'),
     new SlashCommandBuilder().setName('vaporwave').setDescription('[Premium] Toggle vaporwave filter'),
     new SlashCommandBuilder().setName('vibrato').setDescription('[Premium] Toggle vibrato filter'),
+    new SlashCommandBuilder().setName('nowplaying').setDescription('Show the currently playing track with live progress bar'),
     new SlashCommandBuilder().setName('help').setDescription('Show all commands and help menu'),
     new SlashCommandBuilder().setName('ping').setDescription('Check the bot latency'),
     new SlashCommandBuilder().setName('invite').setDescription('Get the bot invite link'),
