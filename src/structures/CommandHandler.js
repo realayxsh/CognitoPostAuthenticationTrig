@@ -111,8 +111,10 @@ class AvonCommands extends EventEmitter {
             }
         }
         if(avonCommand.premium){
-            let isPremium = await client.data3.get(`premium_${message.guild.id}`);
-            if(!isPremium && !client.config.owners.includes(message.author.id)){
+            let premData = await client.data3.get(`premium_${message.guild.id}`);
+            let isActive = premData && (premData.expiresAt === null || Date.now() < premData.expiresAt);
+            if(premData && !isActive) await client.data3.delete(`premium_${message.guild.id}`);
+            if(!isActive && !client.config.owners.includes(message.author.id)){
                 return message.channel.send({embeds: [new EmbedBuilder().setColor(config.color)
                     .setAuthor({name: `| Premium Required`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                     .setDescription(`${client.emoji.cross} | This command is **Premium Only!**\n\nAsk the bot owner for a premium code and use \`${prefix}redeem <code>\` to unlock all filters for this server.\n\nCheck your status with \`${prefix}premium\``)

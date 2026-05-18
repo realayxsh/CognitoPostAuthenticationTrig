@@ -2,7 +2,7 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("
 const AvonClientEvents = require(`../../structures/Eventhandler`);
 const { Api } = require(`@top-gg/sdk`);
 const config = require(`../../../config.json`);
-const vote = new Api(config.topggapi);
+const vote = new Api(process.env.topggapi || config.topggapi);
 
 class AvonInteractions extends AvonClientEvents{
     get name(){
@@ -68,7 +68,20 @@ class AvonInteractions extends AvonClientEvents{
 
                 let prefix = await client.data.get(`${interaction.guild.id}-prefix`) || client.config.prefix;
 
-                const args = interaction.options.data.map(opt => String(opt.value));
+                // Extract args — handle subcommands too
+                let args = [];
+                let subcommand = null;
+                try { subcommand = interaction.options.getSubcommand(false); } catch(e){}
+                if(subcommand){
+                    const subOpts = interaction.options.data[0]?.options || [];
+                    args = [subcommand, ...subOpts.map(opt => String(opt.value))];
+                } else {
+                    args = interaction.options.data.map(opt => String(opt.value));
+                }
+
+                // Resolve member for commands that need mentions (e.g. noprefix)
+                let resolvedMember = null;
+                try { resolvedMember = interaction.options.getMember('user') || null; } catch(e){}
 
                 let replied = false;
                 const sendFn = async (data) => {
@@ -87,7 +100,7 @@ class AvonInteractions extends AvonClientEvents{
                         name: interaction.channel?.name || 'unknown'
                     },
                     reply: sendFn,
-                    mentions: { members: { first: () => null } }
+                    mentions: { members: { first: () => resolvedMember } }
                 };
 
                 if(avonCommand.inVoice){
@@ -107,8 +120,10 @@ class AvonInteractions extends AvonClientEvents{
                     }
                 }
                 if(avonCommand.premium){
-                    let isPremium = await client.data3.get(`premium_${interaction.guild.id}`);
-                    if(!isPremium && !client.config.owners.includes(interaction.user.id)){
+                    let premData = await client.data3.get(`premium_${interaction.guild.id}`);
+                    let isActive = premData && (premData.expiresAt === null || Date.now() < premData.expiresAt);
+                    if(premData && !isActive) await client.data3.delete(`premium_${interaction.guild.id}`);
+                    if(!isActive && !client.config.owners.includes(interaction.user.id)){
                         return interaction.editReply({embeds:[new EmbedBuilder().setColor(config.color)
                             .setAuthor({name:`| Premium Required`, iconURL: interaction.user.displayAvatarURL({dynamic:true})})
                             .setDescription(`${client.emoji.cross} | This command is **Premium Only!**\n\nUse \`/redeem <code>\` to activate premium for this server.`)

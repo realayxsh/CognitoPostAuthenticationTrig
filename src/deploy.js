@@ -12,7 +12,7 @@ const commands = [
     new SlashCommandBuilder().setName('loop').setDescription('Set loop mode').addStringOption(o => o.setName('type').setDescription('Loop type').setRequired(true).addChoices({name:'Track',value:'track'},{name:'Queue',value:'queue'},{name:'None',value:'none'})),
     new SlashCommandBuilder().setName('shuffle').setDescription('Shuffle the music queue'),
     new SlashCommandBuilder().setName('clearqueue').setDescription('Clear the entire music queue'),
-    new SlashCommandBuilder().setName('volume').setDescription('Set or check the player volume').addIntegerOption(o => o.setName('level').setDescription('Volume level (0-200)'). setMinValue(0).setMaxValue(200)),
+    new SlashCommandBuilder().setName('volume').setDescription('Set or check the player volume').addIntegerOption(o => o.setName('level').setDescription('Volume level (0-200)').setMinValue(0).setMaxValue(200)),
     new SlashCommandBuilder().setName('seek').setDescription('Seek to a position in the current track').addIntegerOption(o => o.setName('position').setDescription('Position in seconds').setRequired(true)),
     new SlashCommandBuilder().setName('remove').setDescription('Remove a song from the queue').addIntegerOption(o => o.setName('position').setDescription('Queue position to remove').setRequired(true)),
     new SlashCommandBuilder().setName('previous').setDescription('Play the previous track'),
@@ -41,8 +41,38 @@ const commands = [
     new SlashCommandBuilder().setName('setprefix').setDescription('Set a custom prefix for this server').addStringOption(o => o.setName('prefix').setDescription('New prefix (max 3 characters)').setRequired(true).setMaxLength(3)),
     new SlashCommandBuilder().setName('247').setDescription('Toggle 24/7 mode (stay in voice channel)'),
     new SlashCommandBuilder().setName('autoplay').setDescription('Toggle autoplay mode'),
+
+    // Premium commands
     new SlashCommandBuilder().setName('premium').setDescription('Check this server\'s premium status'),
-    new SlashCommandBuilder().setName('redeem').setDescription('Redeem a premium code for this server').addStringOption(o => o.setName('code').setDescription('Premium activation code').setRequired(true)),
+    new SlashCommandBuilder().setName('redeem').setDescription('Redeem a premium code for this server')
+        .addStringOption(o => o.setName('code').setDescription('Premium activation code').setRequired(true)),
+
+    // Owner — premium management
+    new SlashCommandBuilder().setName('genpremium').setDescription('Generate premium codes (Owner only)')
+        .addStringOption(o => o.setName('duration').setDescription('Premium validity duration').setRequired(true)
+            .addChoices(
+                {name: '30 Days',  value: '30d'},
+                {name: '90 Days',  value: '90d'},
+                {name: '180 Days', value: '180d'},
+                {name: '1 Year',   value: '365d'},
+                {name: 'Lifetime', value: 'lifetime'}
+            ))
+        .addIntegerOption(o => o.setName('amount').setDescription('Number of codes to generate (max 10)').setMinValue(1).setMaxValue(10)),
+    new SlashCommandBuilder().setName('revokepremium').setDescription('Revoke premium from a server (Owner only)')
+        .addStringOption(o => o.setName('server_id').setDescription('The server ID to revoke premium from').setRequired(true)),
+    new SlashCommandBuilder().setName('listpremium').setDescription('List all premium servers (Owner only)'),
+
+    // Owner — no-prefix management
+    new SlashCommandBuilder().setName('noprefix').setDescription('Manage no-prefix users (Owner only)')
+        .addSubcommand(sub => sub.setName('add').setDescription('Grant a user no-prefix access')
+            .addUserOption(o => o.setName('user').setDescription('The user to add').setRequired(true))
+            .addStringOption(o => o.setName('scope').setDescription('Use "all" for all servers, or enter a specific server ID').setRequired(true)))
+        .addSubcommand(sub => sub.setName('remove').setDescription('Remove a user\'s no-prefix access')
+            .addUserOption(o => o.setName('user').setDescription('The user to remove').setRequired(true))
+            .addStringOption(o => o.setName('scope').setDescription('Use "all" for all servers, or enter a specific server ID').setRequired(true)))
+        .addSubcommand(sub => sub.setName('show').setDescription('Show no-prefix users')
+            .addStringOption(o => o.setName('scope').setDescription('Use "all" for all servers, or enter a specific server ID').setRequired(true))),
+
 ].map(c => c.toJSON());
 
 const rest = new REST({ version: '10' }).setToken(process.env.token);
