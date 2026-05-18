@@ -34,7 +34,7 @@ class Help extends AvonCommand{
                 .setFooter({text: `Developed By Radio Development`, iconURL: message.guild.iconURL({dynamic: true})})
                 .setThumbnail(message.author.displayAvatarURL({dynamic: true}));
 
-            let em6 = new EmbedBuilder().setColor(`#FF5722`)
+            let em6 = new EmbedBuilder().setColor(`#CC0000`)
                 .setAuthor({name: `| Premium Commands`, iconURL: client.user.displayAvatarURL({dynamic: true})})
                 .setDescription(
                     `**Premium** unlocks all audio filters for your server!\n\n` +

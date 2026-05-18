@@ -74,7 +74,7 @@ class Redeem extends AvonCommand{
             let expText = expiresAt ? `<t:${Math.floor(expiresAt/1000)}:F>` : '**Never (Lifetime)**';
 
             return message.channel.send({embeds: [
-                new EmbedBuilder().setColor(`#FF5722`)
+                new EmbedBuilder().setColor(`#CC0000`)
                     .setAuthor({name: `| Premium Activated!`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                     .setDescription(`${client.emoji.tick} | **${message.guild.name}** now has **Premium** (${label})!\n\nExpires: ${expText}\n\nAll filters and premium features are now unlocked.`)
                     .setThumbnail(message.guild.iconURL({dynamic: true}))
