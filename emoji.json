@@ -27,11 +27,11 @@
     "settings"    : "<:emoji_3:1091983277532926013>",
     "allCommands" : "<:raoshab:1163623734805024871>",
 
-    "servers"     : "",
-    "members"     : "",
-    "player"      : "",
-    "premium"     : "",
-    "ram"         : "",
-    "cpu"         : "",
-    "nodejs"      : ""
+    "servers"     : "<:servers:1505751272765132992>",
+    "members"     : "<:FS_redmembers:1505751631696756798>",
+    "player"      : "<:Red_Musicnote:1505751962572947456>",
+    "premium"     : "<a:red_premium:1505740312813768715>",
+    "ram"         : "<:RAM:1505752667241054390>",
+    "cpu"         : "<:CPU:1505752693027897344>",
+    "nodejs"      : "<:nodejs:1505752730046693527>"
 }
