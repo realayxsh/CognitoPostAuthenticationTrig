@@ -12,10 +12,10 @@ class Lavasfy extends LavasfyClient{
         },[
             {
                 id : "Radio",
-                host : "lava-v3.ajieblogs.eu.org",
-                port : 80,
-                password : "https://dsc.gg/ajidevserver",
-                secure : false
+                host : "lava-v4.millohost.my.id",
+                port : 443,
+                password : "https://discord.gg/mjS5J2K3ep",
+                secure : true
             }
         ]);
     }
