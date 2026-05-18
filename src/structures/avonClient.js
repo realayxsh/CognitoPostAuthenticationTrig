@@ -1,5 +1,5 @@
  const { Client , GatewayIntentBits , Collection , WebhookClient, Partials , EmbedBuilder } = require(`discord.js`);
-const { Guilds , MessageContent , GuildInvites , GuildVoiceStates , GuildMessages , DirectMessages } = GatewayIntentBits;
+const { Guilds , MessageContent , GuildInvites , GuildVoiceStates , GuildMessages , DirectMessages , AutoModerationConfiguration , AutoModerationExecution } = GatewayIntentBits;
 const { User , Channel , Reaction , Message , GuildMember } = Partials;
 const { errors } = require(`../../config.json`);
 const { Database } = require("quickmongo");
@@ -13,7 +13,7 @@ const web = new WebhookClient({url : errors});
 class Avon extends Client {
     constructor(){
         super({
-            intents : [Guilds,MessageContent,GuildInvites,GuildMessages,DirectMessages,GuildVoiceStates],
+            intents : [Guilds,MessageContent,GuildInvites,GuildMessages,DirectMessages,GuildVoiceStates,AutoModerationConfiguration,AutoModerationExecution],
             shardCount : getInfo().TOTAL_SHARDS,
             shards : getInfo().SHARD_LIST,
             partials : [Channel,User,Reaction,Message,GuildMember],
