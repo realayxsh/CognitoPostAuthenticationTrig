@@ -7,9 +7,9 @@
     "mongourl" : "",
     "mongourl2" : "",
     "errors" : "https://discord.com/api/webhooks/1504581750251192400/joU7_yYTcNmDZ2VPreJC5yyw7i_VMpO9EcIWG8Fm0brz8_6f8yYr6y0QHBegSDyQTflV", 
-    "spotifyId" : "",
+    "spotifyId" : "d0a7fc39e0ee431993a5c40f31bc80a8",
     "noprefix" : "871770313564753950",
-    "spotifySecret" : "",
+    "spotifySecret" : "d9662351f3c949258af5dcaf30f3b446",
     "topggapi" : "",
     "server" : "https://discord.com/invite/pMuDkCcppJ",
     "nodes" : [
