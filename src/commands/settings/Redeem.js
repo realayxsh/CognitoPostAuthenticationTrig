@@ -2,13 +2,10 @@ const { EmbedBuilder } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
 
 class Redeem extends AvonCommand{
-    get name(){
-        return 'redeem'
-    }
-    get aliases(){
-        return ['activatepremium','redeemcode'];
-    }
-    async run(client,message,args,prefix){
+    get name(){ return 'redeem'; }
+    get aliases(){ return ['activatepremium','redeemcode']; }
+    get cat(){ return 'premium'; }
+    async run(client, message, args, prefix){
         try{
             if(!message.member.permissions.has(8n) && !client.config.owners.includes(message.author.id)){
                 return message.channel.send({embeds: [
@@ -52,7 +49,7 @@ class Redeem extends AvonCommand{
                     .setDescription(`${client.emoji.tick} | **${message.guild.name}** now has **Premium** access!\n\nAll filters and premium features are now unlocked for this server.`)
                     .setThumbnail(message.guild.iconURL({dynamic: true}))
             ]});
-        } catch(e){ console.log(e) }
+        } catch(e){ console.log(e); }
     }
 }
 module.exports = Redeem;
