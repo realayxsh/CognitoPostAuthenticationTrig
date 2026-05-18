@@ -29,7 +29,7 @@ class ListPremium extends AvonCommand{
             }
 
             return message.channel.send({embeds: [
-                new EmbedBuilder().setColor(`#FF4444`)
+                new EmbedBuilder().setColor(`#FF5722`)
                     .setAuthor({name: `| Premium Servers (${list.length})`, iconURL: message.author.displayAvatarURL({dynamic: true})})
                     .setDescription(list.join('\n'))
                     .setFooter({text: `Use +revokepremium <server_id> to remove premium`})

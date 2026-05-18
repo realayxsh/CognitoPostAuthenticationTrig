@@ -29,7 +29,7 @@ class PremiumStatus extends AvonCommand{
                     : `Expires: <t:${Math.floor(expiresAt/1000)}:F> (<t:${Math.floor(expiresAt/1000)}:R>)`;
 
                 return message.channel.send({embeds: [
-                    new EmbedBuilder().setColor(`#FF4444`)
+                    new EmbedBuilder().setColor(`#FF5722`)
                         .setAuthor({name: `| Premium Status`, iconURL: message.guild.iconURL({dynamic: true})})
                         .setDescription(`${client.emoji.tick} | **${message.guild.name}** has **Premium** active!\n\n${expLine}\n\nAll filters are unlocked and available.`)
                         .setThumbnail(message.guild.iconURL({dynamic: true}))
