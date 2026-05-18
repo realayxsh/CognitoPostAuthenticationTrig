@@ -3,8 +3,8 @@ const config = require(`../../config.json`);
 class Lavasfy extends LavasfyClient{
     constructor(client){
         super({
-            clientID : config.spotifyId,
-            clientSecret : config.spotifySecret,
+            clientID : process.env.spotifyId || config.spotifyId,
+            clientSecret : process.env.spotifySecret || config.spotifySecret,
             playlistLoadLimit : 4,
             audioOnlyResults : true,
             autoResolve : true,

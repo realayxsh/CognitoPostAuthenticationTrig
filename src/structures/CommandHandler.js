@@ -6,7 +6,7 @@ const ascii = require(`ascii-table`);
 const config = require(`../../config.json`);
 const table = new ascii().setHeading('Avon Commands','Status');
 const top = require(`@top-gg/sdk`);
-const vote = new top.Api(config.topggapi);
+const vote = new top.Api(process.env.topggapi || config.topggapi);
 class AvonCommands extends EventEmitter {
     constructor(client){
         super();

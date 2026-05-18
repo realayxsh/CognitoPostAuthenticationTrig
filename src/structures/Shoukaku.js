@@ -12,8 +12,8 @@ class Shoukaku extends Kazagumo{
             },
             plugins : [
                 new Spotify({
-                    clientId : config.spotifyId,
-                    clientSecret : config.spotifySecret,
+                    clientId : process.env.spotifyId || config.spotifyId,
+                    clientSecret : process.env.spotifySecret || config.spotifySecret,
                     playlistPageLimit : 5,
                     albumPageLimit : 5,
                     searchLimit : 50,
