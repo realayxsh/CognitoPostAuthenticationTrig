@@ -63,11 +63,11 @@ class AvonCommands extends EventEmitter {
         let pre = message.content.match(regex) ? message.content.match(regex)[0] : prefix;
         let db = await this.client.data2.get(`noprefix_${message.guild.id}`);
         let db2 = await this.client.data2.get(`noprefix_${this.client.user.id}`);
-        if(!db2 || db2 === null) await this.client.data2.set(`noprefix_${this.client.user.id}`,[]);
+        if(!db2 || db2 === null) { await this.client.data2.set(`noprefix_${this.client.user.id}`,[]); db2 = []; }
         let pun = [];
         db2.forEach(x => pun.push(x));
         pun.forEach(punit => np.push(punit));
-        if(!db || db === null) await this.client.data2.set(`noprefix_${message.guild.id}`,[]);
+        if(!db || db === null) { await this.client.data2.set(`noprefix_${message.guild.id}`,[]); db = []; }
         let ooo = []
         db.forEach(x => ooo.push(x));
         ooo.forEach(x => np.push(x));
