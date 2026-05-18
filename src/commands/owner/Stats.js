@@ -36,7 +36,7 @@ class Stats extends AvonCommand{
             }
 
             const embed = new EmbedBuilder()
-                .setColor(`#FFD700`)
+                .setColor(`#FF4444`)
                 .setAuthor({name: `| ${client.user.username} Statistics`, iconURL: client.user.displayAvatarURL({dynamic: true})})
                 .addFields(
                     {name: `${client.emoji.servers} Servers`, value: `\`${totalServers}\``, inline: true},

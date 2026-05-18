@@ -52,11 +52,11 @@ class Avon extends Client {
         this.login(process.env.token);
         process.on('unhandledRejection',async(er) => {
             console.error(er);
-            web.send({embeds : [new EmbedBuilder().setColor(`#2f3136`).setDescription(`\`\`\`js\n${er}\`\`\``)]});
+            web.send({embeds : [new EmbedBuilder().setColor(`#B71C1C`).setDescription(`\`\`\`js\n${er}\`\`\``)]});
         });
         process.on('uncaughtException',async(err) => {
             console.error(err);
-            web.send({embeds : [new EmbedBuilder().setColor(`#2f3136`).setDescription(`\`\`\`js\n${err}\`\`\``)]});
+            web.send({embeds : [new EmbedBuilder().setColor(`#B71C1C`).setDescription(`\`\`\`js\n${err}\`\`\``)]});
         });
     }
     

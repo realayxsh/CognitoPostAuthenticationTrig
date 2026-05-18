@@ -22,7 +22,7 @@ class Pause extends AvonCommand{
     }
     async run(client,message,args,prefix,player){
         if(player.paused){
-            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.comfig.color).setAuthor({name : `| Player is already paused` , iconURL : message.author.displayAvatarURL({dynamic : true})})]})
+            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Player is already paused` , iconURL : message.author.displayAvatarURL({dynamic : true})})]})
         }
         else{
             player.pause(true);

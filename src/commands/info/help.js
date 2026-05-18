@@ -60,7 +60,7 @@ class Help extends AvonCommand{
             let em4 = new EmbedBuilder().setColor(client.config.color)
                 .addFields({name: `__Information Commands__ [${infoCmds.size}]`, value: infoCmds.map(r => `\`${r.name}\``).sort().join(`, `) || 'None'});
 
-            let em6 = new EmbedBuilder().setColor(`#FFD700`)
+            let em6 = new EmbedBuilder().setColor(`#FF4444`)
                 .setAuthor({name: `| Premium Commands`, iconURL: client.user.displayAvatarURL({dynamic: true})})
                 .setDescription(
                     `⭐ **Premium** unlocks all audio filters for your server!\n\n` +
