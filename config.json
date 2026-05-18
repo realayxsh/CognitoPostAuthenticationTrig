@@ -15,9 +15,9 @@
     "nodes" : [
         {
         "name" : "Radio",
-        "url" : "lava-v3.ajieblogs.eu.org:80",
-        "auth" : "https://dsc.gg/ajidevserver",
-        "secure" : false
+        "url" : "lava-v4.millohost.my.id:443",
+        "auth" : "https://discord.gg/mjS5J2K3ep",
+        "secure" : true
         }
     ]
 }
