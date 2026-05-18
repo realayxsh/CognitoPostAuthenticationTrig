@@ -15,8 +15,8 @@
     "nodes" : [
         {
         "name" : "Radio",
-        "url" : "89.106.84.59:4000",
-        "auth" : "heavencloud.in",
+        "url" : "lavalink.devamop.in:443",
+        "auth" : "devamop.in",
         "secure" : true
         }
     ]
