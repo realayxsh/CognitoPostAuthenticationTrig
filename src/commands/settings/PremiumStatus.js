@@ -15,14 +15,14 @@ class PremiumStatus extends AvonCommand{
                 return message.channel.send({embeds: [
                     new EmbedBuilder().setColor(`#FFD700`)
                         .setAuthor({name: `| Premium Status`, iconURL: message.guild.iconURL({dynamic: true})})
-                        .setDescription(`✅ **${message.guild.name}** has **Premium** active!\n\nAll filters are unlocked and available.`)
+                        .setDescription(`${client.emoji.tick} | **${message.guild.name}** has **Premium** active!\n\nAll filters are unlocked and available.`)
                         .setThumbnail(message.guild.iconURL({dynamic: true}))
                 ]});
             } else {
                 return message.channel.send({embeds: [
                     new EmbedBuilder().setColor(client.config.color)
                         .setAuthor({name: `| Premium Status`, iconURL: message.guild.iconURL({dynamic: true})})
-                        .setDescription(`❌ **${message.guild.name}** does not have **Premium**.\n\nAsk the bot owner for a premium code, then use \`${prefix}redeem <code>\` to activate it.`)
+                        .setDescription(`${client.emoji.cross} | **${message.guild.name}** does not have **Premium**.\n\nAsk the bot owner for a premium code, then use \`${prefix}redeem <code>\` to activate it.`)
                 ]});
             }
         } catch(e){ console.log(e) }

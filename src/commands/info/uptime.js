@@ -11,9 +11,11 @@ class Uptime extends AvonCommand{
     get cat(){
         return 'info'
     }
-    async run(client,message,args,prefix){
-        let uptime = moment.duration(message.client.uptime).format(`D[days], H[hrs], m[mins], s[secs]`);
-        return message.channel.send({content : `${client.emoji.uptime} | My Uptime L \`${uptime}\``});
+    async run(client, message, args, prefix){
+        try{
+            let uptime = moment.duration(client.uptime).format(`D[d] H[h] m[m] s[s]`);
+            return message.channel.send({content: `${client.emoji.uptime} | My Uptime: \`${uptime}\``});
+        } catch(e){ console.log(e); }
     }
 }
 module.exports = Uptime;

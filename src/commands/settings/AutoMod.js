@@ -48,7 +48,7 @@ class AutoMod extends AvonCommand{
                 if(botRules.size === 0){
                     return message.channel.send({embeds:[new EmbedBuilder().setColor(client.config.color).setDescription(`${client.emoji.cross} | No AutoMod rules set up by me yet. Use \`${prefix}automod all\` to set up.`)]});
                 }
-                let list = botRules.map((r,i) => `\`${i+1}\` **${r.name}** — ${r.enabled ? '✅ Enabled' : '❌ Disabled'}`);
+                let list = botRules.map((r,i) => `\`${i+1}\` **${r.name}** — ${r.enabled ? `${client.emoji.tick} Enabled` : `${client.emoji.cross} Disabled`}`);
                 return message.channel.send({embeds:[new EmbedBuilder().setColor(`#FFD700`).setAuthor({name:'| Active AutoMod Rules'}).setDescription(list.join('\n'))]});
             }
 
@@ -59,7 +59,7 @@ class AutoMod extends AvonCommand{
                 let rules = await message.guild.autoModerationRules.fetch();
                 let botRules = rules.filter(r => r.creatorId === client.user.id);
                 for(let rule of botRules.values()) await rule.delete();
-                return message.channel.send({embeds:[new EmbedBuilder().setColor(client.config.color).setDescription(`✅ Deleted **${botRules.size}** AutoMod rule(s) created by me.`)]});
+                return message.channel.send({embeds:[new EmbedBuilder().setColor(client.config.color).setDescription(`${client.emoji.tick} | Deleted **${botRules.size}** AutoMod rule(s) created by me.`)]});
             }
 
             let created = [];
@@ -74,8 +74,8 @@ class AutoMod extends AvonCommand{
                         enabled: true,
                         reason: `AutoMod setup by ${message.author.tag}`
                     });
-                    created.push('✅ Anti-Spam Protection');
-                } catch(e){ created.push('❌ Spam (already exists or failed)'); }
+                    created.push(`${client.emoji.tick} Anti-Spam Protection`);
+                } catch(e){ created.push(`${client.emoji.cross} Spam (already exists or failed)`); }
             }
 
             if(op === 'mentions' || op === 'all'){
@@ -89,8 +89,8 @@ class AutoMod extends AvonCommand{
                         enabled: true,
                         reason: `AutoMod setup by ${message.author.tag}`
                     });
-                    created.push('✅ Anti Mass-Mention');
-                } catch(e){ created.push('❌ Mentions (already exists or failed)'); }
+                    created.push(`${client.emoji.tick} Anti Mass-Mention`);
+                } catch(e){ created.push(`${client.emoji.cross} Mentions (already exists or failed)`); }
             }
 
             if(op === 'links' || op === 'all'){
@@ -104,8 +104,8 @@ class AutoMod extends AvonCommand{
                         enabled: true,
                         reason: `AutoMod setup by ${message.author.tag}`
                     });
-                    created.push('✅ Suspicious Link Filter');
-                } catch(e){ created.push('❌ Links (already exists or failed)'); }
+                    created.push(`${client.emoji.tick} Suspicious Link Filter`);
+                } catch(e){ created.push(`${client.emoji.cross} Links (already exists or failed)`); }
             }
 
             return message.channel.send({embeds:[

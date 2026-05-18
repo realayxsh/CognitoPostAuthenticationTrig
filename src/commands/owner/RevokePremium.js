@@ -36,7 +36,7 @@ class RevokePremium extends AvonCommand{
             return message.channel.send({embeds: [
                 new EmbedBuilder().setColor(client.config.color)
                     .setAuthor({name: `| Premium Revoked`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                    .setDescription(`✅ Premium has been **removed** from **${guildName}**.\n\nServer ID: \`${guildId}\``)
+                    .setDescription(`${client.emoji.tick} | Premium has been **removed** from **${guildName}**.\n\nServer ID: \`${guildId}\``)
             ]});
         } catch(e){ console.log(e) }
     }

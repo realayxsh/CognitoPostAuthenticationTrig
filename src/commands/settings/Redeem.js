@@ -49,7 +49,7 @@ class Redeem extends AvonCommand{
             return message.channel.send({embeds: [
                 new EmbedBuilder().setColor(`#FFD700`)
                     .setAuthor({name: `| Premium Activated!`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                    .setDescription(`🎉 **${message.guild.name}** now has **Premium** access!\n\nAll filters and premium features are now unlocked for this server.`)
+                    .setDescription(`${client.emoji.tick} | **${message.guild.name}** now has **Premium** access!\n\nAll filters and premium features are now unlocked for this server.`)
                     .setThumbnail(message.guild.iconURL({dynamic: true}))
             ]});
         } catch(e){ console.log(e) }
