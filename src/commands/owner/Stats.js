@@ -39,15 +39,15 @@ class Stats extends AvonCommand{
                 .setColor(`#FFD700`)
                 .setAuthor({name: `| ${client.user.username} Statistics`, iconURL: client.user.displayAvatarURL({dynamic: true})})
                 .addFields(
-                    {name: `🌐 Servers`, value: `\`${totalServers}\``, inline: true},
-                    {name: `👥 Users`, value: `\`${totalUsers.toLocaleString()}\``, inline: true},
-                    {name: `🎵 Active Players`, value: `\`${activePlayers}\``, inline: true},
-                    {name: `⭐ Premium Servers`, value: `\`${premiumCount}\``, inline: true},
-                    {name: `📡 Ping`, value: `\`${ping}ms\``, inline: true},
-                    {name: `⏱️ Uptime`, value: `\`${uptimeStr}\``, inline: true},
-                    {name: `💾 RAM Usage`, value: `\`${memUsed} MB / ${memTotal} MB\``, inline: true},
-                    {name: `🖥️ CPU Load`, value: `\`${cpuLoad}%\``, inline: true},
-                    {name: `📦 Node.js`, value: `\`${process.version}\``, inline: true},
+                    {name: `${client.emoji.servers} Servers`, value: `\`${totalServers}\``, inline: true},
+                    {name: `${client.emoji.members} Users`, value: `\`${totalUsers.toLocaleString()}\``, inline: true},
+                    {name: `${client.emoji.player} Active Players`, value: `\`${activePlayers}\``, inline: true},
+                    {name: `${client.emoji.premium} Premium Servers`, value: `\`${premiumCount}\``, inline: true},
+                    {name: `${client.emoji.ping} Ping`, value: `\`${ping}ms\``, inline: true},
+                    {name: `${client.emoji.uptime} Uptime`, value: `\`${uptimeStr}\``, inline: true},
+                    {name: `${client.emoji.ram} RAM Usage`, value: `\`${memUsed} MB / ${memTotal} MB\``, inline: true},
+                    {name: `${client.emoji.cpu} CPU Load`, value: `\`${cpuLoad}%\``, inline: true},
+                    {name: `${client.emoji.nodejs} Node.js`, value: `\`${process.version}\``, inline: true},
                 )
                 .setThumbnail(client.user.displayAvatarURL({dynamic: true}))
                 .setFooter({text: `Requested by ${message.author.tag}`, iconURL: message.author.displayAvatarURL({dynamic: true})})
