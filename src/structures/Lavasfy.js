@@ -12,9 +12,9 @@ class Lavasfy extends LavasfyClient{
         },[
             {
                 id : "Radio",
-                host : "lava-v4.millohost.my.id",
+                host : "89.106.84.59",
                 port : 443,
-                password : "https://discord.gg/mjS5J2K3ep",
+                password : "heavencloud.in",
                 secure : true
             }
         ]);
