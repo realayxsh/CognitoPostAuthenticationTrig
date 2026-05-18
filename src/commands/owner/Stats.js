@@ -31,7 +31,7 @@ class Stats extends AvonCommand{
 
             let premiumCount = 0;
             for(let g of client.guilds.cache.values()){
-                let isPremium = await client.data.get(`premium_${g.id}`);
+                let isPremium = await client.data3.get(`premium_${g.id}`);
                 if(isPremium) premiumCount++;
             }
 

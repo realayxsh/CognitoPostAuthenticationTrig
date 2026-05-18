@@ -24,7 +24,7 @@ class Redeem extends AvonCommand{
                 ]});
             }
 
-            let alreadyPremium = await client.data.get(`premium_${message.guild.id}`);
+            let alreadyPremium = await client.data3.get(`premium_${message.guild.id}`);
             if(alreadyPremium){
                 return message.channel.send({embeds: [
                     new EmbedBuilder().setColor(client.config.color)
@@ -33,7 +33,7 @@ class Redeem extends AvonCommand{
             }
 
             let code = args[0].toUpperCase();
-            let codes = await client.data.get(`premium_codes`) || [];
+            let codes = await client.data3.get(`premium_codes`) || [];
 
             if(!codes.includes(code)){
                 return message.channel.send({embeds: [
@@ -43,8 +43,8 @@ class Redeem extends AvonCommand{
             }
 
             let remaining = codes.filter(c => c !== code);
-            await client.data.set(`premium_codes`, remaining);
-            await client.data.set(`premium_${message.guild.id}`, true);
+            await client.data3.set(`premium_codes`, remaining);
+            await client.data3.set(`premium_${message.guild.id}`, true);
 
             return message.channel.send({embeds: [
                 new EmbedBuilder().setColor(`#FFD700`)

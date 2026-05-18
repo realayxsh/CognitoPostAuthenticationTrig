@@ -111,7 +111,7 @@ class AvonCommands extends EventEmitter {
             }
         }
         if(avonCommand.premium){
-            let isPremium = await client.data.get(`premium_${message.guild.id}`);
+            let isPremium = await client.data3.get(`premium_${message.guild.id}`);
             if(!isPremium && !client.config.owners.includes(message.author.id)){
                 return message.channel.send({embeds: [new EmbedBuilder().setColor(config.color)
                     .setAuthor({name: `| Premium Required`, iconURL: message.author.displayAvatarURL({dynamic: true})})

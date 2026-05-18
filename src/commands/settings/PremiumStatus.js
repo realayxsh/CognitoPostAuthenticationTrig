@@ -10,7 +10,7 @@ class PremiumStatus extends AvonCommand{
     }
     async run(client,message,args,prefix){
         try{
-            let isPremium = await client.data.get(`premium_${message.guild.id}`);
+            let isPremium = await client.data3.get(`premium_${message.guild.id}`);
             if(isPremium){
                 return message.channel.send({embeds: [
                     new EmbedBuilder().setColor(`#FFD700`)

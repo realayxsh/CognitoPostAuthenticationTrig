@@ -20,7 +20,7 @@ class RevokePremium extends AvonCommand{
             }
 
             let guildId = args[0];
-            let isPremium = await client.data.get(`premium_${guildId}`);
+            let isPremium = await client.data3.get(`premium_${guildId}`);
 
             if(!isPremium){
                 return message.channel.send({embeds: [
@@ -29,7 +29,7 @@ class RevokePremium extends AvonCommand{
                 ]});
             }
 
-            await client.data.delete(`premium_${guildId}`);
+            await client.data3.delete(`premium_${guildId}`);
 
             let guildName = client.guilds.cache.get(guildId)?.name || guildId;
 

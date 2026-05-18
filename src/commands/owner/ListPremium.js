@@ -14,7 +14,7 @@ class ListPremium extends AvonCommand{
 
             let premiumGuilds = [];
             client.guilds.cache.forEach(async g => {
-                let isPremium = await client.data.get(`premium_${g.id}`);
+                let isPremium = await client.data3.get(`premium_${g.id}`);
                 if(isPremium) premiumGuilds.push(g);
             });
 
@@ -23,7 +23,7 @@ class ListPremium extends AvonCommand{
 
             let list = [];
             for(let g of client.guilds.cache.values()){
-                let isPremium = await client.data.get(`premium_${g.id}`);
+                let isPremium = await client.data3.get(`premium_${g.id}`);
                 if(isPremium) list.push(`\`${list.length+1}\` **${g.name}** | \`${g.id}\` | ${g.memberCount} members`);
             }
 

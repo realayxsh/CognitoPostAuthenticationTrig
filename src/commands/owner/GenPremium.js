@@ -16,7 +16,7 @@ class GenPremium extends AvonCommand{
             let amount = parseInt(args[0]) || 1;
             if(amount > 10) amount = 10;
 
-            let codes = await client.data.get(`premium_codes`) || [];
+            let codes = await client.data3.get(`premium_codes`) || [];
             let generated = [];
 
             for(let i = 0; i < amount; i++){
@@ -25,7 +25,7 @@ class GenPremium extends AvonCommand{
                 generated.push(code);
             }
 
-            await client.data.set(`premium_codes`, codes);
+            await client.data3.set(`premium_codes`, codes);
 
             let codeList = generated.map((c, i) => `\`${i+1}\` \`${c}\``).join('\n');
             return message.channel.send({embeds: [

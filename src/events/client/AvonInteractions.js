@@ -107,7 +107,7 @@ class AvonInteractions extends AvonClientEvents{
                     }
                 }
                 if(avonCommand.premium){
-                    let isPremium = await client.data.get(`premium_${interaction.guild.id}`);
+                    let isPremium = await client.data3.get(`premium_${interaction.guild.id}`);
                     if(!isPremium && !client.config.owners.includes(interaction.user.id)){
                         return interaction.editReply({embeds:[new EmbedBuilder().setColor(config.color)
                             .setAuthor({name:`| Premium Required`, iconURL: interaction.user.displayAvatarURL({dynamic:true})})
