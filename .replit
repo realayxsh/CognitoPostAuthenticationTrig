@@ -79,7 +79,8 @@ pattern = "**/{*.js,*.jsx,*.ts,*.tsx,*.json}"
 start = "typescript-language-server --stdio"
 
 [deployment]
-run = ["sh", "-c", "node src/sharding.js"]
+run = ["node", "src/sharding.js"]
+deploymentTarget = "vm"
 
 [agent]
 expertMode = true
