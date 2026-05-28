@@ -202,11 +202,11 @@ class AvonInteractions extends AvonClientEvents{
 
         if(interaction.isChatInputCommand()){
             try{
-                await interaction.deferReply();
+                await interaction.deferReply({ flags: [MessageFlags.IsComponentsV2] });
                 const client = this.client;
                 const commandName = interaction.commandName;
                 const avonCommand = client.AvonCommands.commands.get(commandName) || client.AvonCommands.commands.find(c => c.aliases && c.aliases.includes(commandName));
-                if(!avonCommand) return interaction.editReply({ content: `Command not found.` });
+                if(!avonCommand) return interaction.editReply(cv2(`Command not found.`));
 
                 let prefix = await client.data.get(`${interaction.guild.id}-prefix`) || client.config.prefix;
 
@@ -304,7 +304,7 @@ class AvonInteractions extends AvonClientEvents{
                 }
 
                 await avonCommand.run(client, fakeMessage, args, prefix, player);
-            } catch(e){ console.log(e); try{ interaction.editReply({ content: `An error occurred: ${e.message}` }); } catch(_){} }
+            } catch(e){ console.log('[SlashError]', e.message); try{ interaction.editReply(cv2(`An error occurred: ${e.message}`)); } catch(_){} }
         }
     }
 }

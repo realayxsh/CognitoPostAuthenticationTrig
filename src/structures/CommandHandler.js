@@ -1,9 +1,10 @@
 const { Collection, ButtonBuilder, ActionRowBuilder, ButtonStyle, ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, PermissionsBitField, WebhookClient, MessageFlags } = require('discord.js');
 const EventEmitter = require('events');
 const { readdirSync } = require('fs');
-const web = new WebhookClient({ url: `https://discord.com/api/webhooks/1504581750251192400/joU7_yYTcNmDZ2VPreJC5yyw7i_VMpO9EcIWG8Fm0brz8_6f8yYr6y0QHBegSDyQTflV` });
 const ascii = require(`ascii-table`);
 const config = require(`../../config.json`);
+const webhookUrl = process.env.logwebhook || config.logwebhook || '';
+const web = webhookUrl ? new WebhookClient({ url: webhookUrl }) : null;
 const table = new ascii().setHeading('Avon Commands', 'Status');
 const top = require(`@top-gg/sdk`);
 const voteApi = new top.Api(process.env.topggapi || config.topggapi);
@@ -135,7 +136,7 @@ class AvonCommands extends EventEmitter {
                         ))
                         .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.guild.iconURL({ dynamic: true }) || this.client.user.displayAvatarURL()))
                 );
-            web.send({ flags: [MessageFlags.IsComponentsV2], components: [logContainer] }).catch(() => {});
+            if(web) web.send({ flags: [MessageFlags.IsComponentsV2], components: [logContainer] }).catch(() => {});
 
             if(!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ViewChannel)) return;
             if(!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.SendMessages)) return message.author.send({ content: `I don't have **Send Messages** permissions in that channel` }).catch(e => null);
