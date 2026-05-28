@@ -21,16 +21,20 @@ class Volume extends AvonCommand {
             };
 
             let player = client.poru.players.get(message.guild.id);
-            if (!player) return send(`${client.emoji.cross} **| I am not playing anything**`);
-            if (!args[0]) return send(`${client.emoji.music} **| Current volume of the player is ${player.volume * 100}%**`);
+            if (!player) return await send(`${client.emoji.cross} **| I am not playing anything**`);
+            if (!args[0]) return await send(`${client.emoji.music} **| Current volume: ${player.volume}%**`);
 
             let vol = Number(args[0]);
-            if (vol < 0 || vol > 200) return send(`${client.emoji.cross} **| Volume must be between 0 and 200**`);
-            if (player.volume * 100 === vol) return send(`${client.emoji.cross} **| Volume is already set to ${vol}%**`);
+            if (isNaN(vol) || vol < 0 || vol > 200) return await send(`${client.emoji.cross} **| Volume must be between 0 and 200**`);
+            if (player.volume === vol) return await send(`${client.emoji.cross} **| Volume is already set to ${vol}%**`);
 
-            await player.setVolume(vol / 1);
-            return send(`${client.emoji.tick} **| Volume has been changed to ${vol}%**`);
-        } catch (e) { console.log(e) }
+            const currentFilters = Object.assign({}, player.shoukaku.filters || {});
+            currentFilters.volume = vol / 100;
+            await player.shoukaku.setFilters(currentFilters);
+            player.volume = vol;
+
+            return await send(`${client.emoji.tick} **| Volume set to ${vol}%**`);
+        } catch (e) { console.log('[Volume Error]', e.message); }
     }
 }
 module.exports = Volume;

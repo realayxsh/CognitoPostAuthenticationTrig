@@ -47,7 +47,8 @@ class TrackStart extends AvonClientEvent {
             player.data.get('treble') || player.data.get('slow') || player.data.get('chip') ||
             player.data.get('china') || player.data.get('vapor');
         if (!anyFilterActive) {
-            player.shoukaku.setFilters({ equalizer: CLARITY_EQ }).catch(() => {});
+            const userVol = (player.volume || 100) / 100;
+            player.shoukaku.setFilters({ equalizer: CLARITY_EQ, volume: userVol }).catch(() => {});
         }
 
         const container = new ContainerBuilder()
