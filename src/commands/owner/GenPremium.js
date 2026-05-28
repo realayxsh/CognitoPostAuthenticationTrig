@@ -25,9 +25,8 @@ class GenPremium extends AvonCommand{
             let amount = 1;
             let durKey = '30d';
             for(let a of args){
-                let n = parseInt(a);
-                if(!isNaN(n)) amount = n;
-                else if(DURATIONS.hasOwnProperty(a.toLowerCase())) durKey = a.toLowerCase();
+                if(DURATIONS.hasOwnProperty(a.toLowerCase())) durKey = a.toLowerCase();
+                else { let n = parseInt(a); if(!isNaN(n) && /^\d+$/.test(a.trim())) amount = n; }
             }
             if(amount > 10) amount = 10;
 

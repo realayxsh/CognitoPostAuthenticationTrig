@@ -9,6 +9,7 @@ class Badges extends AvonCommand{
     get name(){ return 'profile'; }
     get aliases(){ return ['badges','badge','pr']; }
     get cat(){ return 'info' }
+    get vote(){ return true; }
     async run(client, message, args, prefix){
         try{
             let badges = '';
