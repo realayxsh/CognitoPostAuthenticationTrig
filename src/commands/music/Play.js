@@ -104,7 +104,7 @@ class Play extends AvonCommand {
                         } else {
                             player.queue.add(result.tracks[0]);
                             if (!player.playing && !player.paused) player.play();
-                            return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
+                            return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
                         }
                     } catch (e) {
                         console.error('[Play URL]', e);
@@ -186,7 +186,7 @@ class Play extends AvonCommand {
                             : result.tracks[0];
                         p.queue.add(track);
                         if (!p.playing && !p.paused) p.play();
-                        return editMsg(msg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
+                        return editMsg(msg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
                     }
                 } catch (e) {
                     console.error('[Play Collector]', e);

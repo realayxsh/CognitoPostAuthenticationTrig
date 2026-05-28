@@ -25,10 +25,7 @@ const CLARITY_EQ = [
 class TrackStart extends AvonClientEvent {
     get name() { return 'playerStart' }
     async run(player, track) {
-        let url = track.uri;
-        if (url.includes("youtube.com") || url.includes("youtu.be")) {
-            url = this.client.config.server;
-        }
+        let url = track.uri || '';
         const channel = this.client.channels.cache.get(player.textId);
         let duration = moment.duration(player.queue.current.length).format("hh:mm:ss");
 

@@ -52,7 +52,6 @@ function buildNowPlayingComponents(client, player) {
     const track = player.queue.current;
     if (!track) return null;
     let url = track.uri || '';
-    if (url.includes('youtube.com') || url.includes('youtu.be')) url = client.config.server;
     const duration = ms(track.length || 0);
     const loopOn = player.loop !== 'none';
     const pauseLabel = player.paused ? 'Resume' : 'Pause';
