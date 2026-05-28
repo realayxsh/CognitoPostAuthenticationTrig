@@ -21,10 +21,16 @@ class Redeem extends AvonCommand{
     async run(client, message, args, prefix){
         try{
             const send = (text, thumb) => {
-                const section = new SectionBuilder()
-                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(text));
-                if(thumb) section.setThumbnailAccessory(new ThumbnailBuilder().setURL(thumb));
-                const container = new ContainerBuilder().addSectionComponents(section);
+                const container = new ContainerBuilder();
+                if (thumb) {
+                    container.addSectionComponents(
+                        new SectionBuilder()
+                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
+                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(thumb))
+                    );
+                } else {
+                    container.addTextDisplayComponents(new TextDisplayBuilder().setContent(text));
+                }
                 return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
             };
 

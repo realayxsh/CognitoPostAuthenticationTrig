@@ -31,7 +31,7 @@ class PremiumStatus extends AvonCommand{
                                 `${expLine}\n\nAll filters are unlocked and available.\n\n` +
                                 `-# Thank you for supporting us!`
                             ))
-                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.guild.iconURL({ dynamic: true })))
+                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.guild.iconURL({ dynamic: true }) || client.user.displayAvatarURL()))
                     );
                 const row = new ActionRowBuilder().addComponents(
                     new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Support Server`).setURL(client.config.server)
@@ -48,7 +48,7 @@ class PremiumStatus extends AvonCommand{
                                 `${client.emoji.filters || '🎛️'} All audio filters (BassBoost, Nightcore, 8D, etc.)\n\n` +
                                 `Contact the bot owner to get a premium code, then use \`${prefix}redeem <code>\`.`
                             ))
-                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.guild.iconURL({ dynamic: true })))
+                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.guild.iconURL({ dynamic: true }) || client.user.displayAvatarURL()))
                     );
                 const row = new ActionRowBuilder().addComponents(
                     new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Support Server`).setURL(client.config.server),

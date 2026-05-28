@@ -12,6 +12,8 @@
     "spotifySecret" : "d9662351f3c949258af5dcaf30f3b446",
     "topggapi" : "",
     "server" : "https://discord.com/invite/pMuDkCcppJ",
+    "mongourl5" : "",
+    "mongourl6" : "",
     "nodes" : [
         {
         "name" : "Jirayu",

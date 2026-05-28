@@ -32,6 +32,10 @@ class Avon extends Client {
         this.data3.connect();
         this.data4 = new Database(process.env.mongourl4 || process.env.mongourl || config.mongourl, { writeConcern: { w: 'majority' } });
         this.data4.connect();
+        this.data5 = new Database(process.env.mongourl5 || config.mongourl5 || process.env.mongourl || config.mongourl, { writeConcern: { w: 'majority' } });
+        this.data5.connect();
+        this.data6 = new Database(process.env.mongourl6 || config.mongourl6 || process.env.mongourl || config.mongourl, { writeConcern: { w: 'majority' } });
+        this.data6.connect();
         this.poru = new Shoukaku(this);
         this.lavasfy = new Lavasfy(this);
         this.poru.shoukaku.on('ready', (name) => { console.log(`[SHOUKAKU] => Node ${name} is connected`) });
