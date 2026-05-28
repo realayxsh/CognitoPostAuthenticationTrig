@@ -1,6 +1,9 @@
 const { PermissionsBitField, ContainerBuilder, TextDisplayBuilder, MessageFlags } = require("discord.js");
 const AvonClientEvent = require("../../structures/Eventhandler");
 
+const recreateCooldown = new Map();
+const COOLDOWN_MS = 15000;
+
 class PlayerDestroy extends AvonClientEvent{
     get name(){ return 'playerDestroy' }
     async run(player){
@@ -11,6 +14,10 @@ class PlayerDestroy extends AvonClientEvent{
         if(!db) return;
         if(db === `disabled`) return;
         if(db === `enabled`){
+            const now = Date.now();
+            const lastRecreate = recreateCooldown.get(guild.id) || 0;
+            if(now - lastRecreate < COOLDOWN_MS) return;
+
             let channel = guild.channels.cache.get(await this.client.data.get(`${guild.id}-voice`));
             if(!channel){
                 this.client.data.delete(`${guild.id}-text`);
@@ -20,6 +27,7 @@ class PlayerDestroy extends AvonClientEvent{
             if(guild.members.me.permissions.has([PermissionsBitField.Flags.Connect, PermissionsBitField.Flags.Speak])){
                 try{
                     let text = guild.channels.cache.get(await this.client.data.get(`${guild.id}-text`));
+                    recreateCooldown.set(guild.id, now);
                     this.client.poru.createPlayer({
                         guildId: guild.id,
                         textId: text.id,
