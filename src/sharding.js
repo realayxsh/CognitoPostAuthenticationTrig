@@ -3,8 +3,8 @@ const { ClusterManager } = require("discord-hybrid-sharding");
 
 const manager = new ClusterManager('./src/index.js', {
 token: process.env.token,
-totalClusters: 2,
-totalShards: 2,
+totalClusters: 'auto',
+totalShards: 'auto',
 shardsPerClusters: 1
 });
 
