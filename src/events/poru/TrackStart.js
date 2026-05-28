@@ -12,12 +12,10 @@ class TrackStart extends AvonClientEvent {
         }
         const channel = this.client.channels.cache.get(player.textId);
         let duration = moment.duration(player.queue.current.length).format("hh:mm:ss");
-        const accentColor = parseInt(this.client.config.color.replace('#', ''), 16);
 
         if (duration < 30) {
             player.skip();
             const skipContainer = new ContainerBuilder()
-                .setAccentColor(accentColor)
                 .addTextDisplayComponents(
                     new TextDisplayBuilder().setContent(`${this.client.emoji.settings} Skipping this track as its duration is less than 30 seconds`)
                 );
@@ -25,7 +23,6 @@ class TrackStart extends AvonClientEvent {
         }
 
         const container = new ContainerBuilder()
-            .setAccentColor(accentColor)
             .addSectionComponents(
                 new SectionBuilder()
                     .addTextDisplayComponents(

@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
 const { v4: uuidv4 } = require("uuid");
 
@@ -22,7 +22,6 @@ class GenPremium extends AvonCommand{
         try{
             if(!client.config.owners.includes(message.author.id)) return;
 
-            // Support both prefix (+genpremium 3 30d) and slash (/genpremium duration:30d amount:3)
             let amount = 1;
             let durKey = '30d';
             for(let a of args){
@@ -32,7 +31,7 @@ class GenPremium extends AvonCommand{
             }
             if(amount > 10) amount = 10;
 
-            let codes    = await client.data3.get(`premium_codes`) || [];
+            let codes     = await client.data3.get(`premium_codes`) || [];
             let generated = [];
 
             for(let i = 0; i < amount; i++){
@@ -46,13 +45,19 @@ class GenPremium extends AvonCommand{
             let label    = DURATION_LABELS[durKey];
             let codeList = generated.map((c, i) => `\`${i+1}\` \`${c}\``).join('\n');
 
-            return message.channel.send({embeds: [
-                new EmbedBuilder()
-                    .setColor(client.config.color)
-                    .setAuthor({name: `| Premium Codes Generated`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                    .setDescription(`Generated **${generated.length}** code(s) • Validity: **${label}**\n\n${codeList}\n\n**Share these with server owners to activate premium.**`)
-                    .setFooter({text: `Total active codes in DB: ${codes.length}`})
-            ]});
+            const container = new ContainerBuilder()
+                .addSectionComponents(
+                    new SectionBuilder()
+                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                            `**| Premium Codes Generated**\n\n` +
+                            `Generated **${generated.length}** code(s) • Validity: **${label}**\n\n` +
+                            `${codeList}\n\n` +
+                            `**Share these with server owners to activate premium.**\n\n` +
+                            `-# Total active codes in DB: ${codes.length}`
+                        ))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
+                );
+            return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
         } catch(e){ console.log(e) }
     }
 }

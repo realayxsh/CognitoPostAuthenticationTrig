@@ -9,10 +9,8 @@ function buildContainer(client, track, player) {
     let filled = duration > 0 ? Math.min(Math.round((position / duration) * size), size - 1) : 0;
     let bar = `${'▬'.repeat(filled)}●${'▬'.repeat(size - 1 - filled)}`;
     let loopMode = player.loop === 'track' ? '🔂 Track' : player.loop === 'queue' ? '🔁 Queue' : '➡️ Off';
-    const accentColor = parseInt(client.config.color.replace('#', ''), 16);
 
     return new ContainerBuilder()
-        .setAccentColor(accentColor)
         .addSectionComponents(
             new SectionBuilder()
                 .addTextDisplayComponents(
@@ -42,9 +40,7 @@ class NowPlaying extends AvonCommand {
         try {
             let track = player.queue.current;
             if (!track) {
-                const accentColor = parseInt(client.config.color.replace('#', ''), 16);
                 const noTrackContainer = new ContainerBuilder()
-                    .setAccentColor(accentColor)
                     .addTextDisplayComponents(
                         new TextDisplayBuilder().setContent(`${client.emoji.cross} No track is currently playing.`)
                     );
@@ -63,9 +59,7 @@ class NowPlaying extends AvonCommand {
                     if (!currentPlayer || !currentTrack || updates >= 24) {
                         clearInterval(interval);
                         if (msg.editable) {
-                            const accentColor = parseInt(client.config.color.replace('#', ''), 16);
                             const doneContainer = new ContainerBuilder()
-                                .setAccentColor(accentColor)
                                 .addTextDisplayComponents(
                                     new TextDisplayBuilder().setContent(`${client.emoji.music} No longer updating.`)
                                 );

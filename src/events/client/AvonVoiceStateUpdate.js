@@ -1,5 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
-const  delay  = require(`delay`);
+const delay = require(`delay`);
 const AvonClientEvent = require("../../structures/Eventhandler");
 
 class AvonVoiceStateUpdate extends AvonClientEvent{

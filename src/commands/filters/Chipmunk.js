@@ -10,10 +10,8 @@ class Chipmunk extends AvonCommand {
     get player() { return true; }
     get premium() { return true; }
     async run(client, message, args, prefix, player) {
-        const accentColor = parseInt(client.config.color.replace('#', ''), 16);
         const send = (text) => {
             const container = new ContainerBuilder()
-                .setAccentColor(accentColor)
                 .addSectionComponents(
                     new SectionBuilder()
                         .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))

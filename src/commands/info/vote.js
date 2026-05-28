@@ -1,22 +1,23 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
 
 class Vote extends AvonCommand{
-    get name(){
-        return 'vote'
-    }
-    get aliases(){
-        return ['vot']
-    }
-    get cat(){
-        return 'info'
-    }
-    async run(client,message,args,prefix){
-        let em = new EmbedBuilder().setColor(client.config.color).setDescription(`${client.emoji.info} | Click [here](https://top.gg/bot/1097475016880304180/vote) to [vote](https://top.gg/bot/1097475016880304180/vote) me.`);
-        let row = new ActionRowBuilder().addComponents(
+    get name(){ return 'vote' }
+    get aliases(){ return ['vot'] }
+    get cat(){ return 'info' }
+    async run(client, message, args, prefix){
+        const container = new ContainerBuilder()
+            .addSectionComponents(
+                new SectionBuilder()
+                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                        `${client.emoji.info} | Click **[here](https://top.gg/bot/1097475016880304180/vote)** to vote for **${client.user.username}**!`
+                    ))
+                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL()))
+            );
+        const row = new ActionRowBuilder().addComponents(
             new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(`https://top.gg/bot/1097475016880304180/vote`).setLabel(`Vote`)
         );
-        return message.channel.send({embeds : [em] , components : [row]});
+        return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container, row] });
     }
 }
 module.exports = Vote;

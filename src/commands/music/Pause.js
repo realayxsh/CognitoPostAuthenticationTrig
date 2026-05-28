@@ -9,11 +9,9 @@ class Pause extends AvonCommand {
     get inVoice() { return true; }
     get sameVoice() { return true; }
     async run(client, message, args, prefix, player) {
-        const accentColor = parseInt(client.config.color.replace('#', ''), 16);
         const text = player.paused ? `**| Player is already paused**` : `**| Paused the player**`;
         if (!player.paused) player.pause(true);
         const container = new ContainerBuilder()
-            .setAccentColor(accentColor)
             .addSectionComponents(
                 new SectionBuilder()
                     .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))

@@ -12,11 +12,9 @@ class Play extends AvonCommand {
 
     async run(client, message, args, prefix) {
         try {
-            const accentColor = parseInt(client.config.color.replace('#', ''), 16);
 
             const sendContainer = (text, avatarURL) => {
                 const container = new ContainerBuilder()
-                    .setAccentColor(accentColor)
                     .addSectionComponents(
                         new SectionBuilder()
                             .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
@@ -27,7 +25,6 @@ class Play extends AvonCommand {
 
             const updateContainer = (interaction, text, avatarURL) => {
                 const container = new ContainerBuilder()
-                    .setAccentColor(accentColor)
                     .addSectionComponents(
                         new SectionBuilder()
                             .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
@@ -123,7 +120,6 @@ class Play extends AvonCommand {
             }
 
             const selectorContainer = new ContainerBuilder()
-                .setAccentColor(accentColor)
                 .addSectionComponents(
                     new SectionBuilder()
                         .addTextDisplayComponents(

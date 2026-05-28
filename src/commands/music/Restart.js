@@ -10,8 +10,7 @@ class Restart extends AvonCommand {
     get sameVoice() { return true; }
     async run(client, message, args, prefix, player) {
         player.seek(0);
-        const container = new ContainerBuilder()
-            .setAccentColor(parseInt(client.config.color.replace('#', ''), 16))
+        const container = new ContainerBuilder(), 16))
             .addSectionComponents(
                 new SectionBuilder()
                     .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| Restarted the currently playing song**`))

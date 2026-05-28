@@ -10,8 +10,7 @@ class Skip extends AvonCommand {
     get player() { return true; }
     async run(client, message, args, prefix, player) {
         player.skip();
-        const container = new ContainerBuilder()
-            .setAccentColor(parseInt(client.config.color.replace('#', ''), 16))
+        const container = new ContainerBuilder(), 16))
             .addSectionComponents(
                 new SectionBuilder()
                     .addTextDisplayComponents(

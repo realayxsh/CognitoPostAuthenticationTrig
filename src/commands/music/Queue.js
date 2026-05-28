@@ -13,7 +13,6 @@ class Queue extends AvonCommand {
 
     async run(client, message, args, prefix, player) {
         try {
-            const accentColor = parseInt(client.config.color.replace('#', ''), 16);
 
             const buildContainer = (page, pages, withButtons) => {
                 const nowPlaying = `**Now Playing**\n> [${player.queue.current.title}](${client.config.server}) ${client.emoji.arrow} ${ms(player.queue.current.length)}`;
@@ -21,7 +20,6 @@ class Queue extends AvonCommand {
                 const footer = pages.length > 1 ? `\n\n-# Page ${page + 1} of ${pages.length}` : '';
 
                 const container = new ContainerBuilder()
-                    .setAccentColor(accentColor)
                     .addSectionComponents(
                         new SectionBuilder()
                             .addTextDisplayComponents(
@@ -87,7 +85,6 @@ class Queue extends AvonCommand {
             } else {
                 const nowPlayingOnly = `**Now Playing**\n> [${player.queue.current.title}](${client.config.server}) ${client.emoji.arrow} ${ms(player.queue.current.length)}`;
                 const container = new ContainerBuilder()
-                    .setAccentColor(accentColor)
                     .addSectionComponents(
                         new SectionBuilder()
                             .addTextDisplayComponents(

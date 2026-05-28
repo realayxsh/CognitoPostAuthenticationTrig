@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
 
 const DURATION_MS = {
@@ -20,18 +20,19 @@ class Redeem extends AvonCommand{
     get cat(){ return 'premium'; }
     async run(client, message, args, prefix){
         try{
-            if(!message.member.permissions.has(8n) && !client.config.owners.includes(message.author.id)){
-                return message.channel.send({embeds: [
-                    new EmbedBuilder().setColor(client.config.color)
-                        .setDescription(`${client.emoji.cross} | Only server administrators can redeem a premium code.`)
-                ]});
-            }
+            const send = (text, thumb) => {
+                const section = new SectionBuilder()
+                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(text));
+                if(thumb) section.setThumbnailAccessory(new ThumbnailBuilder().setURL(thumb));
+                const container = new ContainerBuilder().addSectionComponents(section);
+                return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+            };
 
+            if(!message.member.permissions.has(8n) && !client.config.owners.includes(message.author.id)){
+                return send(`${client.emoji.cross} | Only server administrators can redeem a premium code.`);
+            }
             if(!args[0]){
-                return message.channel.send({embeds: [
-                    new EmbedBuilder().setColor(client.config.color)
-                        .setDescription(`${client.emoji.cross} | Usage: \`${prefix}redeem <code>\``)
-                ]});
+                return send(`${client.emoji.cross} | Usage: \`${prefix}redeem <code>\``);
             }
 
             let existing = await client.data3.get(`premium_${message.guild.id}`);
@@ -40,22 +41,15 @@ class Redeem extends AvonCommand{
                 let isActive   = isLifetime || Date.now() < existing.expiresAt;
                 if(isActive){
                     let expText = isLifetime ? '**Lifetime**' : `<t:${Math.floor(existing.expiresAt/1000)}:R>`;
-                    return message.channel.send({embeds: [
-                        new EmbedBuilder().setColor(client.config.color)
-                            .setDescription(`${client.emoji.tick} | This server already has **Premium** active! Expires: ${expText}`)
-                    ]});
+                    return send(`${client.emoji.tick} | This server already has **Premium** active! Expires: ${expText}`);
                 }
             }
 
             let code  = args[0].toUpperCase();
             let codes = await client.data3.get(`premium_codes`) || [];
-
             let entry = codes.find(c => (typeof c === 'object' ? c.code : c) === code);
             if(!entry){
-                return message.channel.send({embeds: [
-                    new EmbedBuilder().setColor(client.config.color)
-                        .setDescription(`${client.emoji.cross} | Invalid or already used code.`)
-                ]});
+                return send(`${client.emoji.cross} | Invalid or already used code.`);
             }
 
             let durKey    = typeof entry === 'object' ? (entry.duration || '30d') : '30d';
@@ -65,20 +59,15 @@ class Redeem extends AvonCommand{
 
             let remaining = codes.filter(c => (typeof c === 'object' ? c.code : c) !== code);
             await client.data3.set(`premium_codes`, remaining);
-            await client.data3.set(`premium_${message.guild.id}`, {
-                active: true,
-                expiresAt,
-                activatedAt: Date.now()
-            });
+            await client.data3.set(`premium_${message.guild.id}`, { active: true, expiresAt, activatedAt: Date.now() });
 
             let expText = expiresAt ? `<t:${Math.floor(expiresAt/1000)}:F>` : '**Never (Lifetime)**';
-
-            return message.channel.send({embeds: [
-                new EmbedBuilder().setColor(`#CC0000`)
-                    .setAuthor({name: `| Premium Activated!`, iconURL: message.author.displayAvatarURL({dynamic: true})})
-                    .setDescription(`${client.emoji.tick} | **${message.guild.name}** now has **Premium** (${label})!\n\nExpires: ${expText}\n\nAll filters and premium features are now unlocked.`)
-                    .setThumbnail(message.guild.iconURL({dynamic: true}))
-            ]});
+            return send(
+                `**| Premium Activated!**\n\n` +
+                `${client.emoji.tick} | **${message.guild.name}** now has **Premium** (${label})!\n\n` +
+                `Expires: ${expText}\n\nAll filters and premium features are now unlocked.`,
+                message.guild.iconURL({ dynamic: true })
+            );
         } catch(e){ console.log(e); }
     }
 }
