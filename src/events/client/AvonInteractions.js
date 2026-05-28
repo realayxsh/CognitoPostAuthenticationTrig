@@ -80,56 +80,57 @@ class AvonInteractions extends AvonClientEvents{
                 player.data.set('slow',false); player.data.set('chip',false); player.data.set('china',false);
                 player.data.set('vapor',false);
 
-                if(selected === 'none') return reply(`❌ **Cleared all filters**`);
+                const em = this.client.emoji;
+                if(selected === 'none') return reply(`${em.filter_none} **Cleared all filters**`);
                 if(selected === '8d'){
                     await player.shoukaku.setFilters({ rotation:{ rotationHz:0.2 } });
                     player.data.set('8d',true);
-                    return reply(`🎧 **Enabled 8D**`);
+                    return reply(`${em.filter_8d} **Enabled 8D**`);
                 }
                 if(selected === 'bassboost'){
                     await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.10},{band:1,gain:0.10},{band:2,gain:0.05},{band:3,gain:0.05},{band:4,gain:-0.05},{band:5,gain:-0.05},{band:6,gain:0},{band:7,gain:-0.05},{band:8,gain:-0.05},{band:9,gain:0},{band:10,gain:0.05},{band:11,gain:0.05},{band:12,gain:0.10},{band:13,gain:0.10}] });
                     player.data.set('bass',true);
-                    return reply(`🔊 **Enabled Bass Boost**`);
+                    return reply(`${em.filter_bassboost} **Enabled Bass Boost**`);
                 }
                 if(selected === 'nightcore'){
                     await player.shoukaku.setFilters({ timescale:{ speed:1.1, pitch:1.125, rate:1.05 } });
                     player.data.set('night',true);
-                    return reply(`🌙 **Enabled Nightcore**`);
+                    return reply(`${em.filter_nightcore} **Enabled Nightcore**`);
                 }
                 if(selected === 'vibrato'){
                     await player.shoukaku.setFilters({ vibrato:{ frequency:4.0, depth:0.75 } });
                     player.data.set('vib',true);
-                    return reply(`〰️ **Enabled Vibrato**`);
+                    return reply(`${em.filter_vibrato} **Enabled Vibrato**`);
                 }
                 if(selected === 'tremolo'){
                     await player.shoukaku.setFilters({ tremolo:{ frequency:4.0, depth:0.75 } });
                     player.data.set('trem',true);
-                    return reply(`🌊 **Enabled Tremolo**`);
+                    return reply(`${em.filter_tremolo} **Enabled Tremolo**`);
                 }
                 if(selected === 'treblebass'){
                     await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.6},{band:1,gain:0.67},{band:2,gain:0.67},{band:3,gain:0},{band:4,gain:-0.5},{band:5,gain:0.15},{band:6,gain:-0.45},{band:7,gain:0.23},{band:8,gain:0.35},{band:9,gain:0.45},{band:10,gain:0.55},{band:11,gain:0.6},{band:12,gain:0.55},{band:13,gain:0}] });
                     player.data.set('treble',true);
-                    return reply(`🎚️ **Enabled Treblebass**`);
+                    return reply(`${em.filter_treblebass} **Enabled Treblebass**`);
                 }
                 if(selected === 'slowmode'){
                     await player.shoukaku.setFilters({ timescale:{ speed:0.5, pitch:1.0, rate:0.8 } });
                     player.data.set('slow',true);
-                    return reply(`🐢 **Enabled Slowmode**`);
+                    return reply(`${em.filter_slowmode} **Enabled Slowmode**`);
                 }
                 if(selected === 'chipmunk'){
                     await player.shoukaku.setFilters({ timescale:{ speed:1.05, pitch:1.35, rate:1.25 } });
                     player.data.set('chip',true);
-                    return reply(`🐿️ **Enabled Chipmunk**`);
+                    return reply(`${em.filter_chipmunk} **Enabled Chipmunk**`);
                 }
                 if(selected === 'china'){
                     await player.shoukaku.setFilters({ timescale:{ speed:0.75, pitch:1.25, rate:1.25 } });
                     player.data.set('china',true);
-                    return reply(`🀄 **Enabled China**`);
+                    return reply(`${em.filter_china} **Enabled China**`);
                 }
                 if(selected === 'vaporwave'){
                     await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0},{band:1,gain:0},{band:2,gain:0},{band:3,gain:0},{band:4,gain:0},{band:5,gain:0},{band:6,gain:0},{band:7,gain:0},{band:8,gain:0.15},{band:9,gain:0.15},{band:10,gain:0.15},{band:11,gain:0.15},{band:12,gain:0.15},{band:13,gain:0.15}], timescale:{ pitch:0.55 } });
                     player.data.set('vapor',true);
-                    return reply(`🌸 **Enabled Vaporwave**`);
+                    return reply(`${em.filter_vaporwave} **Enabled Vaporwave**`);
                 }
             } catch(e){ console.log(e); }
         }

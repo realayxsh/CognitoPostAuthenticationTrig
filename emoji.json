@@ -33,5 +33,17 @@
     "premium"     : "<a:red_premium:1505740312813768715>",
     "ram"         : "<:RAM:1505752667241054390>",
     "cpu"         : "<:CPU:1505752693027897344>",
-    "nodejs"      : "<:nodejs:1505752730046693527>"
+    "nodejs"      : "<:nodejs:1505752730046693527>",
+
+    "filter_none"      : "",
+    "filter_8d"        : "",
+    "filter_bassboost" : "",
+    "filter_nightcore" : "",
+    "filter_vibrato"   : "",
+    "filter_tremolo"   : "",
+    "filter_treblebass": "",
+    "filter_slowmode"  : "",
+    "filter_chipmunk"  : "",
+    "filter_china"     : "",
+    "filter_vaporwave" : ""
 }

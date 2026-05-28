@@ -51,19 +51,26 @@ class TrackStart extends AvonClientEvent {
                 new ActionRowBuilder().addComponents(
                     new StringSelectMenuBuilder()
                         .setCustomId(`filter_select`)
-                        .setPlaceholder(`🎛️ Select a filter...`)
+                        .setPlaceholder(`Select a filter...`)
                         .addOptions(
-                            new StringSelectMenuOptionBuilder().setLabel(`None (Clear Filters)`).setValue(`none`).setDescription(`Remove all active filters`).setEmoji(`❌`),
-                            new StringSelectMenuOptionBuilder().setLabel(`8D`).setValue(`8d`).setDescription(`Rotating 8D audio effect`).setEmoji(`🎧`),
-                            new StringSelectMenuOptionBuilder().setLabel(`Bass Boost`).setValue(`bassboost`).setDescription(`Boost the bass frequencies`).setEmoji(`🔊`),
-                            new StringSelectMenuOptionBuilder().setLabel(`Nightcore`).setValue(`nightcore`).setDescription(`Faster speed and higher pitch`).setEmoji(`🌙`),
-                            new StringSelectMenuOptionBuilder().setLabel(`Vibrato`).setValue(`vibrato`).setDescription(`Oscillating pitch effect`).setEmoji(`〰️`),
-                            new StringSelectMenuOptionBuilder().setLabel(`Tremolo`).setValue(`tremolo`).setDescription(`Oscillating volume effect`).setEmoji(`🌊`),
-                            new StringSelectMenuOptionBuilder().setLabel(`Treblebass`).setValue(`treblebass`).setDescription(`Boost both treble and bass`).setEmoji(`🎚️`),
-                            new StringSelectMenuOptionBuilder().setLabel(`Slowmode`).setValue(`slowmode`).setDescription(`Slower speed, lower pitch`).setEmoji(`🐢`),
-                            new StringSelectMenuOptionBuilder().setLabel(`Chipmunk`).setValue(`chipmunk`).setDescription(`High-pitched chipmunk voice`).setEmoji(`🐿️`),
-                            new StringSelectMenuOptionBuilder().setLabel(`China`).setValue(`china`).setDescription(`China-style audio effect`).setEmoji(`🀄`),
-                            new StringSelectMenuOptionBuilder().setLabel(`Vaporwave`).setValue(`vaporwave`).setDescription(`Slowed, lower-pitched vibe`).setEmoji(`🌸`)
+                            ...[ 
+                                { label: `None (Clear Filters)`, value: `none`,       desc: `Remove all active filters`,      key: `filter_none`       },
+                                { label: `8D`,                   value: `8d`,         desc: `Rotating 8D audio effect`,       key: `filter_8d`         },
+                                { label: `Bass Boost`,           value: `bassboost`,  desc: `Boost the bass frequencies`,     key: `filter_bassboost`  },
+                                { label: `Nightcore`,            value: `nightcore`,  desc: `Faster speed and higher pitch`,  key: `filter_nightcore`  },
+                                { label: `Vibrato`,              value: `vibrato`,    desc: `Oscillating pitch effect`,       key: `filter_vibrato`    },
+                                { label: `Tremolo`,              value: `tremolo`,    desc: `Oscillating volume effect`,      key: `filter_tremolo`    },
+                                { label: `Treblebass`,           value: `treblebass`, desc: `Boost both treble and bass`,     key: `filter_treblebass` },
+                                { label: `Slowmode`,             value: `slowmode`,   desc: `Slower speed, lower pitch`,      key: `filter_slowmode`   },
+                                { label: `Chipmunk`,             value: `chipmunk`,   desc: `High-pitched chipmunk voice`,    key: `filter_chipmunk`   },
+                                { label: `China`,                value: `china`,      desc: `China-style audio effect`,       key: `filter_china`      },
+                                { label: `Vaporwave`,            value: `vaporwave`,  desc: `Slowed, lower-pitched vibe`,     key: `filter_vaporwave`  },
+                            ].map(({ label, value, desc, key }) => {
+                                const opt = new StringSelectMenuOptionBuilder().setLabel(label).setValue(value).setDescription(desc);
+                                const e = this.client.emoji[key];
+                                if (e) opt.setEmoji(e);
+                                return opt;
+                            })
                         )
                 )
             );
