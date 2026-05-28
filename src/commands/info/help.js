@@ -105,7 +105,8 @@ class Help extends AvonCommand{
                     `**__What Premium Unlocks__**\n` +
                     `${client.emoji.filters} BassBoost, Nightcore, 8D, China\n` +
                     `${client.emoji.filters} Chipmunk, Slowmode, Treble Bass\n` +
-                    `${client.emoji.filters} Tremolo, Vaporwave, Vibrato, Clear All`
+                    `${client.emoji.filters} Tremolo, Vaporwave, Vibrato, Clear All\n` +
+                    `${client.emoji.filters} Dolby Atmos`
                 ))
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
