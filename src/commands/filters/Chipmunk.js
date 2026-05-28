@@ -23,12 +23,12 @@ class Chipmunk extends AvonCommand {
         if (!data || data == false || data == undefined) {
             await player.shoukaku.setFilters({ timescale: { speed: 1.05, pitch: 1.35, rate: 1.25 } });
             player.data.set(`chip`, true);
-            return send(`**| Enabled Chipmunk**`);
+            return send(`${client.emoji.filters} **| Enabled Chipmunk**`);
         }
         if (data == true) {
             player.data.set(`chip`, false);
             await player.shoukaku.setFilters({ timescale: null });
-            return send(`**| Disabled Chipmunk**`);
+            return send(`${client.emoji.cross} **| Disabled Chipmunk**`);
         }
     }
 }

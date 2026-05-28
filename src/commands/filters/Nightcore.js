@@ -24,12 +24,12 @@ class Nightcore extends AvonCommand {
         if (!data || data == false || data == undefined) {
             await player.shoukaku.setFilters({ timescale: { speed: 1.1, pitch: 1.125, rate: 1.05 } });
             player.data.set(`night`, true);
-            return send(`**| Enabled Nightcore**`);
+            return send(`${client.emoji.filters} **| Enabled Nightcore**`);
         }
         if (data == true) {
             player.data.set(`night`, false);
             await player.shoukaku.setFilters({ timescale: null });
-            return send(`**| Disabled Nightcore**`);
+            return send(`${client.emoji.cross} **| Disabled Nightcore**`);
         }
     }
 }

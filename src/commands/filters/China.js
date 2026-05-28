@@ -24,12 +24,12 @@ class China extends AvonCommand {
         if (!db || db === undefined || db === false) {
             await player.shoukaku.setFilters({ timescale: { speed: 0.75, pitch: 1.25, rate: 1.25 } });
             player.data.set(`china`, true);
-            return send(`**| Enabled China**`);
+            return send(`${client.emoji.filters} **| Enabled China**`);
         }
         if (db === true) {
             await player.shoukaku.setFilters({ timescale: null });
             player.data.set(`china`, false);
-            return send(`**| Disabled China**`);
+            return send(`${client.emoji.cross} **| Disabled China**`);
         }
     }
 }

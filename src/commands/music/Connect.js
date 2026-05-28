@@ -21,17 +21,17 @@ class Connect extends AvonCommand {
 
         let player = client.poru.players.get(message.guild.id);
         if (message.guild.members.me.voice.channel) {
-            if (player) return send(`**| I am already connected to ${message.guild.members.me.voice.channel}**`);
+            if (player) return send(`${client.emoji.cross} **| I am already connected to ${message.guild.members.me.voice.channel}**`);
             message.guild.members.me.voice.disconnect();
             if (message.guild.members.me.permissionsIn(message.member.voice.channel).has([PermissionsBitField.Flags.Connect, PermissionsBitField.Flags.Speak])) {
                 await client.poru.createPlayer({ guildId: message.guild.id, textId: message.channel.id, voiceId: message.member.voice.channel.id, volume: 100, deaf: true, shardId: message.guild.shardId });
-                return send(`**| Connected to your voice channel**`);
+                return send(`${client.emoji.tick} **| Connected to your voice channel**`);
             } else {
-                return send(`**| Missing Connect or Speak permissions in your voice channel**`);
+                return send(`${client.emoji.cross} **| Missing Connect or Speak permissions in your voice channel**`);
             }
         } else {
             await client.poru.createPlayer({ guildId: message.guild.id, textId: message.channel.id, voiceId: message.member.voice.channel.id, volume: 100, deaf: true, shardId: message.guild.shardId });
-            return send(`**| Connected to your voice channel**`);
+            return send(`${client.emoji.tick} **| Connected to your voice channel**`);
         }
     }
 }

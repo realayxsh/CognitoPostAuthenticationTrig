@@ -24,12 +24,12 @@ class Slowmode extends AvonCommand {
         if (!db || db === false || db === undefined) {
             await player.shoukaku.setFilters({ timescale: { speed: 0.5, pitch: 1.0, rate: 0.8 } });
             player.data.set(`slow`, true);
-            return send(`**| Enabled Slowmode**`);
+            return send(`${client.emoji.filters} **| Enabled Slowmode**`);
         }
         if (db === true) {
             await player.shoukaku.setFilters({ timescale: null });
             player.data.set(`slow`, false);
-            return send(`**| Disabled Slowmode**`);
+            return send(`${client.emoji.cross} **| Disabled Slowmode**`);
         }
     }
 }

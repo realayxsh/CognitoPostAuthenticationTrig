@@ -25,12 +25,12 @@ class Rotation extends AvonCommand {
             if (!data || data === false || data === undefined) {
                 await player.shoukaku.setFilters({ rotation: { rotationHz: 0.2 } });
                 player.data.set(`8d`, true);
-                return send(`**| Enabled 8D**`);
+                return send(`${client.emoji.filters} **| Enabled 8D**`);
             }
             if (data === true) {
                 await player.shoukaku.setFilters({ rotation: null });
                 player.data.set(`8d`, false);
-                return send(`**| Disabled 8D**`);
+                return send(`${client.emoji.cross} **| Disabled 8D**`);
             }
         } catch (e) { console.log(e) }
     }

@@ -19,11 +19,11 @@ class Remove extends AvonCommand {
             return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
         };
         let player = client.poru.players.get(message.guild.id);
-        if (!player) return send(`**| No player is initiated**`);
-        if (!args[0] || isNaN(args[0])) return send(`**| Provide a number to remove from queue**`);
-        if (args[0] === 1) return send(`**| You cannot remove the current song from queue**`);
+        if (!player) return send(`${client.emoji.cross} **| No player is initiated**`);
+        if (!args[0] || isNaN(args[0])) return send(`${client.emoji.cross} **| Provide a number to remove from queue**`);
+        if (args[0] === 1) return send(`${client.emoji.cross} **| You cannot remove the current song from queue**`);
         player.queue.remove(args[0] - 1);
-        return send(`**| Removed the track**`);
+        return send(`${client.emoji.tick} **| Removed the track**`);
     }
 }
 module.exports = Remove;

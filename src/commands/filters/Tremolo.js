@@ -24,12 +24,12 @@ class Tremolo extends AvonCommand {
         if (!db || db === false || db === undefined) {
             await player.shoukaku.setFilters({ tremolo: { frequency: 4.0, depth: 0.75 } });
             player.data.set(`trem`, true);
-            return send(`**| Enabled Tremolo**`);
+            return send(`${client.emoji.filters} **| Enabled Tremolo**`);
         }
         if (db === true) {
             await player.shoukaku.clearFilters();
             player.data.set(`trem`, false);
-            return send(`**| Disabled Tremolo**`);
+            return send(`${client.emoji.cross} **| Disabled Tremolo**`);
         }
     }
 }

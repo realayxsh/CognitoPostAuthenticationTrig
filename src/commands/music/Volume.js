@@ -21,15 +21,15 @@ class Volume extends AvonCommand {
             };
 
             let player = client.poru.players.get(message.guild.id);
-            if (!player) return send(`**| I am not playing anything**`);
-            if (!args[0]) return send(`**| Current volume of the player is ${player.volume * 100}%**`);
+            if (!player) return send(`${client.emoji.cross} **| I am not playing anything**`);
+            if (!args[0]) return send(`${client.emoji.music} **| Current volume of the player is ${player.volume * 100}%**`);
 
             let vol = Number(args[0]);
-            if (vol < 0 || vol > 200) return send(`**| Volume must be between 0 and 200**`);
-            if (player.volume * 100 === vol) return send(`**| Volume is already set to ${vol}%**`);
+            if (vol < 0 || vol > 200) return send(`${client.emoji.cross} **| Volume must be between 0 and 200**`);
+            if (player.volume * 100 === vol) return send(`${client.emoji.cross} **| Volume is already set to ${vol}%**`);
 
             await player.setVolume(vol / 1);
-            return send(`**| Volume has been changed to ${vol}%**`);
+            return send(`${client.emoji.tick} **| Volume has been changed to ${vol}%**`);
         } catch (e) { console.log(e) }
     }
 }

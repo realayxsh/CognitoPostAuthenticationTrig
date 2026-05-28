@@ -19,9 +19,9 @@ class Disconnect extends AvonCommand {
             return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
         };
         let player = client.poru.players.get(message.guild.id);
-        if (!player) return send(`**| There is no player for this guild**`);
+        if (!player) return send(`${client.emoji.cross} **| There is no player for this guild**`);
         player.destroy();
-        return send(`**| Disconnected and cleared the queue**`);
+        return send(`${client.emoji.tick} **| Disconnected and cleared the queue**`);
     }
 }
 module.exports = Disconnect;

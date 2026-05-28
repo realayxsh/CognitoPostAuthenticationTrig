@@ -15,7 +15,7 @@ class ClearFilters extends AvonCommand {
         const container = new ContainerBuilder()
             .addSectionComponents(
                 new SectionBuilder()
-                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| Cleared all filters**`))
+                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(`${client.emoji.tick} **| Cleared all filters**`))
                     .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
             );
         return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
