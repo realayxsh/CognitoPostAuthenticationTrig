@@ -19,7 +19,6 @@ class Badges extends AvonCommand{
     get name(){ return 'profile'; }
     get aliases(){ return ['badges','badge','pr']; }
     get cat(){ return 'info' }
-    get vote(){ return true; }
     async run(client, message, args, prefix){
         const member = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
         const avatar = member.displayAvatarURL({ dynamic: true });
