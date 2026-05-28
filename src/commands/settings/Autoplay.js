@@ -4,7 +4,7 @@ const AvonCommand = require("../../structures/avonCommand");
 class autoPlay extends AvonCommand{
     get name(){ return 'autoplay'; }
     get aliases(){ return ['ap','auto'] }
-    get vote(){ return true; }
+    get premium(){ return true; }
     get cat(){ return 'set' }
     get player(){ return true; }
     get inVoice(){ return true; }
