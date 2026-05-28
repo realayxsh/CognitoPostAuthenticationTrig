@@ -91,6 +91,7 @@ class TrackStart extends AvonClientEvent {
                                 { label: `Chipmunk`,             value: `chipmunk`,   desc: `High-pitched chipmunk voice`,    key: `filter_chipmunk`   },
                                 { label: `China`,                value: `china`,      desc: `China-style audio effect`,       key: `filter_china`      },
                                 { label: `Vaporwave`,            value: `vaporwave`,  desc: `Slowed, lower-pitched vibe`,     key: `filter_vaporwave`  },
+                                { label: `Dolby Atmos`,          value: `dolbyatmos`, desc: `Spatial surround sound effect`,   key: `filter_dolbyatmos` },
                             ].map(({ label, value, desc, key }) => {
                                 const opt = new StringSelectMenuOptionBuilder().setLabel(label).setValue(value).setDescription(desc);
                                 const e = this.client.emoji[key];

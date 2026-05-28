@@ -45,6 +45,7 @@ const FILTER_OPTIONS = [
     { label: `Chipmunk`,             value: `chipmunk`,   desc: `High-pitched chipmunk voice`,    key: `filter_chipmunk`   },
     { label: `China`,                value: `china`,      desc: `China-style audio effect`,       key: `filter_china`      },
     { label: `Vaporwave`,            value: `vaporwave`,  desc: `Slowed, lower-pitched vibe`,     key: `filter_vaporwave`  },
+    { label: `Dolby Atmos`,          value: `dolbyatmos`, desc: `Spatial surround sound effect`,   key: `filter_dolbyatmos` },
 ];
 
 function buildNowPlayingComponents(client, player) {
@@ -245,6 +246,11 @@ class AvonInteractions extends AvonClientEvents{
                     await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0},{band:1,gain:0},{band:2,gain:0},{band:3,gain:0},{band:4,gain:0},{band:5,gain:0},{band:6,gain:0},{band:7,gain:0},{band:8,gain:0.15},{band:9,gain:0.15},{band:10,gain:0.15},{band:11,gain:0.15},{band:12,gain:0.15},{band:13,gain:0.15}], timescale:{ pitch:0.55 }, volume: userVol });
                     player.data.set('vapor',true);
                     return reply(`${em.filter_vaporwave} **Enabled Vaporwave**`);
+                }
+                if(selected === 'dolbyatmos'){
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.08},{band:1,gain:0.10},{band:2,gain:0.07},{band:3,gain:0.04},{band:4,gain:0.02},{band:5,gain:0.00},{band:6,gain:0.01},{band:7,gain:0.03},{band:8,gain:0.05},{band:9,gain:0.07},{band:10,gain:0.06},{band:11,gain:0.04},{band:12,gain:0.03},{band:13,gain:0.02}], rotation:{ rotationHz:0.08 }, vibrato:{ frequency:4.0, depth:0.05 }, volume: userVol });
+                    player.data.set('dolbyatmos',true);
+                    return reply(`${em.filter_dolbyatmos || '🎧'} **Enabled Dolby Atmos**`);
                 }
             } catch(e){ console.log(e); }
         }
