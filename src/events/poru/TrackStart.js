@@ -1,4 +1,4 @@
-const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require("discord.js");
+const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, MessageFlags } = require("discord.js");
 const AvonClientEvent = require(`../../structures/Eventhandler`);
 const moment = require(`moment`);
 require(`moment-duration-format`);
@@ -45,6 +45,26 @@ class TrackStart extends AvonClientEvent {
                     new ButtonBuilder().setStyle(ButtonStyle.Primary).setLabel(`Loop`).setCustomId(`pl3`),
                     new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel(`Previous`).setCustomId(`pl4`),
                     new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel(`Skip`).setCustomId(`pl5`)
+                )
+            )
+            .addActionRowComponents(
+                new ActionRowBuilder().addComponents(
+                    new StringSelectMenuBuilder()
+                        .setCustomId(`filter_select`)
+                        .setPlaceholder(`🎛️ Select a filter...`)
+                        .addOptions(
+                            new StringSelectMenuOptionBuilder().setLabel(`None (Clear Filters)`).setValue(`none`).setDescription(`Remove all active filters`).setEmoji(`❌`),
+                            new StringSelectMenuOptionBuilder().setLabel(`8D`).setValue(`8d`).setDescription(`Rotating 8D audio effect`).setEmoji(`🎧`),
+                            new StringSelectMenuOptionBuilder().setLabel(`Bass Boost`).setValue(`bassboost`).setDescription(`Boost the bass frequencies`).setEmoji(`🔊`),
+                            new StringSelectMenuOptionBuilder().setLabel(`Nightcore`).setValue(`nightcore`).setDescription(`Faster speed and higher pitch`).setEmoji(`🌙`),
+                            new StringSelectMenuOptionBuilder().setLabel(`Vibrato`).setValue(`vibrato`).setDescription(`Oscillating pitch effect`).setEmoji(`〰️`),
+                            new StringSelectMenuOptionBuilder().setLabel(`Tremolo`).setValue(`tremolo`).setDescription(`Oscillating volume effect`).setEmoji(`🌊`),
+                            new StringSelectMenuOptionBuilder().setLabel(`Treblebass`).setValue(`treblebass`).setDescription(`Boost both treble and bass`).setEmoji(`🎚️`),
+                            new StringSelectMenuOptionBuilder().setLabel(`Slowmode`).setValue(`slowmode`).setDescription(`Slower speed, lower pitch`).setEmoji(`🐢`),
+                            new StringSelectMenuOptionBuilder().setLabel(`Chipmunk`).setValue(`chipmunk`).setDescription(`High-pitched chipmunk voice`).setEmoji(`🐿️`),
+                            new StringSelectMenuOptionBuilder().setLabel(`China`).setValue(`china`).setDescription(`China-style audio effect`).setEmoji(`🀄`),
+                            new StringSelectMenuOptionBuilder().setLabel(`Vaporwave`).setValue(`vaporwave`).setDescription(`Slowed, lower-pitched vibe`).setEmoji(`🌸`)
+                        )
                 )
             );
 

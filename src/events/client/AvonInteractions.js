@@ -1,4 +1,4 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ContainerBuilder, TextDisplayBuilder, MessageFlags } = require("discord.js");
 const AvonClientEvents = require(`../../structures/Eventhandler`);
 const { Api } = require(`@top-gg/sdk`);
 const config = require(`../../../config.json`);
@@ -56,6 +56,82 @@ class AvonInteractions extends AvonClientEvents{
                     return interaction.reply({embeds:[new EmbedBuilder().setColor(this.client.config.color).setDescription(`${this.client.emoji.tick} | **Skipped** the track`)],ephemeral:true});
                 }
             } catch(e){ console.log(e) }
+        }
+
+        if(interaction.isStringSelectMenu() && interaction.customId === 'filter_select'){
+            try {
+                const player = this.client.poru.players.get(interaction.guild.id);
+                if(!player || !player.queue.current)
+                    return interaction.reply({ embeds:[new EmbedBuilder().setColor(this.client.config.color).setDescription(`${this.client.emoji.cross} | Nothing is playing right now.`)], ephemeral:true });
+                if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
+                    return interaction.reply({ embeds:[new EmbedBuilder().setColor(this.client.config.color).setDescription(`${this.client.emoji.cross} | You must be in the same voice channel as me.`)], ephemeral:true });
+
+                const selected = interaction.values[0];
+                const accentColor = parseInt(this.client.config.color.replace('#',''), 16);
+                const reply = (text) => interaction.reply({
+                    flags: [MessageFlags.IsComponentsV2],
+                    components: [new ContainerBuilder().setAccentColor(accentColor).addTextDisplayComponents(new TextDisplayBuilder().setContent(text))],
+                    ephemeral: true
+                });
+
+                await player.shoukaku.clearFilters();
+                player.data.set('8d',false); player.data.set('bass',false); player.data.set('night',false);
+                player.data.set('vib',false); player.data.set('trem',false); player.data.set('treble',false);
+                player.data.set('slow',false); player.data.set('chip',false); player.data.set('china',false);
+                player.data.set('vapor',false);
+
+                if(selected === 'none') return reply(`❌ **Cleared all filters**`);
+                if(selected === '8d'){
+                    await player.shoukaku.setFilters({ rotation:{ rotationHz:0.2 } });
+                    player.data.set('8d',true);
+                    return reply(`🎧 **Enabled 8D**`);
+                }
+                if(selected === 'bassboost'){
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.10},{band:1,gain:0.10},{band:2,gain:0.05},{band:3,gain:0.05},{band:4,gain:-0.05},{band:5,gain:-0.05},{band:6,gain:0},{band:7,gain:-0.05},{band:8,gain:-0.05},{band:9,gain:0},{band:10,gain:0.05},{band:11,gain:0.05},{band:12,gain:0.10},{band:13,gain:0.10}] });
+                    player.data.set('bass',true);
+                    return reply(`🔊 **Enabled Bass Boost**`);
+                }
+                if(selected === 'nightcore'){
+                    await player.shoukaku.setFilters({ timescale:{ speed:1.1, pitch:1.125, rate:1.05 } });
+                    player.data.set('night',true);
+                    return reply(`🌙 **Enabled Nightcore**`);
+                }
+                if(selected === 'vibrato'){
+                    await player.shoukaku.setFilters({ vibrato:{ frequency:4.0, depth:0.75 } });
+                    player.data.set('vib',true);
+                    return reply(`〰️ **Enabled Vibrato**`);
+                }
+                if(selected === 'tremolo'){
+                    await player.shoukaku.setFilters({ tremolo:{ frequency:4.0, depth:0.75 } });
+                    player.data.set('trem',true);
+                    return reply(`🌊 **Enabled Tremolo**`);
+                }
+                if(selected === 'treblebass'){
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.6},{band:1,gain:0.67},{band:2,gain:0.67},{band:3,gain:0},{band:4,gain:-0.5},{band:5,gain:0.15},{band:6,gain:-0.45},{band:7,gain:0.23},{band:8,gain:0.35},{band:9,gain:0.45},{band:10,gain:0.55},{band:11,gain:0.6},{band:12,gain:0.55},{band:13,gain:0}] });
+                    player.data.set('treble',true);
+                    return reply(`🎚️ **Enabled Treblebass**`);
+                }
+                if(selected === 'slowmode'){
+                    await player.shoukaku.setFilters({ timescale:{ speed:0.5, pitch:1.0, rate:0.8 } });
+                    player.data.set('slow',true);
+                    return reply(`🐢 **Enabled Slowmode**`);
+                }
+                if(selected === 'chipmunk'){
+                    await player.shoukaku.setFilters({ timescale:{ speed:1.05, pitch:1.35, rate:1.25 } });
+                    player.data.set('chip',true);
+                    return reply(`🐿️ **Enabled Chipmunk**`);
+                }
+                if(selected === 'china'){
+                    await player.shoukaku.setFilters({ timescale:{ speed:0.75, pitch:1.25, rate:1.25 } });
+                    player.data.set('china',true);
+                    return reply(`🀄 **Enabled China**`);
+                }
+                if(selected === 'vaporwave'){
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0},{band:1,gain:0},{band:2,gain:0},{band:3,gain:0},{band:4,gain:0},{band:5,gain:0},{band:6,gain:0},{band:7,gain:0},{band:8,gain:0.15},{band:9,gain:0.15},{band:10,gain:0.15},{band:11,gain:0.15},{band:12,gain:0.15},{band:13,gain:0.15}], timescale:{ pitch:0.55 } });
+                    player.data.set('vapor',true);
+                    return reply(`🌸 **Enabled Vaporwave**`);
+                }
+            } catch(e){ console.log(e); }
         }
 
         if(interaction.isChatInputCommand()){
