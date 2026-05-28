@@ -12,7 +12,7 @@ class ClearFilters extends AvonCommand {
     get premium() { return true; }
     async run(client, message, args, prefix, player) {
         await player.shoukaku.clearFilters();
-        const container = new ContainerBuilder(), 16))
+        const container = new ContainerBuilder()
             .addSectionComponents(
                 new SectionBuilder()
                     .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| Cleared all filters**`))

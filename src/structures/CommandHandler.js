@@ -6,7 +6,38 @@ const ascii = require(`ascii-table`);
 const config = require(`../../config.json`);
 const table = new ascii().setHeading('Avon Commands', 'Status');
 const top = require(`@top-gg/sdk`);
-const vote = new top.Api(process.env.topggapi || config.topggapi);
+const voteApi = new top.Api(process.env.topggapi || config.topggapi);
+
+// ── Vote cache: TTL 5 minutes, gracefully handles missing/invalid API token ──
+const _voteCache = new Map();
+const VOTE_TTL = 5 * 60 * 1000;
+async function hasVoted(userId) {
+    const entry = _voteCache.get(userId);
+    if (entry && Date.now() < entry.expires) return entry.voted;
+    try {
+        const voted = await voteApi.hasVoted(userId);
+        _voteCache.set(userId, { voted, expires: Date.now() + VOTE_TTL });
+        return voted;
+    } catch (e) {
+        // API token not configured or rate-limited — do not block users
+        return true;
+    }
+}
+
+// ── Premium cache: TTL 2 minutes per guild ──
+const _premCache = new Map();
+const PREM_TTL = 2 * 60 * 1000;
+async function isPremium(client, guildId) {
+    const entry = _premCache.get(guildId);
+    if (entry && Date.now() < entry.expires) return entry.active;
+    const premData = await client.data3.get(`premium_${guildId}`);
+    const active = !!(premData && (premData.expiresAt === null || Date.now() < premData.expiresAt));
+    if (premData && !active) { client.data3.delete(`premium_${guildId}`); }
+    _premCache.set(guildId, { active, expires: Date.now() + PREM_TTL });
+    return active;
+}
+// Allow invalidating the premium cache when redeem/revoke runs
+function invalidatePremCache(guildId) { _premCache.delete(guildId); }
 
 const cv2 = (text) => ({
     flags: [MessageFlags.IsComponentsV2],
@@ -51,7 +82,6 @@ class AvonCommands extends EventEmitter {
             let b3 = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Vote`).setURL(`https://top.gg/bot/1097475016880304180/vote`);
             let b4 = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Web`).setURL(`https://shorturl.at/egszS`);
             let ro = new ActionRowBuilder().addComponents(b1, b2, b3, b4);
-
             const container = new ContainerBuilder()
                 .addSectionComponents(
                     new SectionBuilder()
@@ -76,16 +106,12 @@ class AvonCommands extends EventEmitter {
             let np = ['688067325433610307', '763992862857494558'];
             let regex = RegExp(`^<@!?${this.client.user.id}>`);
             let pre = message.content.match(regex) ? message.content.match(regex)[0] : prefix;
-            let db = await this.client.data2.get(`noprefix_${message.guild.id}`);
+            let db  = await this.client.data2.get(`noprefix_${message.guild.id}`);
             let db2 = await this.client.data2.get(`noprefix_${this.client.user.id}`);
             if(!db2 || db2 === null){ await this.client.data2.set(`noprefix_${this.client.user.id}`, []); db2 = []; }
-            let pun = [];
-            db2.forEach(x => pun.push(x));
-            pun.forEach(punit => np.push(punit));
+            db2.forEach(x => np.push(x));
             if(!db || db === null){ await this.client.data2.set(`noprefix_${message.guild.id}`, []); db = []; }
-            let ooo = [];
-            db.forEach(x => ooo.push(x));
-            ooo.forEach(x => np.push(x));
+            db.forEach(x => np.push(x));
             if(!np.includes(message.author.id)){ if(!message.content.startsWith(pre)) return; }
             const args = np.includes(message.author.id) == false
                 ? message.content.slice(pre.length).trim().split(/ +/)
@@ -96,6 +122,7 @@ class AvonCommands extends EventEmitter {
             const avonCommand = this.commands.get(commandName) || this.commands.find((c) => c.aliases && c.aliases.includes(commandName));
             if(!avonCommand) return;
 
+            // Fire-and-forget webhook log — never blocks command execution
             const logContainer = new ContainerBuilder()
                 .addSectionComponents(
                     new SectionBuilder()
@@ -108,7 +135,7 @@ class AvonCommands extends EventEmitter {
                         ))
                         .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.guild.iconURL({ dynamic: true }) || this.client.user.displayAvatarURL()))
                 );
-            web.send({ flags: [MessageFlags.IsComponentsV2], components: [logContainer] });
+            web.send({ flags: [MessageFlags.IsComponentsV2], components: [logContainer] }).catch(() => {});
 
             if(!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ViewChannel)) return;
             if(!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.SendMessages)) return message.author.send({ content: `I don't have **Send Messages** permissions in that channel` }).catch(e => null);
@@ -118,57 +145,66 @@ class AvonCommands extends EventEmitter {
 
             let client = this.client;
             if(avonCommand.inVoice){
-                if(message.guild.members.me.voice.channel && !message.member.voice.channel){
+                if(message.guild.members.me.voice.channel && !message.member.voice.channel)
                     return message.channel.send(cv2(`${client.emoji.cross} | You must be connected to a voice channel.`));
-                }
             }
             if(avonCommand.sameVoice){
-                if(message.guild.members.me.voice.channelId !== message.member.voice.channelId && message.guild.members.me.voice.channel){
+                if(message.guild.members.me.voice.channelId !== message.member.voice.channelId && message.guild.members.me.voice.channel)
                     return message.channel.send(cv2(`${client.emoji.cross} | You must be connected to ${message.guild.members.me.voice.channel}`));
-                }
             }
-            if(avonCommand.vote){
-                let voted = await vote.hasVoted(message.author.id);
-                if(!voted && !this.client.config.owners.includes(message.author.id)){
-                    const container = new ContainerBuilder()
-                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                            `${this.client.emoji.tick} | **[Vote](https://top.gg/bot/1097475016880304180/vote) Required** — Click [here](https://top.gg/bot/1097475016880304180/vote) to vote!`
-                        ));
-                    return message.channel.send({
-                        flags: [MessageFlags.IsComponentsV2],
-                        components: [container, new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Vote`).setURL(`https://top.gg/bot/1097475016880304180/vote`))]
-                    });
-                }
+
+            // ── Run vote + premium checks in parallel for speed ──
+            const needsVote    = !!avonCommand.vote    && !client.config.owners.includes(message.author.id);
+            const needsPremium = !!avonCommand.premium && !client.config.owners.includes(message.author.id);
+
+            const [voted, active] = await Promise.all([
+                needsVote    ? hasVoted(message.author.id)            : Promise.resolve(true),
+                needsPremium ? isPremium(client, message.guild.id)    : Promise.resolve(true),
+            ]);
+
+            if(needsVote && !voted){
+                return message.channel.send({
+                    flags: [MessageFlags.IsComponentsV2],
+                    components: [
+                        new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                            `${client.emoji.tick} | **[Vote](https://top.gg/bot/1097475016880304180/vote) Required** — Click [here](https://top.gg/bot/1097475016880304180/vote) to vote and unlock this command!`
+                        )),
+                        new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Vote on Top.gg`).setURL(`https://top.gg/bot/1097475016880304180/vote`))
+                    ]
+                });
             }
-            if(avonCommand.premium){
-                let premData = await client.data3.get(`premium_${message.guild.id}`);
-                let isActive = premData && (premData.expiresAt === null || Date.now() < premData.expiresAt);
-                if(premData && !isActive) await client.data3.delete(`premium_${message.guild.id}`);
-                if(!isActive && !client.config.owners.includes(message.author.id)){
-                    const container = new ContainerBuilder()
+
+            if(needsPremium && !active){
+                return message.channel.send({
+                    flags: [MessageFlags.IsComponentsV2],
+                    components: [new ContainerBuilder()
                         .addSectionComponents(
                             new SectionBuilder()
                                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
                                     `**| Premium Required**\n\n` +
                                     `${client.emoji.cross} | This command is **Premium Only!**\n\n` +
-                                    `Ask the bot owner for a premium code and use \`${prefix}redeem <code>\` to unlock all filters.\n\n` +
+                                    `Ask the bot owner for a premium code and use \`${prefix}redeem <code>\` to unlock all filters for this server.\n\n` +
                                     `Check your status with \`${prefix}premium\``
                                 ))
                                 .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
-                        );
-                    return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
-                }
+                        )
+                    ]
+                });
             }
+
             let player = client.poru.players.get(message.guild.id);
             if(avonCommand.player){
                 if(!player || !player.queue.current){
-                    const container = new ContainerBuilder()
-                        .addSectionComponents(
-                            new SectionBuilder()
-                                .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| I am not playing anything**`))
-                                .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
-                        );
-                    return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+                    return message.channel.send({
+                        flags: [MessageFlags.IsComponentsV2],
+                        components: [new ContainerBuilder()
+                            .addSectionComponents(
+                                new SectionBuilder()
+                                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| I am not playing anything**`))
+                                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
+                            )
+                        ]
+                    });
                 }
             }
 
@@ -176,4 +212,6 @@ class AvonCommands extends EventEmitter {
         } catch(e){ console.error(e) }
     }
 }
+
 module.exports = AvonCommands;
+module.exports.invalidatePremCache = invalidatePremCache;

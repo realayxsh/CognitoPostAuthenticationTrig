@@ -2,7 +2,35 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ContainerBuilder, TextDisp
 const AvonClientEvents = require(`../../structures/Eventhandler`);
 const { Api } = require(`@top-gg/sdk`);
 const config = require(`../../../config.json`);
-const vote = new Api(process.env.topggapi || config.topggapi);
+const voteApi = new Api(process.env.topggapi || config.topggapi);
+
+// ── Vote cache: TTL 5 minutes, gracefully handles missing/invalid API token ──
+const _voteCache = new Map();
+const VOTE_TTL = 5 * 60 * 1000;
+async function hasVoted(userId) {
+    const entry = _voteCache.get(userId);
+    if (entry && Date.now() < entry.expires) return entry.voted;
+    try {
+        const voted = await voteApi.hasVoted(userId);
+        _voteCache.set(userId, { voted, expires: Date.now() + VOTE_TTL });
+        return voted;
+    } catch (e) {
+        return true; // API unavailable — don't block users
+    }
+}
+
+// ── Premium cache: TTL 2 minutes per guild ──
+const _premCache = new Map();
+const PREM_TTL = 2 * 60 * 1000;
+async function isPremium(client, guildId) {
+    const entry = _premCache.get(guildId);
+    if (entry && Date.now() < entry.expires) return entry.active;
+    const premData = await client.data3.get(`premium_${guildId}`);
+    const active = !!(premData && (premData.expiresAt === null || Date.now() < premData.expiresAt));
+    if (premData && !active) { client.data3.delete(`premium_${guildId}`); }
+    _premCache.set(guildId, { active, expires: Date.now() + PREM_TTL });
+    return active;
+}
 
 const cv2 = (text, ephemeral = false) => ({
     flags: ephemeral ? [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral] : [MessageFlags.IsComponentsV2],
@@ -75,6 +103,29 @@ class AvonInteractions extends AvonClientEvents{
                     return interaction.reply(cv2(`${this.client.emoji.cross} | You must be in the same voice channel as me.`, true));
 
                 const selected = interaction.values[0];
+
+                // ── Premium gate — 'none' (clear filters) is always allowed ──
+                if(selected !== 'none' && !this.client.config.owners.includes(interaction.user.id)){
+                    const active = await isPremium(this.client, interaction.guild.id);
+                    if(!active){
+                        return interaction.reply({
+                            flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
+                            components: [new ContainerBuilder()
+                                .addSectionComponents(
+                                    new SectionBuilder()
+                                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                                            `**| Premium Required**\n\n` +
+                                            `${this.client.emoji.cross} | Filters are **Premium Only!**\n\n` +
+                                            `Ask the bot owner for a premium code and use \`+redeem <code>\` to activate premium for this server.\n\n` +
+                                            `Check your status with \`+premium\``
+                                        ))
+                                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(interaction.user.displayAvatarURL({ dynamic: true })))
+                                )
+                            ]
+                        });
+                    }
+                }
+
                 const reply = (text) => interaction.reply(cv2(text, true));
 
                 await player.shoukaku.clearFilters();
@@ -172,45 +223,46 @@ class AvonInteractions extends AvonClientEvents{
                     author: interaction.user,
                     member: interaction.member,
                     content: `/${commandName} ${args.join(' ')}`,
-                    channel: {
-                        id: interaction.channelId,
-                        send: sendFn,
-                        name: interaction.channel?.name || 'unknown'
-                    },
+                    channel: { id: interaction.channelId, send: sendFn, name: interaction.channel?.name || 'unknown' },
                     reply: sendFn,
                     mentions: { members: { first: () => resolvedMember } }
                 };
 
                 if(avonCommand.inVoice){
-                    if(interaction.guild.members.me.voice.channel && !interaction.member.voice.channel){
+                    if(interaction.guild.members.me.voice.channel && !interaction.member.voice.channel)
                         return interaction.editReply(cv2(`${client.emoji.cross} | You must be connected to a voice channel.`));
-                    }
                 }
                 if(avonCommand.sameVoice){
-                    if(interaction.guild.members.me.voice.channelId !== interaction.member.voice?.channelId && interaction.guild.members.me.voice.channel){
+                    if(interaction.guild.members.me.voice.channelId !== interaction.member.voice?.channelId && interaction.guild.members.me.voice.channel)
                         return interaction.editReply(cv2(`${client.emoji.cross} | You must be connected to ${interaction.guild.members.me.voice.channel}`));
-                    }
                 }
-                if(avonCommand.vote){
-                    let voted = await vote.hasVoted(interaction.user.id);
-                    if(!voted && !client.config.owners.includes(interaction.user.id)){
-                        return interaction.editReply({
-                            flags: [MessageFlags.IsComponentsV2],
-                            components: [
-                                new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                                    `${client.emoji.tick} | **[Vote](https://top.gg/bot/1097475016880304180/vote) Required** — Click [here](https://top.gg/bot/1097475016880304180/vote) to vote!`
-                                )),
-                                new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Vote`).setURL(`https://top.gg/bot/1097475016880304180/vote`))
-                            ]
-                        });
-                    }
+
+                // ── Run vote + premium checks in parallel ──
+                const isOwner      = client.config.owners.includes(interaction.user.id);
+                const needsVote    = !!avonCommand.vote    && !isOwner;
+                const needsPremium = !!avonCommand.premium && !isOwner;
+
+                const [voted, active] = await Promise.all([
+                    needsVote    ? hasVoted(interaction.user.id)              : Promise.resolve(true),
+                    needsPremium ? isPremium(client, interaction.guild.id)    : Promise.resolve(true),
+                ]);
+
+                if(needsVote && !voted){
+                    return interaction.editReply({
+                        flags: [MessageFlags.IsComponentsV2],
+                        components: [
+                            new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                                `${client.emoji.tick} | **[Vote](https://top.gg/bot/1097475016880304180/vote) Required** — Click [here](https://top.gg/bot/1097475016880304180/vote) to vote!`
+                            )),
+                            new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Vote on Top.gg`).setURL(`https://top.gg/bot/1097475016880304180/vote`))
+                        ]
+                    });
                 }
-                if(avonCommand.premium){
-                    let premData = await client.data3.get(`premium_${interaction.guild.id}`);
-                    let isActive = premData && (premData.expiresAt === null || Date.now() < premData.expiresAt);
-                    if(premData && !isActive) await client.data3.delete(`premium_${interaction.guild.id}`);
-                    if(!isActive && !client.config.owners.includes(interaction.user.id)){
-                        const container = new ContainerBuilder()
+
+                if(needsPremium && !active){
+                    return interaction.editReply({
+                        flags: [MessageFlags.IsComponentsV2],
+                        components: [new ContainerBuilder()
                             .addSectionComponents(
                                 new SectionBuilder()
                                     .addTextDisplayComponents(new TextDisplayBuilder().setContent(
@@ -219,21 +271,24 @@ class AvonInteractions extends AvonClientEvents{
                                         `Use \`/redeem <code>\` to activate premium for this server.`
                                     ))
                                     .setThumbnailAccessory(new ThumbnailBuilder().setURL(interaction.user.displayAvatarURL({ dynamic: true })))
-                            );
-                        return interaction.editReply({ flags: [MessageFlags.IsComponentsV2], components: [container] });
-                    }
+                            )
+                        ]
+                    });
                 }
 
                 let player = client.poru.players.get(interaction.guild.id);
                 if(avonCommand.player){
                     if(!player || !player.queue.current){
-                        const container = new ContainerBuilder()
-                            .addSectionComponents(
-                                new SectionBuilder()
-                                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| I am not playing anything**`))
-                                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(interaction.user.displayAvatarURL({ dynamic: true })))
-                            );
-                        return interaction.editReply({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+                        return interaction.editReply({
+                            flags: [MessageFlags.IsComponentsV2],
+                            components: [new ContainerBuilder()
+                                .addSectionComponents(
+                                    new SectionBuilder()
+                                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| I am not playing anything**`))
+                                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(interaction.user.displayAvatarURL({ dynamic: true })))
+                                )
+                            ]
+                        });
                     }
                 }
 

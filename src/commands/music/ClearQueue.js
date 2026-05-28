@@ -10,7 +10,7 @@ class ClearQueue extends AvonCommand {
     get sameVoice() { return true; }
     async run(client, message, args, prefix, player) {
         player.queue.clear();
-        const container = new ContainerBuilder(), 16))
+        const container = new ContainerBuilder()
             .addSectionComponents(
                 new SectionBuilder()
                     .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| Successfully cleared the queue**`))
