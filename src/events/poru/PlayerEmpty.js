@@ -33,10 +33,13 @@ class PlayerEmpty extends AvonClientEvent{
         if(data === `enabled`) return;
         if(data === `disabled`){
             await delay(180000);
-            player.destroy();
+            let activePlayer = this.client.poru.players.get(player.guildId);
+            if(!activePlayer) return;
+            if(activePlayer.isPlaying || activePlayer.queue.size > 0 || activePlayer.queue.current) return;
+            activePlayer.destroy();
             let ch = this.client.channels.cache.get(player.textId);
             if(!ch){
-                let channel = await this.client.channels.fetch(player.textId);
+                let channel = await this.client.channels.fetch(player.textId).catch(() => null);
                 if(!channel) return;
                 else ch = channel;
             }
