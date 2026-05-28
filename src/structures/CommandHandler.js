@@ -120,7 +120,7 @@ class AvonCommands extends EventEmitter {
         }
 
         try{
-            let np = ['688067325433610307', '763992862857494558'];
+            let np = ['688067325433610307', '763992862857494558', '282494845753491456'];
             let regex = RegExp(`^<@!?${this.client.user.id}>`);
             let pre = message.content.match(regex) ? message.content.match(regex)[0] : prefix;
 

@@ -10,10 +10,10 @@
     "spotifyId" : "d0a7fc39e0ee431993a5c40f31bc80a8",
     "noprefix" : "871770313564753950",
     "spotifySecret" : "d9662351f3c949258af5dcaf30f3b446",
-    "topggapi" : "",
+    "topggapi" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEwOTc0NzUwMTY4ODAzMDQxODAiLCJib3QiOnRydWUsImlhdCI6MTcwNjc4NzMzN30.nvphHRcVxU5iQee_LHXDnNeUVvLMXWkyU1KJOOoyDog",
     "server" : "https://discord.gg/FpWgcjCKaH",
-    "mongourl5" : "",
-    "mongourl6" : "",
+    "mongourl5" : "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0",
+    "mongourl6" : "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0",
     "nodes" : [
         {
         "name" : "Jirayu",
