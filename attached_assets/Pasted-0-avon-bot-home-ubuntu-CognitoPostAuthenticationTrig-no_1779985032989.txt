@@ -1,0 +1,486 @@
+0|avon-bot |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot |   ]
+0|avon-bot | }
+0|avon-bot |
+0|avon-bot | Node.js v20.20.2
+0|avon-bot | Error: CLUSTERING_READY_DIED | ClusterId: 0
+0|avon-bot |     at Cluster.onDeath (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:150:24)
+0|avon-bot |     at Object.onceWrapper (node:events:639:26)
+0|avon-bot |     at Cluster.emit (node:events:524:28)
+0|avon-bot |     at Cluster._handleExit (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:276:14)
+0|avon-bot |     at ChildProcess.emit (node:events:524:28)
+0|avon-bot |     at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+
+0|avon-bot  | Cluster Launched: 1
+0|avon-bot  | ◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | ◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | Error: CLUSTERING_READY_DIED | ClusterId: 1
+0|avon-bot  |     at Cluster.onDeath (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:150:24)
+0|avon-bot  |     at Object.onceWrapper (node:events:639:26)
+0|avon-bot  |     at Cluster.emit (node:events:524:28)
+0|avon-bot  |     at Cluster._handleExit (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:276:14)
+0|avon-bot  |     at ChildProcess.emit (node:events:524:28)
+0|avon-bot  |     at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+0|avon-bot  | ◇ injected env (0) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | Error: CLUSTERING_READY_DIED | ClusterId: 1
+0|avon-bot  |     at Cluster.onDeath (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:150:24)
+0|avon-bot  |     at Object.onceWrapper (node:events:639:26)
+0|avon-bot  |     at Cluster.emit (node:events:524:28)
+0|avon-bot  |     at Cluster._handleExit (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:276:14)
+0|avon-bot  |     at ChildProcess.emit (node:events:524:28)
+0|avon-bot  |     at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+0|avon-bot  | ◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | Error: CLUSTERING_READY_DIED | ClusterId: 1
+0|avon-bot  |     at Cluster.onDeath (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:150:24)
+0|avon-bot  |     at Object.onceWrapper (node:events:639:26)
+0|avon-bot  |     at Cluster.emit (node:events:524:28)
+0|avon-bot  |     at Cluster._handleExit (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:276:14)
+0|avon-bot  |     at ChildProcess.emit (node:events:524:28)
+0|avon-bot  |     at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+0|avon-bot  | ◇ injected env (4) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+0|avon-bot  | Cluster Launched: 0
+0|avon-bot  | ◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | ◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | Error: CLUSTERING_READY_DIED | ClusterId: 0
+0|avon-bot  |     at Cluster.onDeath (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:150:24)
+0|avon-bot  |     at Object.onceWrapper (node:events:639:26)
+0|avon-bot  |     at Cluster.emit (node:events:524:28)
+0|avon-bot  |     at Cluster._handleExit (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:276:14)
+0|avon-bot  |     at ChildProcess.emit (node:events:524:28)
+0|avon-bot  |     at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+0|avon-bot  | ◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | Error: CLUSTERING_READY_DIED | ClusterId: 0
+0|avon-bot  |     at Cluster.onDeath (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:150:24)
+0|avon-bot  |     at Object.onceWrapper (node:events:639:26)
+0|avon-bot  |     at Cluster.emit (node:events:524:28)
+0|avon-bot  |     at Cluster._handleExit (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:276:14)
+0|avon-bot  |     at ChildProcess.emit (node:events:524:28)
+0|avon-bot  |     at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+0|avon-bot  | ◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | Error: CLUSTERING_READY_DIED | ClusterId: 0
+0|avon-bot  |     at Cluster.onDeath (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:150:24)
+0|avon-bot  |     at Object.onceWrapper (node:events:639:26)
+0|avon-bot  |     at Cluster.emit (node:events:524:28)
+0|avon-bot  |     at Cluster._handleExit (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:276:14)
+0|avon-bot  |     at ChildProcess.emit (node:events:524:28)
+0|avon-bot  |     at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+0|avon-bot  | Cluster Launched: 1
+0|avon-bot  | ◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | ◇ injected env (0) from .env // tip: ⌘ override existing { override: true }
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | Error: CLUSTERING_READY_DIED | ClusterId: 1
+0|avon-bot  |     at Cluster.onDeath (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:150:24)
+0|avon-bot  |     at Object.onceWrapper (node:events:639:26)
+0|avon-bot  |     at Cluster.emit (node:events:524:28)
+0|avon-bot  |     at Cluster._handleExit (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:276:14)
+0|avon-bot  |     at ChildProcess.emit (node:events:524:28)
+0|avon-bot  |     at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+0|avon-bot  | ◇ injected env (0) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js',
+0|avon-bot  |     '/home/ubuntu/CognitoPostAuthenticationTrig/src/index.js'
+0|avon-bot  |   ]
+0|avon-bot  | }
+0|avon-bot  | Node.js v20.20.2
+0|avon-bot  | Error: CLUSTERING_READY_DIED | ClusterId: 1
+0|avon-bot  |     at Cluster.onDeath (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:150:24)
+0|avon-bot  |     at Object.onceWrapper (node:events:639:26)
+0|avon-bot  |     at Cluster.emit (node:events:524:28)
+0|avon-bot  |     at Cluster._handleExit (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:276:14)
+0|avon-bot  |     at ChildProcess.emit (node:events:524:28)
+0|avon-bot  |     at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+0|avon-bot  | ◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+0|avon-bot  | node:internal/modules/cjs/loader:1210
+0|avon-bot  |   throw err;
+0|avon-bot  |   ^
+0|avon-bot  | Error: Cannot find module './message'
+0|avon-bot  | Require stack:
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/v10.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/@discordjs/rest/dist/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/client/BaseClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord.js/src/index.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js
+0|avon-bot  | - /home/ubuntu/CognitoPostAuthenticationTrig/src/index.js
+0|avon-bot  |     at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1038:27)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot  |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot  |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-api-types/payloads/v10/index.js:27:14)
+0|avon-bot  |     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0|avon-bot  |     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0|avon-bot  |     at Module.load (node:internal/modules/cjs/loader:1266:32)
+0|avon-bot  |     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0|avon-bot  |     at Module.require (node:internal/modules/cjs/loader:1289:19) {
+0|avon-bot  |   code: 'MODULE_NOT_FOUND',
+0|avon-bot  |   requireStack: [
