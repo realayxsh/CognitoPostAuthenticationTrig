@@ -1,55 +1,37 @@
-const { EmbedBuilder } = require("discord.js");
+const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
 
-class Loop extends AvonCommand{
-    get name(){
-        return 'loop'
-    }
-    get aliases(){
-        return ['repeat','lop']
-    }
-    get inVoice(){
-        return true;
-    }
-    get cat(){
-        return 'music'
-    }
-    get sameVoice(){
-        return true;
-    }
-    get player(){
-        return true;
-    }
-    async run(client,message,args,prefix,player){
-        try{
-            let mode = '';
-            if(player.loop === `none`) mode = 'Off';
-            if(player.loop === `track`) mode = `Track`;
-            if(player.loop === `queue`) mode = 'Queue';
-        if(!args[0])
-        {
-            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Loop mode set to ${mode} Use : ${prefix}loop <off/track/queue>` , iconURL : message.author.displayAvatarURL({dynamic : true})})]})
-        }
-        let op = args[0].toLowerCase();
-        if(op === `off`)
-        {
-            player.setLoop('none');
-            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Loop Mode has been set to Off` , iconURL : message.author.displayAvatarURL({dynamic : true})})]})
-        }
-        if(op === `track`)
-        {
-            player.setLoop('track');
-            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Loop mode has been set to Track` , iconURL : message.author.displayAvatarURL({dynamic : true})})]})
-        }
-        if(op === `queue`)
-        {
-            player.setLoop("queue");
-            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Loop Mode has been set to Queue` , iconURL : message.author.displayAvatarURL({dynamic : true})})]})
-        }
-        else{
-            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Use ${prefix}loop <off/track/queue>` , iconURL : message.author.displayAvatarURL({dynamic : true})})]})
-        }
-    } catch(e) {console.log(e)}
+class Loop extends AvonCommand {
+    get name() { return 'loop' }
+    get aliases() { return ['repeat', 'lop'] }
+    get inVoice() { return true; }
+    get cat() { return 'music' }
+    get sameVoice() { return true; }
+    get player() { return true; }
+    async run(client, message, args, prefix, player) {
+        try {
+            const accentColor = parseInt(client.config.color.replace('#', ''), 16);
+            const send = (text) => {
+                const container = new ContainerBuilder()
+                    .setAccentColor(accentColor)
+                    .addSectionComponents(
+                        new SectionBuilder()
+                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
+                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
+                    );
+                return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+            };
+
+            let mode = player.loop === 'track' ? 'Track' : player.loop === 'queue' ? 'Queue' : 'Off';
+
+            if (!args[0]) return send(`**| Loop mode is currently set to ${mode}**\nUse \`${prefix}loop <off/track/queue>\``);
+
+            let op = args[0].toLowerCase();
+            if (op === 'off') { player.setLoop('none'); return send(`**| Loop mode has been set to Off**`); }
+            if (op === 'track') { player.setLoop('track'); return send(`**| Loop mode has been set to Track**`); }
+            if (op === 'queue') { player.setLoop('queue'); return send(`**| Loop mode has been set to Queue**`); }
+            return send(`**| Use \`${prefix}loop <off/track/queue>\`**`);
+        } catch (e) { console.log(e) }
     }
 }
 module.exports = Loop;

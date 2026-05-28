@@ -1,33 +1,25 @@
-const { EmbedBuilder } = require("discord.js");
+const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
 
-class Pause extends AvonCommand{
-    get name(){
-        return 'pause';
-    }
-    get aliases(){
-        return ['roko','pau']
-    }
-    get player(){
-        return true;
-    }
-    get cat(){
-        return 'music'
-    }
-    get inVoice(){
-        return true;
-    }
-    get sameVoice(){
-        return true;
-    }
-    async run(client,message,args,prefix,player){
-        if(player.paused){
-            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Player is already paused` , iconURL : message.author.displayAvatarURL({dynamic : true})})]})
-        }
-        else{
-            player.pause(true);
-            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Paused The player` , iconURL : message.author.displayAvatarURL({dynamic : true})})]})
-        }
+class Pause extends AvonCommand {
+    get name() { return 'pause'; }
+    get aliases() { return ['roko', 'pau'] }
+    get player() { return true; }
+    get cat() { return 'music' }
+    get inVoice() { return true; }
+    get sameVoice() { return true; }
+    async run(client, message, args, prefix, player) {
+        const accentColor = parseInt(client.config.color.replace('#', ''), 16);
+        const text = player.paused ? `**| Player is already paused**` : `**| Paused the player**`;
+        if (!player.paused) player.pause(true);
+        const container = new ContainerBuilder()
+            .setAccentColor(accentColor)
+            .addSectionComponents(
+                new SectionBuilder()
+                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
+                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
+            );
+        return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
     }
 }
 module.exports = Pause;

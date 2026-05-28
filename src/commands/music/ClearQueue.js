@@ -1,28 +1,23 @@
-const { EmbedBuilder } = require("discord.js");
+const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
 
-class ClearQueue extends AvonCommand{
-    get name(){
-        return 'clearqueue'
-    }
-    get aliases(){
-        return ['clear','cq']
-    }
-    get player(){
-        return true;
-    }
-    get cat(){
-        return 'music'
-    }
-    get inVoice(){
-        return true
-    }
-    get sameVoice(){
-        return true;
-    }
-    async run(client,message,args,prefix,player){
+class ClearQueue extends AvonCommand {
+    get name() { return 'clearqueue' }
+    get aliases() { return ['clear', 'cq'] }
+    get player() { return true; }
+    get cat() { return 'music' }
+    get inVoice() { return true }
+    get sameVoice() { return true; }
+    async run(client, message, args, prefix, player) {
         player.queue.clear();
-        return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| SuccessFully Cleared Songs from Queue` , iconURL : message.author.displayAvatarURL({dynamic : true})})]});
+        const container = new ContainerBuilder()
+            .setAccentColor(parseInt(client.config.color.replace('#', ''), 16))
+            .addSectionComponents(
+                new SectionBuilder()
+                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| Successfully cleared the queue**`))
+                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
+            );
+        return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
     }
 }
 module.exports = ClearQueue;

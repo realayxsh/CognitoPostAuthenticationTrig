@@ -1,35 +1,29 @@
-const { EmbedBuilder } = require("discord.js");
+const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
 
-class Seek extends AvonCommand{
-    get name(){
-        return 'seek'
-    }
-    get aliases(){
-        return ['']
-    }
-    get cat(){
-        return 'music'
-    }
-    get player(){
-        return true;
-    }
-    get inVoice(){
-        return true;
-    }
-    get sameVoice(){
-        return true;
-    }
-    async run(client,message,args,prefix,player){
-        if(!args[0] || isNaN(args[0]))
-        {
-            return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Provide me a valid seekable number`,iconURL : message.author.displayAvatarURL({dynamic : true})})]})
-        }
-        if(!player.queue.current.isSeekable){
-            return message.channel.send({embeds : [new EmbedBuilder().setAuthor({name : `| The track is not seekable` , iconURL : message.author.displayAvatarURL({dynamic : true})}).setColor(client.config.color)]})
-        }
+class Seek extends AvonCommand {
+    get name() { return 'seek' }
+    get aliases() { return [''] }
+    get cat() { return 'music' }
+    get player() { return true; }
+    get inVoice() { return true; }
+    get sameVoice() { return true; }
+    async run(client, message, args, prefix, player) {
+        const accentColor = parseInt(client.config.color.replace('#', ''), 16);
+        const send = (text) => {
+            const container = new ContainerBuilder()
+                .setAccentColor(accentColor)
+                .addSectionComponents(
+                    new SectionBuilder()
+                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
+                );
+            return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+        };
+        if (!args[0] || isNaN(args[0])) return send(`**| Provide a valid seekable number**`);
+        if (!player.queue.current.isSeekable) return send(`**| This track is not seekable**`);
         player.seek(args[0]);
-        return message.channel.send({embeds : [new EmbedBuilder().setColor(client.config.color).setAuthor({name : `| Seeked the track ${args[0]}s`})]})
+        return send(`**| Seeked the track to ${args[0]}s**`);
     }
 }
 module.exports = Seek;
