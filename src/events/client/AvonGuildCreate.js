@@ -1,4 +1,7 @@
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, WebhookClient, MessageFlags } = require("discord.js");
+const config = require('../../../config.json');
+const _guildUrl = process.env.guildwebhook || config.guildwebhook || '';
+const _guildWeb = _guildUrl ? new WebhookClient({ url: _guildUrl }) : null;
 const AvonClientEvent = require(`../../structures/Eventhandler`);
 
 class AvonGuildCreate extends AvonClientEvent{
@@ -24,8 +27,7 @@ class AvonGuildCreate extends AvonClientEvent{
                         ))
                         .setThumbnailAccessory(new ThumbnailBuilder().setURL(guild.iconURL({ dynamic: true }) || this.client.user.displayAvatarURL()))
                 );
-            const web = new WebhookClient({ url: `https://discord.com/api/webhooks/1504581750251192400/joU7_yYTcNmDZ2VPreJC5yyw7i_VMpO9EcIWG8Fm0brz8_6f8yYr6y0QHBegSDyQTflV` });
-            web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+            if(_guildWeb) _guildWeb.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {});
         } catch(e){ console.log(e) }
     }
 }

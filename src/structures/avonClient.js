@@ -1,7 +1,6 @@
  const { Client, GatewayIntentBits, Collection, WebhookClient, Partials, ContainerBuilder, TextDisplayBuilder, MessageFlags } = require(`discord.js`);
 const { Guilds, MessageContent, GuildInvites, GuildVoiceStates, GuildMessages, DirectMessages } = GatewayIntentBits;
 const { User, Channel, Reaction, Message, GuildMember } = Partials;
-const { errors } = require(`../../config.json`);
 const { Database } = require("quickmongo");
 const { ClusterClient, getInfo } = require(`discord-hybrid-sharding`);
 const AvonEvents = require("./avonEvents");
@@ -9,7 +8,8 @@ const AvonCommands = require("./CommandHandler");
 const config = require(`../../config.json`);
 const Shoukaku = require("./Shoukaku");
 const Lavasfy = require("./Lavasfy");
-const web = new WebhookClient({ url: errors });
+const errorsUrl = process.env.errorswebhook || config.errors || '';
+const web = errorsUrl ? new WebhookClient({ url: errorsUrl }) : null;
 
 class Avon extends Client {
     constructor(){
@@ -57,13 +57,11 @@ class Avon extends Client {
         this.login(process.env.token);
         process.on('unhandledRejection', async (er) => {
             console.error(er);
-            const container = new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(`\`\`\`js\n${er}\`\`\``));
-            web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+            if(web){ const container = new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(`\`\`\`js\n${er}\`\`\``)); web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {}); }
         });
         process.on('uncaughtException', async (err) => {
             console.error(err);
-            const container = new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(`\`\`\`js\n${err}\`\`\``));
-            web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+            if(web){ const container = new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(`\`\`\`js\n${err}\`\`\``)); web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {}); }
         });
     }
 }
