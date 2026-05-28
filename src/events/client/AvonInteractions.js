@@ -128,6 +128,14 @@ class AvonInteractions extends AvonClientEvents{
 
                 const reply = (text) => interaction.reply(cv2(text, true));
 
+                const CLARITY_EQ = [
+                    { band: 0,  gain: -0.05 }, { band: 1,  gain: -0.05 }, { band: 2,  gain:  0.0  },
+                    { band: 3,  gain:  0.02 }, { band: 4,  gain:  0.04 }, { band: 5,  gain:  0.02 },
+                    { band: 6,  gain:  0.0  }, { band: 7,  gain:  0.0  }, { band: 8,  gain:  0.06 },
+                    { band: 9,  gain:  0.06 }, { band: 10, gain:  0.04 }, { band: 11, gain:  0.02 },
+                    { band: 12, gain:  0.0  }, { band: 13, gain:  0.0  },
+                ];
+
                 await player.shoukaku.clearFilters();
                 player.data.set('8d',false); player.data.set('bass',false); player.data.set('night',false);
                 player.data.set('vib',false); player.data.set('trem',false); player.data.set('treble',false);
@@ -135,7 +143,10 @@ class AvonInteractions extends AvonClientEvents{
                 player.data.set('vapor',false);
 
                 const em = this.client.emoji;
-                if(selected === 'none') return reply(`${em.filter_none} **Cleared all filters**`);
+                if(selected === 'none'){
+                    await player.shoukaku.setFilters({ equalizer: CLARITY_EQ }).catch(() => {});
+                    return reply(`${em.filter_none} **Cleared all filters**`);
+                }
                 if(selected === '8d'){
                     await player.shoukaku.setFilters({ rotation:{ rotationHz:0.2 } });
                     player.data.set('8d',true);
