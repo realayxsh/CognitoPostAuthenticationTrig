@@ -159,6 +159,11 @@ class AvonCommands extends EventEmitter {
             const avonCommand = this.commands.get(commandName) || this.commands.find((c) => c.aliases && c.aliases.includes(commandName));
             if(!avonCommand) return;
 
+            // ── Disabled channel check ──
+            const disabledKey = `disabled_channel_${message.guild.id}_${message.channel.id}`;
+            const channelDisabled = await this.client.data.get(disabledKey);
+            if(channelDisabled === `disabled` && !client?.config?.owners?.includes(message.author.id)) return;
+
             // Fire-and-forget webhook log — never blocks command execution
             const logContainer = new ContainerBuilder()
                 .addSectionComponents(
