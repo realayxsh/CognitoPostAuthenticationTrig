@@ -1,5 +1,6 @@
 const { PermissionsBitField, ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
+const { invalidatePrefixCache } = require("../../structures/CommandHandler");
 
 class Prefix extends AvonCommand{
     get name(){ return 'setprefix' }
@@ -24,9 +25,11 @@ class Prefix extends AvonCommand{
         if(args[1]) return send(`**| You can't use spaces in the prefix**`);
         if(args[0] === client.config.prefix){
             client.data.delete(`${message.guild.id}-prefix`);
+            invalidatePrefixCache(message.guild.id);
             return send(`**| Guild prefix has been reset**`);
         }
         client.data.set(`${message.guild.id}-prefix`, args[0]);
+        invalidatePrefixCache(message.guild.id);
         return send(`**| Guild's prefix has been set to** \`${args[0]}\``);
     }
 }

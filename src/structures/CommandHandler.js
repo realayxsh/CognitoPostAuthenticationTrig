@@ -9,6 +9,16 @@ const table = new ascii().setHeading('Avon Commands', 'Status');
 const top = require(`@top-gg/sdk`);
 const voteApi = new top.Api(process.env.topggapi || config.topggapi);
 
+// ── Prefix cache: TTL 5 minutes per guild ──
+const _prefixCache = new Map();
+const PREFIX_TTL = 5 * 60 * 1000;
+function invalidatePrefixCache(guildId) { _prefixCache.delete(guildId); }
+
+// ── Noprefix cache: TTL 2 minutes per guild / global key ──
+const _noprefixCache = new Map();
+const NOPREFIX_TTL = 2 * 60 * 1000;
+function invalidateNoprefixCache(key) { _noprefixCache.delete(key); }
+
 // ── Vote cache: TTL 5 minutes, gracefully handles missing/invalid API token ──
 const _voteCache = new Map();
 const VOTE_TTL = 5 * 60 * 1000;
@@ -74,8 +84,14 @@ class AvonCommands extends EventEmitter {
     async run(message){
         if(!message.guild || message.author.bot || message.attachments.size || message.stickers.size) return;
         let prefix;
-        let data = await this.client.data.get(`${message.guild.id}-prefix`);
-        if(data) prefix = data; else prefix = this.client.config.prefix;
+        const _pce = _prefixCache.get(message.guild.id);
+        if(_pce && Date.now() < _pce.expires){
+            prefix = _pce.prefix;
+        } else {
+            const data = await this.client.data.get(`${message.guild.id}-prefix`);
+            prefix = data || this.client.config.prefix;
+            _prefixCache.set(message.guild.id, { prefix, expires: Date.now() + PREFIX_TTL });
+        }
 
         if(message.content === `<@${this.client.user.id}>`){
             let b1 = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Invite`).setURL(`https://discord.com/api/oauth2/authorize?client_id=${this.client.user.id}&permissions=415602886720&scope=bot`);
@@ -107,11 +123,31 @@ class AvonCommands extends EventEmitter {
             let np = ['688067325433610307', '763992862857494558'];
             let regex = RegExp(`^<@!?${this.client.user.id}>`);
             let pre = message.content.match(regex) ? message.content.match(regex)[0] : prefix;
-            let db  = await this.client.data2.get(`noprefix_${message.guild.id}`);
-            let db2 = await this.client.data2.get(`noprefix_${this.client.user.id}`);
-            if(!db2 || db2 === null){ await this.client.data2.set(`noprefix_${this.client.user.id}`, []); db2 = []; }
+
+            const _npGuildKey  = `guild_${message.guild.id}`;
+            const _npGlobalKey = `global_${this.client.user.id}`;
+            const _npGuildCached  = _noprefixCache.get(_npGuildKey);
+            const _npGlobalCached = _noprefixCache.get(_npGlobalKey);
+            const now = Date.now();
+
+            const [db, db2] = await Promise.all([
+                (_npGuildCached && now < _npGuildCached.expires)
+                    ? Promise.resolve(_npGuildCached.list)
+                    : this.client.data2.get(`noprefix_${message.guild.id}`).then(v => {
+                        const list = v || [];
+                        _noprefixCache.set(_npGuildKey, { list, expires: now + NOPREFIX_TTL });
+                        return list;
+                    }),
+                (_npGlobalCached && now < _npGlobalCached.expires)
+                    ? Promise.resolve(_npGlobalCached.list)
+                    : this.client.data2.get(`noprefix_${this.client.user.id}`).then(v => {
+                        const list = v || [];
+                        _noprefixCache.set(_npGlobalKey, { list, expires: now + NOPREFIX_TTL });
+                        return list;
+                    })
+            ]);
+
             db2.forEach(x => np.push(x));
-            if(!db || db === null){ await this.client.data2.set(`noprefix_${message.guild.id}`, []); db = []; }
             db.forEach(x => np.push(x));
             if(!np.includes(message.author.id)){ if(!message.content.startsWith(pre)) return; }
             const args = np.includes(message.author.id) == false
@@ -216,3 +252,5 @@ class AvonCommands extends EventEmitter {
 
 module.exports = AvonCommands;
 module.exports.invalidatePremCache = invalidatePremCache;
+module.exports.invalidatePrefixCache = invalidatePrefixCache;
+module.exports.invalidateNoprefixCache = invalidateNoprefixCache;

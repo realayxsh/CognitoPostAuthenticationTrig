@@ -1,5 +1,6 @@
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
+const { invalidateNoprefixCache } = require("../../structures/CommandHandler");
 
 class Noprefix extends AvonCommand{
     get name(){ return 'noprefix'; }
@@ -39,6 +40,7 @@ class Noprefix extends AvonCommand{
                     if(um.includes(us.id)) return await send(`${client.emoji.tick} | This user is already in all-server no prefix`);
                     um.push(us.id);
                     await client.data2.set(`noprefix_${client.user.id}`, um);
+                    invalidateNoprefixCache(`global_${client.user.id}`);
                     return await send(`${client.emoji.tick} | Added ${us} to all-server no prefix`);
                 } else {
                     let guild;
@@ -51,6 +53,7 @@ class Noprefix extends AvonCommand{
                     if(oo.includes(us.id)) return await send(`${client.emoji.cross} | This user is already in ${guild.name}'s no prefix`);
                     oo.push(us.id);
                     await client.data2.set(`noprefix_${guild.id}`, oo);
+                    invalidateNoprefixCache(`guild_${guild.id}`);
                     return await send(`${client.emoji.tick} | Added ${us} to ${guild.name}'s no prefix`);
                 }
             }
@@ -67,6 +70,7 @@ class Noprefix extends AvonCommand{
                     if(!um.includes(us.id)) return await send(`${client.emoji.tick} | This user is not in all-server no prefix`);
                     let bhai = um.filter(x => x !== us.id);
                     await client.data2.set(`noprefix_${client.user.id}`, bhai);
+                    invalidateNoprefixCache(`global_${client.user.id}`);
                     return await send(`${client.emoji.tick} | Removed ${us} from all-server no prefix`);
                 } else {
                     let guild;
@@ -79,6 +83,7 @@ class Noprefix extends AvonCommand{
                     if(!oo.includes(us.id)) return await send(`${client.emoji.cross} | This user is not in ${guild.name}'s no prefix`);
                     let sh = oo.filter(x => x !== us.id);
                     await client.data2.set(`noprefix_${guild.id}`, sh);
+                    invalidateNoprefixCache(`guild_${guild.id}`);
                     return await send(`${client.emoji.tick} | Removed ${us} from ${guild.name}'s no prefix`);
                 }
             }
