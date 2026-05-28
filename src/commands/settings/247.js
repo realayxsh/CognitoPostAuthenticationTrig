@@ -4,7 +4,6 @@ const AvonCommand = require("../../structures/avonCommand");
 class twentyfourseven extends AvonCommand{
     get name(){ return '247'; }
     get aliases(){ return ['24-7','twentyfourseven','alwaysvc','24/7'] }
-    get vote(){ return true; }
     get cat(){ return 'set' }
     get player(){ return true; }
     get inVoice(){ return true; }

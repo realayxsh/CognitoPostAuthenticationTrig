@@ -6,14 +6,18 @@ class AvonVoiceStateUpdate extends AvonClientEvent{
         return 'voiceStateUpdate';
     }
     async run(os,ns){
-        let player = this.client.poru.players.get(ns.guild.id || os.guild.id);
+        let guild = ns.guild || os.guild;
+        let player = this.client.poru.players.get(guild.id);
         if(!player) return;
-        if(os.id === this.client.user.id) return;
-        if(!ns.guild.members.cache.get(this.client.user.id).voice.channelId || !os.guild.members.cache.get(this.client.user.id).voice.channelId) return;
-        if(!os.guild.members.me.voice.channel || !ns.guild.members.me.voice.channel){
-            player.destroy();
-        }
+
         if(ns.guild.members.me.serverMute === true) ns.guild.members.me.voice.setMute(false);
+
+        if(os.id === this.client.user.id){
+            if(!ns.channelId){
+                player.destroy();
+            }
+            return;
+        }
     }
 }
 module.exports = AvonVoiceStateUpdate;
