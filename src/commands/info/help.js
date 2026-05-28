@@ -3,7 +3,7 @@ const AvonCommand = require("../../structures/avonCommand");
 
 class Help extends AvonCommand{
     get name(){ return 'help'; }
-    get aliases(){ return 'h'; }
+    get aliases(){ return ['h']; }
     get cat(){ return 'info'; }
     async run(client, message, args, prefix){
         try{

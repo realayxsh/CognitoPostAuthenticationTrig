@@ -1,4 +1,5 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, MessageFlags } = require("discord.js");
+const ms = require('ms');
 const AvonClientEvents = require(`../../structures/Eventhandler`);
 const { Api } = require(`@top-gg/sdk`);
 const config = require(`../../../config.json`);
@@ -32,6 +33,59 @@ async function isPremium(client, guildId) {
     return active;
 }
 
+const FILTER_OPTIONS = [
+    { label: `None (Clear Filters)`, value: `none`,       desc: `Remove all active filters`,      key: `filter_none`       },
+    { label: `8D`,                   value: `8d`,         desc: `Rotating 8D audio effect`,       key: `filter_8d`         },
+    { label: `Bass Boost`,           value: `bassboost`,  desc: `Boost the bass frequencies`,     key: `filter_bassboost`  },
+    { label: `Nightcore`,            value: `nightcore`,  desc: `Faster speed and higher pitch`,  key: `filter_nightcore`  },
+    { label: `Vibrato`,              value: `vibrato`,    desc: `Oscillating pitch effect`,       key: `filter_vibrato`    },
+    { label: `Tremolo`,              value: `tremolo`,    desc: `Oscillating volume effect`,      key: `filter_tremolo`    },
+    { label: `Treblebass`,           value: `treblebass`, desc: `Boost both treble and bass`,     key: `filter_treblebass` },
+    { label: `Slowmode`,             value: `slowmode`,   desc: `Slower speed, lower pitch`,      key: `filter_slowmode`   },
+    { label: `Chipmunk`,             value: `chipmunk`,   desc: `High-pitched chipmunk voice`,    key: `filter_chipmunk`   },
+    { label: `China`,                value: `china`,      desc: `China-style audio effect`,       key: `filter_china`      },
+    { label: `Vaporwave`,            value: `vaporwave`,  desc: `Slowed, lower-pitched vibe`,     key: `filter_vaporwave`  },
+];
+
+function buildNowPlayingComponents(client, player) {
+    const track = player.queue.current;
+    if (!track) return null;
+    let url = track.uri || '';
+    if (url.includes('youtube.com') || url.includes('youtu.be')) url = client.config.server;
+    const duration = ms(track.length || 0);
+    const loopOn = player.loop !== 'none';
+    const pauseLabel = player.paused ? 'Resume' : 'Pause';
+    const requesterAvatar = track.requester?.displayAvatarURL?.({ dynamic: true }) || client.user.displayAvatarURL();
+    const container = new ContainerBuilder()
+        .addSectionComponents(
+            new SectionBuilder()
+                .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                    `**| Now Playing**\n\n**[${track.title}](${url})**\nby **${track.author}** — \`${duration}\`\n\n${client.emoji.users} **Requester:** ${track.requester}`
+                ))
+                .setThumbnailAccessory(new ThumbnailBuilder().setURL(requesterAvatar))
+        )
+        .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
+        .addActionRowComponents(new ActionRowBuilder().addComponents(
+            new ButtonBuilder().setStyle(ButtonStyle.Danger).setLabel(`Stop`).setCustomId(`pl1`),
+            new ButtonBuilder().setStyle(ButtonStyle.Success).setLabel(pauseLabel).setCustomId(`pl2`),
+            new ButtonBuilder().setStyle(loopOn ? ButtonStyle.Success : ButtonStyle.Primary).setLabel(loopOn ? `Loop ON` : `Loop`).setCustomId(`pl3`),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel(`Previous`).setCustomId(`pl4`),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel(`Skip`).setCustomId(`pl5`)
+        ))
+        .addActionRowComponents(new ActionRowBuilder().addComponents(
+            new StringSelectMenuBuilder()
+                .setCustomId(`filter_select`)
+                .setPlaceholder(`Select a filter...`)
+                .addOptions(...FILTER_OPTIONS.map(({ label, value, desc, key }) => {
+                    const opt = new StringSelectMenuOptionBuilder().setLabel(label).setValue(value).setDescription(desc);
+                    const e = client.emoji[key];
+                    if (e) opt.setEmoji(e);
+                    return opt;
+                }))
+        ));
+    return { flags: [MessageFlags.IsComponentsV2], components: [container] };
+}
+
 const cv2 = (text, ephemeral = false) => ({
     flags: ephemeral ? [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral] : [MessageFlags.IsComponentsV2],
     components: [new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(text))]
@@ -54,26 +108,20 @@ class AvonInteractions extends AvonClientEvents{
                     if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
-                    let but1 = new ButtonBuilder().setStyle(ButtonStyle.Danger).setLabel(`Stop`).setCustomId(`pl1`);
-                    let but2 = new ButtonBuilder().setStyle(ButtonStyle.Success).setLabel(!player.paused ? `Resume` : `Pause`).setCustomId(`pl2`);
-                    let but3 = new ButtonBuilder().setStyle(ButtonStyle.Primary).setLabel(`Loop`).setCustomId(`pl3`);
-                    let but4 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel(`Previous`).setCustomId(`pl4`);
-                    let but5 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel(`Skip`).setCustomId(`pl5`);
-                    let ro = new ActionRowBuilder().addComponents(but1, but2, but3, but4, but5);
                     player.pause(!player.paused);
-                    return interaction.update({ components: [ro] });
+                    const updatedPause = buildNowPlayingComponents(this.client, player);
+                    if(updatedPause) return interaction.update(updatedPause);
+                    return interaction.reply(cv2(`${this.client.emoji.tick} | ${player.paused ? 'Paused' : 'Resumed'}`, true));
                 }
                 if(interaction.customId === `pl3`){
                     if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
-                    if(player.loop === `queue`){
-                        player.setLoop(`none`);
-                        return interaction.reply(cv2(`${this.client.emoji.cross} | **Disabled** Looping`, true));
-                    } else {
-                        player.setLoop(`queue`);
-                        return interaction.reply(cv2(`${this.client.emoji.tick} | **Enabled** Looping`, true));
-                    }
+                    if(player.loop === `queue`){ player.setLoop(`none`); }
+                    else { player.setLoop(`queue`); }
+                    const updatedLoop = buildNowPlayingComponents(this.client, player);
+                    if(updatedLoop) return interaction.update(updatedLoop);
+                    return interaction.reply(cv2(player.loop !== 'none' ? `${this.client.emoji.tick} | **Loop enabled**` : `${this.client.emoji.cross} | **Loop disabled**`, true));
                 }
                 if(interaction.customId === `pl4`){
                     if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
