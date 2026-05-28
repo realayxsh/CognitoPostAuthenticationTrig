@@ -11,7 +11,7 @@ class ClearFilters extends AvonCommand {
     get player() { return true; }
     get premium() { return true; }
     async run(client, message, args, prefix, player) {
-        player.send({ guildId: message.guild.id, op: 'filters' });
+        await player.shoukaku.clearFilters();
         const container = new ContainerBuilder()
             .setAccentColor(parseInt(client.config.color.replace('#', ''), 16))
             .addSectionComponents(

@@ -1,0 +1,1 @@
+- [Lavalink setup](lavalink-setup.md) — Jirayu node (port 443, v4) is the only confirmed-working Lavalink from Replit; requires shoukaku@4 + kazagumo@3; filter API uses player.shoukaku.setFilters()

@@ -24,12 +24,12 @@ class Tremolo extends AvonCommand {
         };
         let db = player.data.get(`trem`);
         if (!db || db === false || db === undefined) {
-            player.send({ guildId: message.guild.id, op: 'filters', tremolo: { frequency: 4.0, depth: 0.75 } });
+            await player.shoukaku.setFilters({ tremolo: { frequency: 4.0, depth: 0.75 } });
             player.data.set(`trem`, true);
             return send(`**| Enabled Tremolo**`);
         }
         if (db === true) {
-            player.send({ guildId: message.guild.id, op: 'filters' });
+            await player.shoukaku.clearFilters();
             player.data.set(`trem`, false);
             return send(`**| Disabled Tremolo**`);
         }

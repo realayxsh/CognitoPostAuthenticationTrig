@@ -23,13 +23,13 @@ class Chipmunk extends AvonCommand {
         };
         let data = player.data.get(`chip`);
         if (!data || data == false || data == undefined) {
-            player.send({ guildId: message.guild.id, op: 'filters', timescale: { speed: 1.05, pitch: 1.35, rate: 1.25 } });
+            await player.shoukaku.setFilters({ timescale: { speed: 1.05, pitch: 1.35, rate: 1.25 } });
             player.data.set(`chip`, true);
             return send(`**| Enabled Chipmunk**`);
         }
         if (data == true) {
             player.data.set(`chip`, false);
-            player.send({ guildId: message.guild.id, op: 'filters', timescale: { speed: 1.0, pitch: 1.0, rate: 1.0 } });
+            await player.shoukaku.setFilters({ timescale: null });
             return send(`**| Disabled Chipmunk**`);
         }
     }

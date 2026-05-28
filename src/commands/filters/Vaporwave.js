@@ -24,12 +24,12 @@ class Vaporwave extends AvonCommand {
         };
         let data = player.data.get(`vapor`);
         if (!data || data === false || data === undefined) {
-            player.send({ op: 'filters', guildId: message.guild.id, equalizer: [{ band: 0, gain: 0 },{ band: 1, gain: 0 },{ band: 2, gain: 0 },{ band: 3, gain: 0 },{ band: 4, gain: 0 },{ band: 5, gain: 0 },{ band: 6, gain: 0 },{ band: 7, gain: 0 },{ band: 8, gain: 0.15 },{ band: 9, gain: 0.15 },{ band: 10, gain: 0.15 },{ band: 11, gain: 0.15 },{ band: 12, gain: 0.15 },{ band: 13, gain: 0.15 }], timescale: { pitch: 0.55 } });
+            await player.shoukaku.setFilters({ equalizer: [{ band: 0, gain: 0 },{ band: 1, gain: 0 },{ band: 2, gain: 0 },{ band: 3, gain: 0 },{ band: 4, gain: 0 },{ band: 5, gain: 0 },{ band: 6, gain: 0 },{ band: 7, gain: 0 },{ band: 8, gain: 0.15 },{ band: 9, gain: 0.15 },{ band: 10, gain: 0.15 },{ band: 11, gain: 0.15 },{ band: 12, gain: 0.15 },{ band: 13, gain: 0.15 }], timescale: { pitch: 0.55 } });
             player.data.set(`vapor`, true);
             return send(`**| Enabled Vaporwave**`);
         }
         if (data === true) {
-            player.send({ guildId: message.guild.id, op: 'filters' });
+            await player.shoukaku.clearFilters();
             player.data.set(`vapor`, false);
             return send(`**| Disabled Vaporwave**`);
         }

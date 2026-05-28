@@ -24,12 +24,12 @@ class China extends AvonCommand {
         };
         let db = player.data.get(`china`);
         if (!db || db === undefined || db === false) {
-            player.send({ guildId: message.guild.id, op: 'filters', timescale: { speed: 0.75, pitch: 1.25, rate: 1.25 } });
+            await player.shoukaku.setFilters({ timescale: { speed: 0.75, pitch: 1.25, rate: 1.25 } });
             player.data.set(`china`, true);
             return send(`**| Enabled China**`);
         }
         if (db === true) {
-            player.send({ guildId: message.guild.id, op: 'filters', timescale: { speed: 1.0, pitch: 1.0, rate: 1.0 } });
+            await player.shoukaku.setFilters({ timescale: null });
             player.data.set(`china`, false);
             return send(`**| Disabled China**`);
         }

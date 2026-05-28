@@ -24,12 +24,12 @@ class Slowmode extends AvonCommand {
         };
         let db = player.data.get(`slow`);
         if (!db || db === false || db === undefined) {
-            player.send({ guildId: message.guild.id, op: 'filters', timescale: { speed: 0.5, pitch: 1.0, rate: 0.8 } });
+            await player.shoukaku.setFilters({ timescale: { speed: 0.5, pitch: 1.0, rate: 0.8 } });
             player.data.set(`slow`, true);
             return send(`**| Enabled Slowmode**`);
         }
         if (db === true) {
-            player.send({ guildId: message.guild.id, op: 'filters', timescale: { speed: 1.0, pitch: 1.0, rate: 1.0 } });
+            await player.shoukaku.setFilters({ timescale: null });
             player.data.set(`slow`, false);
             return send(`**| Disabled Slowmode**`);
         }

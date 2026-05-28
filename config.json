@@ -14,9 +14,9 @@
     "server" : "https://discord.com/invite/pMuDkCcppJ",
     "nodes" : [
         {
-        "name" : "Radio",
-        "url" : "lavalink.devamop.in:443",
-        "auth" : "devamop.in",
+        "name" : "Jirayu",
+        "url" : "lavalink.jirayu.net:443",
+        "auth" : "youshallnotpass",
         "secure" : true
         }
     ]

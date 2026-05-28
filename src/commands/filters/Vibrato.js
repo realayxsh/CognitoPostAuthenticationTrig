@@ -25,12 +25,12 @@ class Vibrato extends AvonCommand {
             };
             let db = player.data.get(`vib`);
             if (!db || db === false || db === undefined) {
-                player.send({ op: 'filters', guildId: message.guild.id, vibrato: { frequency: 4.0, depth: 0.75 } });
+                await player.shoukaku.setFilters({ vibrato: { frequency: 4.0, depth: 0.75 } });
                 player.data.set(`vib`, true);
                 return send(`**| Enabled Vibrato**`);
             }
             if (db === true) {
-                player.send({ guildId: message.guild.id, op: 'filters' });
+                await player.shoukaku.clearFilters();
                 player.data.set(`vib`, false);
                 return send(`**| Disabled Vibrato**`);
             }
