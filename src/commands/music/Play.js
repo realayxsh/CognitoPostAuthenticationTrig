@@ -38,6 +38,16 @@ class Play extends AvonCommand {
                 return send(`**| Command Usage**\n\`\`\`js\n${prefix}play <songurl>\`\`\``);
             }
 
+            let query = args.join(" ");
+
+            const searchingContainer = new ContainerBuilder()
+                .addSectionComponents(
+                    new SectionBuilder()
+                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| Searching...**\n\nLooking up: \`${query}\``))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(avatar))
+                );
+            let searchingMsg = await message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [searchingContainer] });
+
             let channel = message.member.voice.channel;
             let player = client.poru.players.get(message.guild.id);
             if (!player) {
@@ -51,12 +61,11 @@ class Play extends AvonCommand {
                 });
             }
 
-            let query = args.join(" ");
             player.setTextChannel(message.channel.id);
 
             if (query.startsWith('https://')) {
                 if (query.includes(`youtube`) || query.includes(`youtu.be`)) {
-                    return send(`**| I don't resolve YouTube links anymore due to YouTube's TOS**`);
+                    return editMsg(searchingMsg, `**| I don't resolve YouTube links anymore due to YouTube's TOS**`);
                 }
 
                 if (query.includes(`spotify`)) {
@@ -65,41 +74,41 @@ class Play extends AvonCommand {
                         let node = client.lavasfy.nodes.get('Avon');
                         let result = await node.load(query);
                         if (!result || result.loadType === `LOAD_FAILED`) {
-                            return send(`**| Failed to load that Spotify link**`);
+                            return editMsg(searchingMsg, `**| Failed to load that Spotify link**`);
                         }
                         if (result.loadType === `PLAYLIST_LOADED`) {
                             let songs = result.tracks.map(t => new KazagumoTrack(t, message.author));
                             player.queue.add(songs);
                             if (!player.playing && !player.paused) player.play();
-                            return send(`**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistInfo.name}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks.reduce((a, v) => a + v.info.length, 0))}`);
+                            return editMsg(searchingMsg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistInfo.name}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks.reduce((a, v) => a + v.info.length, 0))}`);
                         }
                         if (result.loadType === `TRACK_LOADED` || result.loadType === `SEARCH_RESULT`) {
                             let convertedTrack = new KazagumoTrack(result.tracks[0], message.author);
                             player.queue.add(convertedTrack);
                             if (!player.playing && !player.paused) player.play();
-                            return send(`**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].info.title}](${result.tracks[0].info.uri})\n${client.emoji.users} **Requester:** ${message.author}`);
+                            return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].info.title}](${result.tracks[0].info.uri})\n${client.emoji.users} **Requester:** ${message.author}`);
                         }
-                        return send(`**| Could not load that link**`);
+                        return editMsg(searchingMsg, `**| Could not load that link**`);
                     } catch (e) {
                         console.error('[Play Spotify]', e);
-                        return send(`**| ${client.emoji.cross} | An error occurred loading that Spotify link**`);
+                        return editMsg(searchingMsg, `**| ${client.emoji.cross} | An error occurred loading that Spotify link**`);
                     }
                 } else {
                     try {
                         let result = await player.search(query, { requester: message.author });
-                        if (!result || !result.tracks.length) return send(`**| No results were found**`);
+                        if (!result || !result.tracks.length) return editMsg(searchingMsg, `**| No results were found**`);
                         if (result.type === `PLAYLIST`) {
                             for (let track of result.tracks) player.queue.add(track);
                             if (!player.playing && !player.paused) player.play();
-                            return send(`**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``);
+                            return editMsg(searchingMsg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``);
                         } else {
                             player.queue.add(result.tracks[0]);
                             if (!player.playing && !player.paused) player.play();
-                            return send(`**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
+                            return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
                         }
                     } catch (e) {
                         console.error('[Play URL]', e);
-                        return send(`**| ${client.emoji.cross} | Failed to load that link**`);
+                        return editMsg(searchingMsg, `**| ${client.emoji.cross} | Failed to load that link**`);
                     }
                 }
             }
@@ -108,7 +117,7 @@ class Play extends AvonCommand {
                 .addSectionComponents(
                     new SectionBuilder()
                         .addTextDisplayComponents(
-                            new TextDisplayBuilder().setContent(`**| Choose the search engine you want to use**\n\nSearching for: \`${query}\``)
+                            new TextDisplayBuilder().setContent(`**| Choose the search engine**\n\nSearching for: \`${query}\``)
                         )
                         .setThumbnailAccessory(new ThumbnailBuilder().setURL(avatar))
                 )
@@ -122,6 +131,7 @@ class Play extends AvonCommand {
                     )
                 );
 
+            await searchingMsg.delete().catch(() => {});
             let msg = await message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [selectorContainer] });
 
             let co = msg.createMessageComponentCollector({
