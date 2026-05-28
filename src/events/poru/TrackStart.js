@@ -32,13 +32,13 @@ class TrackStart extends AvonClientEvent {
         const channel = this.client.channels.cache.get(player.textId);
         let duration = moment.duration(player.queue.current.length).format("hh:mm:ss");
 
-        if (duration < 30) {
+        if (player.queue.current.length < 30000) {
             player.skip();
             const skipContainer = new ContainerBuilder()
                 .addTextDisplayComponents(
                     new TextDisplayBuilder().setContent(`${this.client.emoji.settings} Skipping this track as its duration is less than 30 seconds`)
                 );
-            return channel.send({ flags: [MessageFlags.IsComponentsV2], components: [skipContainer] });
+            return channel?.send({ flags: [MessageFlags.IsComponentsV2], components: [skipContainer] });
         }
 
         // Apply clarity EQ on every new track unless a user filter is active

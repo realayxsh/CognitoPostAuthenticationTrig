@@ -5,43 +5,41 @@ const AvonCommand = require(`../../structures/avonCommand`);
 
 class Play extends AvonCommand {
     get name() { return 'play' }
-    get aliases() { return ['p', 'play'] }
+    get aliases() { return ['p'] }
     get cat() { return 'music' }
     get inVoice() { return true; }
     get sameVoice() { return true; }
 
     async run(client, message, args, prefix) {
-        try {
+        const avatar = message.author.displayAvatarURL({ dynamic: true });
 
-            const sendContainer = (text, avatarURL) => {
-                const container = new ContainerBuilder()
-                    .addSectionComponents(
-                        new SectionBuilder()
-                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
-                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(avatarURL))
-                    );
-                return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
-            };
-
-            const updateContainer = (interaction, text, avatarURL) => {
-                const container = new ContainerBuilder()
-                    .addSectionComponents(
-                        new SectionBuilder()
-                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
-                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(avatarURL))
-                    );
-                return interaction.update({ flags: [MessageFlags.IsComponentsV2], components: [container] });
-            };
-
-            if (!args[0]) {
-                return sendContainer(
-                    `**| Command Usage**\n\`\`\`js\n${prefix}play <songurl>\`\`\``,
-                    message.author.displayAvatarURL({ dynamic: true })
+        const send = (text) => {
+            const container = new ContainerBuilder()
+                .addSectionComponents(
+                    new SectionBuilder()
+                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(avatar))
                 );
+            return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+        };
+
+        const editMsg = (msg, text) => {
+            const container = new ContainerBuilder()
+                .addSectionComponents(
+                    new SectionBuilder()
+                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(avatar))
+                );
+            return msg.edit({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+        };
+
+        try {
+            if (!args[0]) {
+                return send(`**| Command Usage**\n\`\`\`js\n${prefix}play <songurl>\`\`\``);
             }
 
             let channel = message.member.voice.channel;
-            var player = client.poru.players.get(message.guild.id);
+            let player = client.poru.players.get(message.guild.id);
             if (!player) {
                 player = await client.poru.createPlayer({
                     guildId: message.guild.id,
@@ -58,10 +56,7 @@ class Play extends AvonCommand {
 
             if (query.startsWith('https://')) {
                 if (query.includes(`youtube`) || query.includes(`youtu.be`)) {
-                    return sendContainer(
-                        `**| I don't resolve YouTube links anymore due to YouTube's TOS**`,
-                        message.author.displayAvatarURL({ dynamic: true })
-                    );
+                    return send(`**| I don't resolve YouTube links anymore due to YouTube's TOS**`);
                 }
 
                 if (query.includes(`spotify`)) {
@@ -69,52 +64,42 @@ class Play extends AvonCommand {
                         await client.lavasfy.requestToken();
                         let node = client.lavasfy.nodes.get('Avon');
                         let result = await node.load(query);
-                        if (result.loadType === `LOAD_FAILED`) {
-                            return sendContainer(`**| Failed while loading**`, message.author.displayAvatarURL({ dynamic: true }));
+                        if (!result || result.loadType === `LOAD_FAILED`) {
+                            return send(`**| Failed to load that Spotify link**`);
                         }
                         if (result.loadType === `PLAYLIST_LOADED`) {
-                            let songs = [];
-                            for (let i = 0; i < result.tracks.length; i++) {
-                                songs.push(new KazagumoTrack(result.tracks[i], message.author));
-                            }
+                            let songs = result.tracks.map(t => new KazagumoTrack(t, message.author));
                             player.queue.add(songs);
                             if (!player.playing && !player.paused) player.play();
-                            return sendContainer(
-                                `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistInfo.name}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks.reduce((a, v) => a + v.info.length, 0))}`,
-                                message.author.displayAvatarURL({ dynamic: true })
-                            );
+                            return send(`**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistInfo.name}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks.reduce((a, v) => a + v.info.length, 0))}`);
                         }
                         if (result.loadType === `TRACK_LOADED` || result.loadType === `SEARCH_RESULT`) {
                             let convertedTrack = new KazagumoTrack(result.tracks[0], message.author);
                             player.queue.add(convertedTrack);
                             if (!player.playing && !player.paused) player.play();
-                            return sendContainer(
-                                `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].info.title}](${result.tracks[0].info.uri})\n${client.emoji.users} **Requester:** ${message.author}`,
-                                message.author.displayAvatarURL({ dynamic: true })
-                            );
+                            return send(`**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].info.title}](${result.tracks[0].info.uri})\n${client.emoji.users} **Requester:** ${message.author}`);
                         }
-                    } catch (e) { console.log(e) }
-                } else {
-                    let result = await player.search(query, { requester: message.author });
-                    if (!result.tracks.length) {
-                        return sendContainer(`**| No results were found**`, message.author.displayAvatarURL({ dynamic: true }));
+                        return send(`**| Could not load that link**`);
+                    } catch (e) {
+                        console.error('[Play Spotify]', e);
+                        return send(`**| ${client.emoji.cross} | An error occurred loading that Spotify link**`);
                     }
-                    if (result.type === `PLAYLIST`) {
-                        for (let track of result.tracks) {
-                            player.queue.add(track);
+                } else {
+                    try {
+                        let result = await player.search(query, { requester: message.author });
+                        if (!result || !result.tracks.length) return send(`**| No results were found**`);
+                        if (result.type === `PLAYLIST`) {
+                            for (let track of result.tracks) player.queue.add(track);
+                            if (!player.playing && !player.paused) player.play();
+                            return send(`**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``);
+                        } else {
+                            player.queue.add(result.tracks[0]);
+                            if (!player.playing && !player.paused) player.play();
+                            return send(`**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
                         }
-                        if (!player.playing && !player.paused) player.play();
-                        return sendContainer(
-                            `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``,
-                            message.author.displayAvatarURL({ dynamic: true })
-                        );
-                    } else {
-                        player.queue.add(result.tracks[0]);
-                        if (!player.playing && !player.paused) player.play();
-                        return sendContainer(
-                            `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`,
-                            message.author.displayAvatarURL({ dynamic: true })
-                        );
+                    } catch (e) {
+                        console.error('[Play URL]', e);
+                        return send(`**| ${client.emoji.cross} | Failed to load that link**`);
                     }
                 }
             }
@@ -125,9 +110,7 @@ class Play extends AvonCommand {
                         .addTextDisplayComponents(
                             new TextDisplayBuilder().setContent(`**| Choose the search engine you want to use**\n\nSearching for: \`${query}\``)
                         )
-                        .setThumbnailAccessory(
-                            new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true }))
-                        )
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(avatar))
                 )
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(false))
                 .addActionRowComponents(
@@ -144,33 +127,38 @@ class Play extends AvonCommand {
             let co = msg.createMessageComponentCollector({
                 filter: (b) => {
                     if (b.user.id === message.author.id) return true;
-                    b.reply({ content: `${client.emoji.cross} | You are not the author of this command`, ephemeral: true });
+                    b.reply({ content: `${client.emoji.cross} | You are not the author of this command`, ephemeral: true }).catch(() => {});
                     return false;
                 },
-                time: 600000 * 5
+                time: 60000,
+                max: 1
             });
 
             co.on('collect', async (interaction) => {
                 if (!interaction.isButton()) return;
-                if (interaction.user.id !== message.author.id) return interaction.deferUpdate();
+                if (interaction.user.id !== message.author.id) return interaction.deferUpdate().catch(() => {});
+
+                await interaction.deferUpdate().catch(() => {});
+
                 try {
-                    const engines = { def: null, spoti: 'spotify', deez: 'deezer', sc: 'soundcloud' };
-                    const engineName = engines[interaction.customId];
-                    const avatar = message.author.displayAvatarURL({ dynamic: true });
+                    let p = client.poru.players.get(message.guild.id);
+                    if (!p) {
+                        return editMsg(msg, `**| ${client.emoji.cross} | Player no longer exists. Please run the command again.**`);
+                    }
 
                     let result;
                     if (interaction.customId === 'spoti') {
-                        result = await player.search(query, { engine: 'spotify', requester: message.author });
+                        result = await p.search(query, { engine: 'spotify', requester: message.author });
                     } else if (interaction.customId === 'deez') {
-                        result = await player.search(query, { engine: 'deezer', requester: message.author });
+                        result = await p.search(query, { engine: 'deezer', requester: message.author });
                     } else if (interaction.customId === 'sc') {
-                        result = await player.search(query, { engine: 'soundcloud', requester: message.author });
+                        result = await p.search(query, { engine: 'soundcloud', requester: message.author });
                     } else {
-                        result = await player.search(query, { requester: message.author });
+                        result = await p.search(query, { requester: message.author });
                     }
 
-                    if (!result.tracks.length) {
-                        return updateContainer(interaction, `**| No results were found**`, avatar);
+                    if (!result || !result.tracks.length) {
+                        return editMsg(msg, `**| No results were found for \`${query}\`**`);
                     }
 
                     if (result.type === `PLAYLIST`) {
@@ -178,30 +166,34 @@ class Play extends AvonCommand {
                             let tr = interaction.customId === 'spoti'
                                 ? new KazagumoTrack(track.getRaw(), message.author)
                                 : track;
-                            player.queue.add(tr);
+                            p.queue.add(tr);
                         }
-                        if (!player.playing && !player.paused) player.play();
-                        return updateContainer(interaction,
-                            `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``,
-                            avatar
-                        );
+                        if (!p.playing && !p.paused) p.play();
+                        return editMsg(msg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``);
                     } else {
                         let track = interaction.customId === 'spoti'
                             ? new KazagumoTrack(result.tracks[0].getRaw(), message.author)
                             : result.tracks[0];
-                        player.queue.add(track);
-                        if (!player.playing && !player.paused) player.play();
-                        return updateContainer(interaction,
-                            `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`,
-                            avatar
-                        );
+                        p.queue.add(track);
+                        if (!p.playing && !p.paused) p.play();
+                        return editMsg(msg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
                     }
-                } catch (e) { console.log(e) }
+                } catch (e) {
+                    console.error('[Play Collector]', e);
+                    editMsg(msg, `**| ${client.emoji.cross} | Something went wrong while searching. Please try again.**`).catch(() => {});
+                }
             });
 
-            co.on('end', () => {});
+            co.on('end', (collected) => {
+                if (collected.size === 0) {
+                    editMsg(msg, `**| Search timed out. Run the command again to search.**`).catch(() => {});
+                }
+            });
 
-        } catch (e) { console.log(e) }
+        } catch (e) {
+            console.error('[Play]', e);
+            message.channel.send({ content: `${client.emoji.cross} | Something went wrong. Please try again.` }).catch(() => {});
+        }
     }
 }
 module.exports = Play;
