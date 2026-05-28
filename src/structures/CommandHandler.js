@@ -27,7 +27,10 @@ async function hasVoted(userId) {
     if (entry && Date.now() < entry.expires) return entry.voted;
     try {
         const voted = await voteApi.hasVoted(userId);
-        _voteCache.set(userId, { voted, expires: Date.now() + VOTE_TTL });
+        // Cache positive votes for 5 minutes, negative for only 30 seconds
+        // so users who just voted are unblocked quickly
+        const ttl = voted ? VOTE_TTL : 30_000;
+        _voteCache.set(userId, { voted, expires: Date.now() + ttl });
         return voted;
     } catch (e) {
         // API token not configured or rate-limited — do not block users
