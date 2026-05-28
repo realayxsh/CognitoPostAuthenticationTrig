@@ -14,7 +14,7 @@ class Badges extends AvonCommand{
         try{
             let badges = '';
             let member = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
-            let guild  = await client.guilds.fetch('1102574606289739788');
+            let guild  = await client.guilds.fetch('1509516630365835294');
             let user   = await guild.members.fetch(member.id).catch(() => {
                 badges += `\`No Badges Available\`\nYou must be in our [support server](${client.config.server}) to get badges.\nJoin **[here](${client.config.server})**.`;
             });
