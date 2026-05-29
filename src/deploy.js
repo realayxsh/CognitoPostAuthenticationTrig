@@ -87,17 +87,30 @@ const commands = [
 
 ].map(c => c.toJSON());
 
-const rest = new REST({ version: '10' }).setToken(process.env.token);
+const rest = new REST({ version: '10' }).setToken(process.env.token || config.token);
+const guildId = process.argv[2]; // optional: pass a guild ID for instant registration
 
 (async () => {
     try {
-        console.log(`Registering ${commands.length} slash commands globally...`);
-        const data = await rest.put(
-            Routes.applicationCommands(config.clientId),
-            { body: commands }
-        );
-        console.log(`Successfully registered ${data.length} slash commands!`);
+        if (guildId) {
+            // ── Guild registration: INSTANT (for testing) ──
+            console.log(`Registering ${commands.length} slash commands to guild ${guildId} (instant)...`);
+            const data = await rest.put(
+                Routes.applicationGuildCommands(config.clientId, guildId),
+                { body: commands }
+            );
+            console.log(`✅ Successfully registered ${data.length} commands to guild ${guildId}!`);
+            console.log(`Commands visible in Discord immediately.`);
+        } else {
+            // ── Global registration: up to 1 hour to propagate ──
+            console.log(`Registering ${commands.length} slash commands globally (may take up to 1 hour)...`);
+            const data = await rest.put(
+                Routes.applicationCommands(config.clientId),
+                { body: commands }
+            );
+            console.log(`✅ Successfully registered ${data.length} global slash commands!`);
+        }
     } catch (error) {
-        console.error(error);
+        console.error('❌ Deploy failed:', error.message || error);
     }
 })();
