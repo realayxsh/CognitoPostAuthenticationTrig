@@ -163,6 +163,10 @@ class Help extends AvonCommand{
                     `${client.emoji.filters} \`${prefix}vaporwave\` — Slowed, lower-pitched vibe\n` +
                     `${client.emoji.filters} \`${prefix}vibrato\` — Oscillating pitch effect\n` +
                     `${client.emoji.filters} \`${prefix}dolbyatmos\` — Spatial surround sound\n` +
+                    `${client.emoji.filters} \`${prefix}concert\` — Concert hall reverb effect\n` +
+                    `${client.emoji.filters} \`${prefix}lofi\` — Chill lofi aesthetic\n` +
+                    `${client.emoji.filters} \`${prefix}heaven\` — Angelic high-pitch shimmer\n` +
+                    `${client.emoji.filters} \`${prefix}slowedreverb\` — Slowed + deep reverb\n` +
                     `${client.emoji.filters} \`${prefix}clearfilters\` — Remove all active filters\n\n` +
                     `**__Premium Management__**\n` +
                     `${client.emoji.premium} \`${prefix}premium\` — Check this server's premium status\n` +
