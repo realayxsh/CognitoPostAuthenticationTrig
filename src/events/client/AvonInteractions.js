@@ -77,6 +77,9 @@ function buildNowPlayingComponents(client, player) {
             new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel(`Skip`).setCustomId(`pl5`)
         ))
         .addActionRowComponents(new ActionRowBuilder().addComponents(
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel(`Lyrics`).setCustomId(`pl_lyrics`)
+        ))
+        .addActionRowComponents(new ActionRowBuilder().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId(`filter_select`)
                 .setPlaceholder(`Select a filter...`)
@@ -119,7 +122,7 @@ class AvonInteractions extends AvonClientEvents{
                             ]
                         });
                     }
-                    await interaction.deferReply({ flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral] });
+                    await interaction.deferReply({ ephemeral: true });
                     const track = player.queue.current;
                     let artist = track.author || '';
                     let title  = track.title  || '';
@@ -154,7 +157,7 @@ class AvonInteractions extends AvonClientEvents{
                     const preview = lyrics.length > 1800 ? lyrics.slice(0, 1800) + '\n...' : lyrics;
                     const thumb = track.thumbnail || this.client.user.displayAvatarURL({ dynamic: true });
                     return interaction.editReply({
-                        flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
+                        flags: [MessageFlags.IsComponentsV2],
                         components: [new ContainerBuilder()
                             .addSectionComponents(
                                 new SectionBuilder()
