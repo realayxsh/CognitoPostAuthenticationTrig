@@ -1,5 +1,7 @@
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, MessageFlags } = require("discord.js");
+const { MediaGalleryBuilder, MediaGalleryItemBuilder } = require("@discordjs/builders");
 const AvonClientEvent = require(`../../structures/Eventhandler`);
+const { getServerBrand } = require(`../../structures/serverBrand`);
 const moment = require(`moment`);
 require(`moment-duration-format`);
 
@@ -47,17 +49,41 @@ class TrackStart extends AvonClientEvent {
         }
 
         // Apply quality EQ only on the first track of this session.
-        // The flag 'qualityInit' persists on the player so subsequent tracks
-        // never trigger setFilters — no audio interruptions.
         const anyFilterActive = player.data.get('8d') || player.data.get('bass') ||
             player.data.get('night') || player.data.get('vib') || player.data.get('trem') ||
             player.data.get('treble') || player.data.get('slow') || player.data.get('chip') ||
-            player.data.get('china') || player.data.get('vapor') || player.data.get('dolbyatmos');
+            player.data.get('china') || player.data.get('vapor') || player.data.get('dolbyatmos') ||
+            player.data.get('concert') || player.data.get('lofi') || player.data.get('heaven') || player.data.get('slowedreverb');
 
         if (!player.data.get('qualityInit') && !anyFilterActive) {
             player.data.set('qualityInit', true);
             player.shoukaku.setFilters({ equalizer: QUALITY_EQ }).catch(() => {});
         }
+
+        // Load server brand (icon + banner)
+        const guildId = player.guildId || channel?.guild?.id;
+        const brand = guildId ? await getServerBrand(this.client, guildId).catch(() => ({})) : {};
+        const brandThumb  = brand.icon   || track.requester.displayAvatarURL({ dynamic: true });
+        const brandBanner = brand.banner || null;
+
+        const FILTER_LIST = [
+            { label: `None (Clear Filters)`, value: `none`,        desc: `Remove all active filters`,      key: `filter_none`        },
+            { label: `8D`,                   value: `8d`,          desc: `Rotating 8D audio effect`,       key: `filter_8d`          },
+            { label: `Bass Boost`,           value: `bassboost`,   desc: `Boost the bass frequencies`,     key: `filter_bassboost`   },
+            { label: `Nightcore`,            value: `nightcore`,   desc: `Faster speed and higher pitch`,  key: `filter_nightcore`   },
+            { label: `Vibrato`,              value: `vibrato`,     desc: `Oscillating pitch effect`,       key: `filter_vibrato`     },
+            { label: `Tremolo`,              value: `tremolo`,     desc: `Oscillating volume effect`,      key: `filter_tremolo`     },
+            { label: `Treblebass`,           value: `treblebass`,  desc: `Boost both treble and bass`,     key: `filter_treblebass`  },
+            { label: `Slowmode`,             value: `slowmode`,    desc: `Slower speed, lower pitch`,      key: `filter_slowmode`    },
+            { label: `Chipmunk`,             value: `chipmunk`,    desc: `High-pitched chipmunk voice`,    key: `filter_chipmunk`    },
+            { label: `China`,                value: `china`,       desc: `China-style audio effect`,       key: `filter_china`       },
+            { label: `Vaporwave`,            value: `vaporwave`,   desc: `Slowed, lower-pitched vibe`,     key: `filter_vaporwave`   },
+            { label: `Dolby Atmos`,          value: `dolbyatmos`,  desc: `Spatial surround sound effect`,  key: `filter_dolbyatmos`  },
+            { label: `Concert`,              value: `concert`,     desc: `Concert hall reverb effect`,     key: `filter_concert`     },
+            { label: `Lofi`,                 value: `lofi`,        desc: `Chill lofi aesthetic`,           key: `filter_lofi`        },
+            { label: `Heaven`,               value: `heaven`,      desc: `Angelic high-pitch shimmer`,     key: `filter_heaven`      },
+            { label: `Slowed Reverb`,        value: `slowedreverb`,desc: `Slowed + deep reverb`,           key: `filter_slowedreverb`},
+        ];
 
         const container = new ContainerBuilder()
             .addSectionComponents(
@@ -67,9 +93,7 @@ class TrackStart extends AvonClientEvent {
                             `**| Now Playing**\n\n**[${track.title}](${url})**\nby **${track.author}** — \`${duration}\`\n\n${this.client.emoji.users} **Requester:** ${track.requester}`
                         )
                     )
-                    .setThumbnailAccessory(
-                        new ThumbnailBuilder().setURL(track.requester.displayAvatarURL({ dynamic: true }))
-                    )
+                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(brandThumb))
             )
             .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
             .addActionRowComponents(
@@ -87,20 +111,7 @@ class TrackStart extends AvonClientEvent {
                         .setCustomId(`filter_select`)
                         .setPlaceholder(`Select a filter...`)
                         .addOptions(
-                            ...[ 
-                                { label: `None (Clear Filters)`, value: `none`,       desc: `Remove all active filters`,      key: `filter_none`       },
-                                { label: `8D`,                   value: `8d`,         desc: `Rotating 8D audio effect`,       key: `filter_8d`         },
-                                { label: `Bass Boost`,           value: `bassboost`,  desc: `Boost the bass frequencies`,     key: `filter_bassboost`  },
-                                { label: `Nightcore`,            value: `nightcore`,  desc: `Faster speed and higher pitch`,  key: `filter_nightcore`  },
-                                { label: `Vibrato`,              value: `vibrato`,    desc: `Oscillating pitch effect`,       key: `filter_vibrato`    },
-                                { label: `Tremolo`,              value: `tremolo`,    desc: `Oscillating volume effect`,      key: `filter_tremolo`    },
-                                { label: `Treblebass`,           value: `treblebass`, desc: `Boost both treble and bass`,     key: `filter_treblebass` },
-                                { label: `Slowmode`,             value: `slowmode`,   desc: `Slower speed, lower pitch`,      key: `filter_slowmode`   },
-                                { label: `Chipmunk`,             value: `chipmunk`,   desc: `High-pitched chipmunk voice`,    key: `filter_chipmunk`   },
-                                { label: `China`,                value: `china`,      desc: `China-style audio effect`,       key: `filter_china`      },
-                                { label: `Vaporwave`,            value: `vaporwave`,  desc: `Slowed, lower-pitched vibe`,     key: `filter_vaporwave`  },
-                                { label: `Dolby Atmos`,          value: `dolbyatmos`, desc: `Spatial surround sound effect`,  key: `filter_dolbyatmos` },
-                            ].map(({ label, value, desc, key }) => {
+                            ...FILTER_LIST.map(({ label, value, desc, key }) => {
                                 const opt = new StringSelectMenuOptionBuilder().setLabel(label).setValue(value).setDescription(desc);
                                 const e = this.client.emoji[key];
                                 if (e) opt.setEmoji(e);
@@ -109,6 +120,14 @@ class TrackStart extends AvonClientEvent {
                         )
                 )
             );
+
+        if (brandBanner) {
+            container.addMediaGalleryComponents(
+                new MediaGalleryBuilder().addItems(
+                    new MediaGalleryItemBuilder().setURL(brandBanner)
+                )
+            );
+        }
 
         if (channel) {
             return channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] })
