@@ -1,0 +1,25 @@
+const { ContainerBuilder, TextDisplayBuilder, MessageFlags } = require("discord.js");
+const AvonClientEvent = require("../../structures/Eventhandler");
+
+class TrackStuck extends AvonClientEvent {
+    get name() { return 'trackStuck'; }
+    async run(player, track, data) {
+        try {
+            const ch = this.client.channels.cache.get(player.textId);
+            console.warn(`[TrackStuck] Guild: ${player.guildId} | Track: ${track?.title} | Threshold: ${data?.thresholdMs}ms`);
+
+            const container = new ContainerBuilder()
+                .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                    `${this.client.emoji.cross} | Track got stuck — skipping **${track?.title || 'this track'}**.`
+                ));
+            ch?.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {});
+
+            if (player.queue.size > 0) {
+                player.stop();
+            } else {
+                player.destroy();
+            }
+        } catch (e) { console.error('[TrackStuck handler]', e); }
+    }
+}
+module.exports = TrackStuck;

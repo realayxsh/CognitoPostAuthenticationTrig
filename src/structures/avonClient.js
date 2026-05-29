@@ -46,9 +46,8 @@ class Avon extends Client {
             if(moved) return;
             console.warn(`[SHOUKAKU] => Node ${name}: Disconnected`);
         });
-        this.poru.on("playerClosed", (player) => {
-            player.destroy();
-            console.log(player);
+        this.poru.on("playerClosed", (player, data) => {
+            console.warn(`[PORU] playerClosed => Guild: ${player?.guildId} | Code: ${data?.code} | Reason: ${data?.reason}`);
         });
         this.emoji = require(`${process.cwd()}/emoji.json`);
         this.config = require(`${process.cwd()}/config.json`);
