@@ -140,7 +140,7 @@ class Play extends AvonCommand {
                     b.reply({ content: `${client.emoji.cross} | You are not the author of this command`, ephemeral: true }).catch(() => {});
                     return false;
                 },
-                time: 60000,
+                time: 120000,
                 max: 1
             });
 
@@ -196,7 +196,9 @@ class Play extends AvonCommand {
 
             co.on('end', (collected) => {
                 if (collected.size === 0) {
-                    editMsg(msg, `**| Search timed out. Run the command again to search.**`).catch(() => {});
+                    msg.delete().catch(() => {
+                        editMsg(msg, `**| ${client.emoji.cross} | Search timed out. Run the command again.**`).catch(() => {});
+                    });
                 }
             });
 

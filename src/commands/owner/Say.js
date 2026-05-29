@@ -71,14 +71,11 @@ class Say extends AvonCommand {
             }
         }
 
-        const channelMention = args[0];
-        const channelId = channelMention.replace(/[<#>]/g, "");
-
-        let targetChannel;
-        try {
-            targetChannel = await client.channels.fetch(channelId).catch(() => null);
-        } catch {
-            targetChannel = null;
+        let targetChannel = message.mentions.channels.first();
+        if (!targetChannel) {
+            const channelId = args[0].replace(/[<#>]/g, "");
+            targetChannel = client.channels.cache.get(channelId)
+                || await client.channels.fetch(channelId).catch(() => null);
         }
 
         if (!targetChannel || targetChannel.type === ChannelType.DM) {
