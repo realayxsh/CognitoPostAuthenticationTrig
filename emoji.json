@@ -52,10 +52,5 @@
     "customize_icon"   : "",
     "customize_banner" : "",
     "customize_reset"  : "",
-    "customize_view"   : "",
-
-    "lyrics_full"      : "",
-    "lyrics_verse"     : "",
-    "lyrics_info"      : "",
-    "lyrics_loading"   : ""
+    "customize_view"   : ""
 }
