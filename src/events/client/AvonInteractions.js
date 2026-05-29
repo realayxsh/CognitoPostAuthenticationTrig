@@ -102,6 +102,71 @@ class AvonInteractions extends AvonClientEvents{
         if(interaction.isButton()){
             try{
                 let player = this.client.poru.players.get(interaction.guild.id);
+
+                if(interaction.customId === `pl_lyrics`){
+                    if(!player || !player.queue.current)
+                        return interaction.reply(cv2(`${this.client.emoji.cross} | Nothing is playing right now.`, true));
+                    const isOwner = this.client.config.owners.includes(interaction.user.id);
+                    if(!isOwner){
+                        const voted = await hasVoted(interaction.user.id);
+                        if(!voted) return interaction.reply({
+                            flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
+                            components: [
+                                new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                                    `${this.client.emoji.tick} | **Vote Required** — [Click here](https://top.gg/bot/1097475016880304180/vote) to vote and unlock lyrics!`
+                                )),
+                                new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Vote on Top.gg`).setURL(`https://top.gg/bot/1097475016880304180/vote`))
+                            ]
+                        });
+                    }
+                    await interaction.deferReply({ flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral] });
+                    const track = player.queue.current;
+                    let artist = track.author || '';
+                    let title  = track.title  || '';
+                    const clean = (s) => s
+                        .replace(/\(.*?(official|video|audio|lyrics|hd|4k|mv|ft\.?|feat\.?).*?\)/gi, '')
+                        .replace(/\[.*?(official|video|audio|lyrics|hd|4k|mv|ft\.?|feat\.?).*?\]/gi, '')
+                        .trim();
+                    title  = clean(title);
+                    artist = clean(artist);
+                    let lyrics = null;
+                    try {
+                        const params = new URLSearchParams({ track_name: title, artist_name: artist });
+                        const res = await fetch(`https://lrclib.net/api/search?${params}`, { signal: AbortSignal.timeout(6000) });
+                        if (res.ok) {
+                            const data = await res.json();
+                            const hit = data.find(x => x.plainLyrics && x.plainLyrics.trim().length > 20);
+                            if (hit) lyrics = hit.plainLyrics.trim();
+                        }
+                        if (!lyrics) {
+                            const params2 = new URLSearchParams({ track_name: title });
+                            const res2 = await fetch(`https://lrclib.net/api/search?${params2}`, { signal: AbortSignal.timeout(6000) });
+                            if (res2.ok) {
+                                const data2 = await res2.json();
+                                const hit2 = data2.find(x => x.plainLyrics && x.plainLyrics.trim().length > 20);
+                                if (hit2) lyrics = hit2.plainLyrics.trim();
+                            }
+                        }
+                    } catch(e) {}
+                    if (!lyrics) {
+                        return interaction.editReply(cv2(`${this.client.emoji.cross} | No lyrics found for **${track.title}**.\nTry \`+lyrics Artist - Song Name\` for manual search.`));
+                    }
+                    const preview = lyrics.length > 1800 ? lyrics.slice(0, 1800) + '\n...' : lyrics;
+                    const thumb = track.thumbnail || this.client.user.displayAvatarURL({ dynamic: true });
+                    return interaction.editReply({
+                        flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
+                        components: [new ContainerBuilder()
+                            .addSectionComponents(
+                                new SectionBuilder()
+                                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**Lyrics — ${track.title}**\nby **${track.author}**`))
+                                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(thumb))
+                            )
+                            .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
+                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(preview))
+                        ]
+                    });
+                }
+
                 if(interaction.customId === `pl1`){
                     if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
@@ -156,25 +221,45 @@ class AvonInteractions extends AvonClientEvents{
 
                 const selected = interaction.values[0];
 
-                // ── Premium gate — 'none' (clear filters) is always allowed ──
-                if(selected !== 'none' && !this.client.config.owners.includes(interaction.user.id)){
-                    const active = await isPremium(this.client, interaction.guild.id);
-                    if(!active){
-                        return interaction.reply({
-                            flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
-                            components: [new ContainerBuilder()
-                                .addSectionComponents(
-                                    new SectionBuilder()
-                                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                                            `**| Premium Required**\n\n` +
-                                            `${this.client.emoji.cross} | Filters are **Premium Only!**\n\n` +
-                                            `Ask the bot owner for a premium code and use \`+redeem <code>\` to activate premium for this server.\n\n` +
-                                            `Check your status with \`+premium\``
-                                        ))
-                                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(interaction.user.displayAvatarURL({ dynamic: true })))
-                                )
-                            ]
-                        });
+                // Vote-only filters (free with vote, no premium needed)
+                const VOTE_ONLY_FILTERS = new Set(['8d', 'bassboost', 'nightcore', 'treblebass', 'tremolo']);
+                const isOwner = this.client.config.owners.includes(interaction.user.id);
+
+                if(selected !== 'none' && !isOwner){
+                    if(VOTE_ONLY_FILTERS.has(selected)){
+                        // Only requires vote
+                        const voted = await hasVoted(interaction.user.id);
+                        if(!voted){
+                            return interaction.reply({
+                                flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
+                                components: [
+                                    new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                                        `${this.client.emoji.tick} | **Vote Required** — [Click here](https://top.gg/bot/1097475016880304180/vote) to vote and unlock this filter!`
+                                    )),
+                                    new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Vote on Top.gg`).setURL(`https://top.gg/bot/1097475016880304180/vote`))
+                                ]
+                            });
+                        }
+                    } else {
+                        // Requires premium
+                        const active = await isPremium(this.client, interaction.guild.id);
+                        if(!active){
+                            return interaction.reply({
+                                flags: [MessageFlags.IsComponentsV2, MessageFlags.Ephemeral],
+                                components: [new ContainerBuilder()
+                                    .addSectionComponents(
+                                        new SectionBuilder()
+                                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                                                `**| Premium Required**\n\n` +
+                                                `${this.client.emoji.cross} | This filter is **Premium Only!**\n\n` +
+                                                `Ask the bot owner for a premium code and use \`+redeem <code>\` to activate premium for this server.\n\n` +
+                                                `Check your status with \`+premium\``
+                                            ))
+                                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(interaction.user.displayAvatarURL({ dynamic: true })))
+                                    )
+                                ]
+                            });
+                        }
                     }
                 }
 
@@ -296,10 +381,24 @@ class AvonInteractions extends AvonClientEvents{
                     if(interaction.guild.members.me.voice.channel && interaction.member.voice?.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.editReply(cv2(`${client.emoji.cross} | You must be in the same voice channel as me.`));
 
+                    const SLASH_VOTE_ONLY = new Set(['8d', 'bassboost', 'nightcore', 'treblebass', 'tremolo']);
                     const isOwner = client.config.owners.includes(interaction.user.id);
-                    if(!isOwner){
-                        const active = await isPremium(client, interaction.guild.id);
-                        if(!active) return interaction.editReply(cv2(`${client.emoji.cross} | Filters are **Premium Only!** Use \`+redeem <code>\` to activate.`));
+                    if(!isOwner && chosen !== 'clearfilters'){
+                        if(SLASH_VOTE_ONLY.has(chosen)){
+                            const voted = await hasVoted(interaction.user.id);
+                            if(!voted) return interaction.editReply({
+                                flags: [MessageFlags.IsComponentsV2],
+                                components: [
+                                    new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                                        `${client.emoji.tick} | **Vote Required** — [Click here](https://top.gg/bot/1097475016880304180/vote) to vote and unlock this filter!`
+                                    )),
+                                    new ActionRowBuilder().addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(`Vote on Top.gg`).setURL(`https://top.gg/bot/1097475016880304180/vote`))
+                                ]
+                            });
+                        } else {
+                            const active = await isPremium(client, interaction.guild.id);
+                            if(!active) return interaction.editReply(cv2(`${client.emoji.cross} | This filter is **Premium Only!** Use \`+redeem <code>\` to activate.`));
+                        }
                     }
 
                     const filterCmd = client.AvonCommands.commands.get(chosen === 'clearfilters' ? 'clearfilters' : chosen);

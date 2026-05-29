@@ -83,6 +83,11 @@ class TrackStart extends AvonClientEvent {
             )
             .addActionRowComponents(
                 new ActionRowBuilder().addComponents(
+                    new ButtonBuilder().setStyle(ButtonStyle.Secondary).setLabel(`Lyrics`).setCustomId(`pl_lyrics`)
+                )
+            )
+            .addActionRowComponents(
+                new ActionRowBuilder().addComponents(
                     new StringSelectMenuBuilder()
                         .setCustomId(`filter_select`)
                         .setPlaceholder(`Select a filter...`)

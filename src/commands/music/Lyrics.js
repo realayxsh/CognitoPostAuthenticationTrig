@@ -1,6 +1,52 @@
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
 
+async function fetchLyrics(artist, title) {
+    const clean = (s) => s
+        .replace(/\(.*?(official|video|audio|lyrics|hd|4k|mv|ft\.?|feat\.?).*?\)/gi, '')
+        .replace(/\[.*?(official|video|audio|lyrics|hd|4k|mv|ft\.?|feat\.?).*?\]/gi, '')
+        .trim();
+
+    title  = clean(title);
+    artist = clean(artist);
+
+    // 1) lrclib.net — most reliable, no key required
+    try {
+        const params = new URLSearchParams({ track_name: title, artist_name: artist });
+        const res = await fetch(`https://lrclib.net/api/search?${params}`, { signal: AbortSignal.timeout(6000) });
+        if (res.ok) {
+            const data = await res.json();
+            const hit = data.find(x => x.plainLyrics && x.plainLyrics.trim().length > 20);
+            if (hit) return hit.plainLyrics.trim();
+        }
+        // title-only fallback
+        const params2 = new URLSearchParams({ track_name: title });
+        const res2 = await fetch(`https://lrclib.net/api/search?${params2}`, { signal: AbortSignal.timeout(6000) });
+        if (res2.ok) {
+            const data2 = await res2.json();
+            const hit2 = data2.find(x => x.plainLyrics && x.plainLyrics.trim().length > 20);
+            if (hit2) return hit2.plainLyrics.trim();
+        }
+    } catch (e) {}
+
+    // 2) lyrics.ovh — fallback
+    try {
+        const urls = artist
+            ? [`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`,
+               `https://api.lyrics.ovh/v1/_/${encodeURIComponent(title)}`]
+            : [`https://api.lyrics.ovh/v1/_/${encodeURIComponent(title)}`];
+        for (const url of urls) {
+            const r = await fetch(url, { signal: AbortSignal.timeout(5000) });
+            if (r.ok) {
+                const d = await r.json();
+                if (d.lyrics && d.lyrics.trim().length > 20) return d.lyrics.trim();
+            }
+        }
+    } catch (e) {}
+
+    return null;
+}
+
 class Lyrics extends AvonCommand {
     get name()      { return 'lyrics'; }
     get aliases()   { return ['ly', 'lyric']; }
@@ -11,15 +57,12 @@ class Lyrics extends AvonCommand {
     get sameVoice() { return false; }
 
     async run(client, message, args, prefix, player) {
-        const track = player.queue.current;
+        const track  = player.queue.current;
+        const query  = args.length ? args.join(' ') : null;
 
-        // Allow manual query: +lyrics <song name>
-        const query = args.length ? args.join(' ') : null;
+        let artist = track.author || '';
+        let title  = track.title  || '';
 
-        let artist = track.author  || '';
-        let title  = track.title   || '';
-
-        // If user typed a manual query, try to split "artist - title" or use whole thing as title
         if (query) {
             const split = query.split(' - ');
             if (split.length >= 2) {
@@ -31,58 +74,33 @@ class Lyrics extends AvonCommand {
             }
         }
 
-        // Clean up common suffixes that break lyrics search
-        title = title
-            .replace(/\(.*?(official|video|audio|lyrics|hd|4k|mv|ft\.?|feat\.?).*?\)/gi, '')
-            .replace(/\[.*?(official|video|audio|lyrics|hd|4k|mv|ft\.?|feat\.?).*?\]/gi, '')
-            .trim();
-
-        const loadingContainer = new ContainerBuilder()
-            .addTextDisplayComponents(
+        const loadMsg = await message.channel.send({
+            flags: [MessageFlags.IsComponentsV2],
+            components: [new ContainerBuilder().addTextDisplayComponents(
                 new TextDisplayBuilder().setContent(`${client.emoji.music} Searching lyrics for **${title}**...`)
-            );
-        const loadMsg = await message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [loadingContainer] });
+            )]
+        });
 
         try {
-            const encodedArtist = encodeURIComponent(artist);
-            const encodedTitle  = encodeURIComponent(title);
-
-            let lyrics = null;
-            let usedQuery = `${artist} - ${title}`.trim().replace(/^-\s*/, '');
-
-            // Try with artist first, fallback to title-only if no result
-            const attempts = artist
-                ? [`https://api.lyrics.ovh/v1/${encodedArtist}/${encodedTitle}`, `https://api.lyrics.ovh/v1/_/${encodedTitle}`]
-                : [`https://api.lyrics.ovh/v1/_/${encodedTitle}`];
-
-            for (const url of attempts) {
-                const res = await fetch(url);
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.lyrics && data.lyrics.trim().length > 10) {
-                        lyrics = data.lyrics.trim();
-                        break;
-                    }
-                }
-            }
+            const lyrics = await fetchLyrics(artist, title);
 
             if (!lyrics) {
-                const notFoundContainer = new ContainerBuilder()
-                    .addTextDisplayComponents(
-                        new TextDisplayBuilder().setContent(`${client.emoji.cross} No lyrics found for **${usedQuery}**.\nTry: \`${prefix}lyrics <song name>\``)
-                    );
-                return loadMsg.edit({ flags: [MessageFlags.IsComponentsV2], components: [notFoundContainer] });
+                return loadMsg.edit({
+                    flags: [MessageFlags.IsComponentsV2],
+                    components: [new ContainerBuilder().addTextDisplayComponents(
+                        new TextDisplayBuilder().setContent(
+                            `${client.emoji.cross} No lyrics found for **${title}**.\nTry: \`${prefix}lyrics Artist - Song Name\``
+                        )
+                    )]
+                });
             }
 
-            // Split into chunks of max 1800 chars at a newline boundary
+            // Paginate at 1800 chars on newline boundary
             const CHUNK = 1800;
             const pages = [];
             let remaining = lyrics;
             while (remaining.length > 0) {
-                if (remaining.length <= CHUNK) {
-                    pages.push(remaining);
-                    break;
-                }
+                if (remaining.length <= CHUNK) { pages.push(remaining); break; }
                 let cut = remaining.lastIndexOf('\n', CHUNK);
                 if (cut <= 0) cut = CHUNK;
                 pages.push(remaining.slice(0, cut));
@@ -93,7 +111,7 @@ class Lyrics extends AvonCommand {
             const thumb = track.thumbnail || client.user.displayAvatarURL({ dynamic: true });
 
             const buildPage = (p) => {
-                const container = new ContainerBuilder()
+                const c = new ContainerBuilder()
                     .addSectionComponents(
                         new SectionBuilder()
                             .addTextDisplayComponents(
@@ -102,17 +120,12 @@ class Lyrics extends AvonCommand {
                             .setThumbnailAccessory(new ThumbnailBuilder().setURL(thumb))
                     )
                     .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
-                    .addTextDisplayComponents(
-                        new TextDisplayBuilder().setContent(pages[p])
-                    );
-
+                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(pages[p]));
                 if (pages.length > 1) {
-                    container.addSeparatorComponents(new SeparatorBuilder().setDivider(false))
-                        .addTextDisplayComponents(
-                            new TextDisplayBuilder().setContent(`-# Page ${p + 1} of ${pages.length}`)
-                        );
+                    c.addSeparatorComponents(new SeparatorBuilder().setDivider(false))
+                     .addTextDisplayComponents(new TextDisplayBuilder().setContent(`-# Page ${p + 1} of ${pages.length}`));
                 }
-                return container;
+                return c;
             };
 
             const buildRow = (p) => {
@@ -123,11 +136,9 @@ class Lyrics extends AvonCommand {
                 );
             };
 
-            const components = [buildPage(page)];
-            if (pages.length > 1) components.push(buildRow(page));
+            const getComponents = (p) => { const r = buildRow(p); return r ? [buildPage(p), r] : [buildPage(p)]; };
 
-            await loadMsg.edit({ flags: [MessageFlags.IsComponentsV2], components });
-
+            await loadMsg.edit({ flags: [MessageFlags.IsComponentsV2], components: getComponents(page) });
             if (pages.length <= 1) return;
 
             const collector = loadMsg.createMessageComponentCollector({
@@ -144,24 +155,25 @@ class Lyrics extends AvonCommand {
                 await b.deferUpdate().catch(() => {});
                 if (b.customId === 'lyr_next' && page < pages.length - 1) page++;
                 else if (b.customId === 'lyr_prev' && page > 0) page--;
-                await loadMsg.edit({ flags: [MessageFlags.IsComponentsV2], components: [buildPage(page), buildRow(page)] }).catch(() => {});
+                await loadMsg.edit({ flags: [MessageFlags.IsComponentsV2], components: getComponents(page) }).catch(() => {});
             });
 
             collector.on('end', async () => {
-                const finalRow = new ActionRowBuilder().addComponents(
+                const disabledRow = new ActionRowBuilder().addComponents(
                     new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`lyr_prev`).setLabel(`Previous`).setDisabled(true),
                     new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`lyr_next`).setLabel(`Next`).setDisabled(true)
                 );
-                await loadMsg.edit({ flags: [MessageFlags.IsComponentsV2], components: [buildPage(page), finalRow] }).catch(() => {});
+                await loadMsg.edit({ flags: [MessageFlags.IsComponentsV2], components: [buildPage(page), disabledRow] }).catch(() => {});
             });
 
         } catch (e) {
             console.error('[Lyrics]', e);
-            const errContainer = new ContainerBuilder()
-                .addTextDisplayComponents(
+            loadMsg.edit({
+                flags: [MessageFlags.IsComponentsV2],
+                components: [new ContainerBuilder().addTextDisplayComponents(
                     new TextDisplayBuilder().setContent(`${client.emoji.cross} Failed to fetch lyrics. Try again later.`)
-                );
-            loadMsg.edit({ flags: [MessageFlags.IsComponentsV2], components: [errContainer] }).catch(() => {});
+                )]
+            }).catch(() => {});
         }
     }
 }

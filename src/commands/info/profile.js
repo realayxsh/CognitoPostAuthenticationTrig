@@ -4,14 +4,50 @@ const config = require(`../../../config.json`);
 const badge = require(`./badges.json`);
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 
+const voteApi = new Api(process.env.topggapi || config.topggapi);
+
+// Vote cache: 5 min positive, 30s negative
+const _voteCache = new Map();
 async function safeHasVoted(userId) {
-    const apiKey = process.env.topggapi || config.topggapi;
-    if (!apiKey) return false;
+    const entry = _voteCache.get(userId);
+    if (entry && Date.now() < entry.expires) return entry.voted;
     try {
-        const voteApi = new Api(apiKey);
-        return await voteApi.hasVoted(userId);
+        const voted = await voteApi.hasVoted(userId);
+        const ttl = voted ? 5 * 60 * 1000 : 30_000;
+        _voteCache.set(userId, { voted, expires: Date.now() + ttl });
+        return voted;
     } catch (e) {
         return false;
+    }
+}
+
+// Guild member cache: 2 min TTL
+const _memberCache = new Map();
+async function getCachedMember(guild, userId) {
+    const key = `${guild.id}_${userId}`;
+    const entry = _memberCache.get(key);
+    if (entry && Date.now() < entry.expires) return entry.member;
+    try {
+        const member = await guild.members.fetch(userId);
+        _memberCache.set(key, { member, expires: Date.now() + 2 * 60 * 1000 });
+        return member;
+    } catch (e) {
+        _memberCache.set(key, { member: null, expires: Date.now() + 30_000 });
+        return null;
+    }
+}
+
+// Support guild cache
+let _supportGuild = null;
+let _supportGuildExpires = 0;
+async function getSupportGuild(client) {
+    if (_supportGuild && Date.now() < _supportGuildExpires) return _supportGuild;
+    try {
+        _supportGuild = await client.guilds.fetch('1509516630365835294');
+        _supportGuildExpires = Date.now() + 10 * 60 * 1000;
+        return _supportGuild;
+    } catch (e) {
+        return null;
     }
 }
 
@@ -34,19 +70,20 @@ class Badges extends AvonCommand{
             return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
         };
 
-        let guild;
-        try {
-            guild = await client.guilds.fetch('1509516630365835294');
-        } catch (e) {
-            console.error('[Profile] Failed to fetch support guild:', e.message);
-            return send(`**Profile for ${member.username}**\n\n__BADGES__\n\`No Badges Available\`\nYou must be in our [support server](${client.config.server}) to get badges.\nJoin **[here](${client.config.server})**.`);
+        // Fetch support guild + vote status in parallel
+        const [guild, voted] = await Promise.all([
+            getSupportGuild(client),
+            safeHasVoted(member.id)
+        ]);
+
+        if (!guild) {
+            const badges = voted ? `\n${client.emoji.voter} **Voter**` : `\`No Badges Available\`\nYou must be in our [support server](${client.config.server}) to get badges.\nJoin **[here](${client.config.server})**.`;
+            return send(`**Profile for ${member.username}**\n\n__BADGES__\n${badges}`);
         }
 
-        let guildMember;
-        try {
-            guildMember = await guild.members.fetch(member.id);
-        } catch (e) {
-            const voted = await safeHasVoted(member.id);
+        const guildMember = await getCachedMember(guild, member.id);
+
+        if (!guildMember) {
             const badges = voted ? `\n${client.emoji.voter} **Voter**` : `\`No Badges Available\`\nYou must be in our [support server](${client.config.server}) to get badges.\nJoin **[here](${client.config.server})**.`;
             return send(`**Profile for ${member.username}**\n\n__BADGES__\n${badges}`);
         }
@@ -67,7 +104,6 @@ class Badges extends AvonCommand{
             console.error('[Profile] Role check error:', e.message);
         }
 
-        const voted = await safeHasVoted(member.id);
         if (voted) badges += `\n${client.emoji.voter} **Voter**`;
         if (badges === '') badges += `\n${client.emoji.users} **User**`;
 
