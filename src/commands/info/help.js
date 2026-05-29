@@ -1,5 +1,7 @@
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, StringSelectMenuBuilder, MessageFlags } = require("discord.js");
+const { MediaGalleryBuilder, MediaGalleryItemBuilder } = require("@discordjs/builders");
 const AvonCommand = require("../../structures/avonCommand");
+const { getServerBrand } = require("../../structures/serverBrand");
 
 class Help extends AvonCommand{
     get name(){ return 'help'; }
@@ -13,12 +15,32 @@ class Help extends AvonCommand{
             let infoCmds   = client.AvonCommands.commands.filter(x => x.cat && x.cat === `info`);
             let premCmds   = client.AvonCommands.commands.filter(x => x.cat && x.cat === `premium`);
 
-            const makeMsg = (container) => ({
-                flags: [MessageFlags.IsComponentsV2],
-                embeds: [],
-                components: [container, ro, ro3, ro2]
-            });
+            const brand = await getServerBrand(client, message.guild.id);
+            const brandIcon   = brand.icon   || client.user.displayAvatarURL({ dynamic: true });
+            const brandBanner = brand.banner  || null;
 
+            let b1 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m1`).setEmoji(client.emoji.music);
+            let b2 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m2`).setEmoji(client.emoji.filters);
+            let b3 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m3`).setEmoji(client.emoji.settings);
+            let b4 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m4`).setEmoji(client.emoji.info);
+            let b6 = new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`m6`);
+            if(client.emoji.premium) b6.setEmoji(client.emoji.premium); else b6.setLabel(`Premium`);
+            let b5 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m5`).setEmoji(client.emoji.allCommands);
+            let ro  = new ActionRowBuilder().addComponents(b1, b2, b3, b4, b6);
+            let ro3 = new ActionRowBuilder().addComponents(b5);
+
+            let select = new StringSelectMenuBuilder().setCustomId(`ok`).setPlaceholder(`❯ ${client.user.username} is Love`).addOptions([
+                { label: `Help Home`,    emoji: `${client.emoji.home}`,        value: `ok1` },
+                { label: `Music`,        emoji: `${client.emoji.music}`,       value: `ok2` },
+                { label: `Filters`,      emoji: `${client.emoji.filters}`,     value: `ok3` },
+                { label: `Settings`,     emoji: `${client.emoji.settings}`,    value: `ok4` },
+                { label: `Information`,  emoji: `${client.emoji.info}`,        value: `ok5` },
+                { label: `Premium`,      emoji: client.emoji.premium || `🎵`,  value: `ok7` },
+                { label: `All Commands`, emoji: `${client.emoji.allCommands}`, value: `ok6` },
+            ]);
+            let ro2 = new ActionRowBuilder().addComponents(select);
+
+            // ── Home container (c0) — uses server brand icon + optional banner ──
             const c0 = new ContainerBuilder()
                 .addSectionComponents(
                     new SectionBuilder()
@@ -29,7 +51,7 @@ class Help extends AvonCommand{
                             `${client.emoji.arrow} Providing you the best quality music\n\n` +
                             `${client.emoji.arrow} [Invite](https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=2184571968&scope=bot%20applications.commands) | [Support](${client.config.server}) | [Vote](https://top.gg/bot/1097475016880304180/vote)`
                         ))
-                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(brandIcon))
                 )
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
@@ -58,7 +80,7 @@ class Help extends AvonCommand{
                 .addSectionComponents(
                     new SectionBuilder()
                         .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| Settings Commands**`))
-                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL({ dynamic: true })))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(brandIcon))
                 )
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
@@ -67,8 +89,8 @@ class Help extends AvonCommand{
                     `\`${prefix}setprefix <prefix>\` — Change server prefix\n` +
                     `\`${prefix}247\` — Toggle 24/7 voice mode\n` +
                     `\`${prefix}autoplay\` — Toggle autoplay mode\n` +
-                    `\`${prefix}customize icon <url>\` — Set custom icon ✨ **Premium**\n` +
-                    `\`${prefix}customize banner <url>\` — Set custom banner ✨ **Premium**`
+                    `\`${prefix}customize icon <url>\` — Set custom bot icon ✨ **Premium**\n` +
+                    `\`${prefix}customize banner <url>\` — Set custom bot banner ✨ **Premium**`
                 ));
 
             const c4 = new ContainerBuilder()
@@ -80,7 +102,7 @@ class Help extends AvonCommand{
                 .addSectionComponents(
                     new SectionBuilder()
                         .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**All Commands**`))
-                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(brandIcon))
                 )
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
@@ -97,7 +119,7 @@ class Help extends AvonCommand{
                 .addSectionComponents(
                     new SectionBuilder()
                         .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| Premium Commands**`))
-                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL({ dynamic: true })))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(brandIcon))
                 )
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
@@ -108,35 +130,27 @@ class Help extends AvonCommand{
                     `${client.emoji.filters} BassBoost, Nightcore, 8D, China\n` +
                     `${client.emoji.filters} Chipmunk, Slowmode, Treble Bass\n` +
                     `${client.emoji.filters} Tremolo, Vaporwave, Vibrato, Clear All\n` +
-                    `${client.emoji.filters} Dolby Atmos`
+                    `${client.emoji.filters} Dolby Atmos\n` +
+                    `✨ Custom bot icon & banner per server`
                 ))
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
                     `-# Use ${prefix}premium to check your server's premium status`
                 ));
 
-            let b1 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m1`).setEmoji(client.emoji.music);
-            let b2 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m2`).setEmoji(client.emoji.filters);
-            let b3 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m3`).setEmoji(client.emoji.settings);
-            let b4 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m4`).setEmoji(client.emoji.info);
-            let b6 = new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`m6`);
-            if(client.emoji.premium) b6.setEmoji(client.emoji.premium); else b6.setLabel(`Premium`);
-            let b5 = new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId(`m5`).setEmoji(client.emoji.allCommands);
-            let ro  = new ActionRowBuilder().addComponents(b1, b2, b3, b4, b6);
-            let ro3 = new ActionRowBuilder().addComponents(b5);
+            // makeMsg wraps a single container with buttons (used for all non-home pages)
+            const makeMsg = (container) => ({
+                flags: [MessageFlags.IsComponentsV2],
+                embeds: [],
+                components: [container, ro, ro3, ro2]
+            });
 
-            let select = new StringSelectMenuBuilder().setCustomId(`ok`).setPlaceholder(`❯ ${client.user.username} is Love`).addOptions([
-                { label: `Help Home`,    emoji: `${client.emoji.home}`,        value: `ok1` },
-                { label: `Music`,        emoji: `${client.emoji.music}`,       value: `ok2` },
-                { label: `Filters`,      emoji: `${client.emoji.filters}`,     value: `ok3` },
-                { label: `Settings`,     emoji: `${client.emoji.settings}`,    value: `ok4` },
-                { label: `Information`,  emoji: `${client.emoji.info}`,        value: `ok5` },
-                { label: `Premium`,      emoji: client.emoji.premium || `🎵`,  value: `ok7` },
-                { label: `All Commands`, emoji: `${client.emoji.allCommands}`, value: `ok6` },
-            ]);
-            let ro2 = new ActionRowBuilder().addComponents(select);
+            // Home page includes optional server banner under the main container
+            const homeComponents = brandBanner
+                ? [c0, new ContainerBuilder().addMediaGalleryComponents(new MediaGalleryBuilder().addItems(new MediaGalleryItemBuilder().setURL(brandBanner))), ro, ro3, ro2]
+                : [c0, ro, ro3, ro2];
 
-            let msg = await message.channel.send(makeMsg(c0));
+            let msg = await message.channel.send({ flags: [MessageFlags.IsComponentsV2], embeds: [], components: homeComponents });
 
             let call = msg.createMessageComponentCollector({
                 filter: (o) => {
@@ -157,7 +171,7 @@ class Help extends AvonCommand{
                 }
                 if(int.isStringSelectMenu()){
                     for(const value of int.values){
-                        if(value === `ok1`) return int.update(makeMsg(c0));
+                        if(value === `ok1`) return int.update({ flags: [MessageFlags.IsComponentsV2], embeds: [], components: homeComponents });
                         if(value === `ok2`) return int.update(makeMsg(c1));
                         if(value === `ok3`) return int.update(makeMsg(c2));
                         if(value === `ok4`) return int.update(makeMsg(c3));
