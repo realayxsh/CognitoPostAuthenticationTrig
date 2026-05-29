@@ -1,4 +1,4 @@
- const { Client, GatewayIntentBits, Collection, WebhookClient, Partials, ContainerBuilder, TextDisplayBuilder, MessageFlags } = require(`discord.js`);
+const { Client, GatewayIntentBits, Collection, WebhookClient, Partials, EmbedBuilder } = require(`discord.js`);
 const { Guilds, MessageContent, GuildInvites, GuildVoiceStates, GuildMessages, DirectMessages } = GatewayIntentBits;
 const { User, Channel, Reaction, Message, GuildMember } = Partials;
 const { Database } = require("quickmongo");
@@ -15,9 +15,12 @@ function sendErrorToWebhook(web, label, err) {
     if (!web) return;
     const stack = err?.stack || String(err);
     const truncated = stack.length > 3800 ? stack.slice(0, 3800) + '\n...(truncated)' : stack;
-    const container = new ContainerBuilder()
-        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**[${label}]**\n\`\`\`js\n${truncated}\`\`\``));
-    web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {});
+    const embed = new EmbedBuilder()
+        .setTitle(`🔴 ${label}`)
+        .setDescription(`\`\`\`js\n${truncated}\`\`\``)
+        .setColor(0xFF0000)
+        .setTimestamp();
+    web.send({ embeds: [embed] }).catch(() => {});
 }
 
 class Avon extends Client {
@@ -55,9 +58,11 @@ class Avon extends Client {
         this.poru.shoukaku.on('close', (name, code, reason) => {
             console.warn(`[SHOUKAKU] => Node ${name} closed | Code: ${code} | Reason: ${reason}`);
             if(web){
-                const container = new ContainerBuilder()
-                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**[Lavalink Node Closed — ${name}]**\nCode: \`${code}\` | Reason: \`${reason || 'none'}\``));
-                web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {});
+                const embed = new EmbedBuilder()
+                    .setTitle(`🟠 Lavalink Node Closed — ${name}`)
+                    .setDescription(`**Code:** \`${code}\`\n**Reason:** \`${reason || 'none'}\``)
+                    .setColor(0xFF8800).setTimestamp();
+                web.send({ embeds: [embed] }).catch(() => {});
             }
         });
         this.poru.shoukaku.on('debug', (name, info) => { console.log(`[SHOUKAKU] => Node ${name} Debug: ${info}`) });
@@ -65,9 +70,11 @@ class Avon extends Client {
             if(moved) return;
             console.warn(`[SHOUKAKU] => Node ${name}: Disconnected`);
             if(web){
-                const container = new ContainerBuilder()
-                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**[Lavalink Node Disconnected — ${name}]**\nPlayers affected: \`${players?.length ?? 0}\``));
-                web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {});
+                const embed = new EmbedBuilder()
+                    .setTitle(`🔴 Lavalink Node Disconnected — ${name}`)
+                    .setDescription(`**Players affected:** \`${players?.length ?? 0}\``)
+                    .setColor(0xFF0000).setTimestamp();
+                web.send({ embeds: [embed] }).catch(() => {});
             }
         });
         this.poru.on("playerClosed", (player, data) => {
