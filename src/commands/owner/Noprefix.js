@@ -7,7 +7,7 @@ class Noprefix extends AvonCommand{
     get aliases(){ return ['np','nop']; }
     async run(client, message, args, prefix){
         try{
-            let ok = ["282494845753491456"];
+            let ok = [...client.config.owners, ...(client.config.coowners || [])];
             if(!ok.includes(message.author.id)) return;
 
             const send = (text, thumb) => {

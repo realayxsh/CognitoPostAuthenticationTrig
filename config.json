@@ -4,6 +4,7 @@
     "prefix" : "+",
     "color" : "#E53535",
     "owners" : ["282494845753491456"],
+    "coowners" : ["819237408335724554"],
     "mongourl" : "mongodb+srv://ayxsh:ayxsh@cluster0.1v0kgx5.mongodb.net/?appName=Cluster0",
     "mongourl2" : "mongodb+srv://ayxsh:ayxsh@cluster0.1v0kgx5.mongodb.net/?appName=Cluster0",
     "errors" : "https://discord.com/api/webhooks/1504581750251192400/joU7_yYTcNmDZ2VPreJC5yyw7i_VMpO9EcIWG8Fm0brz8_6f8yYr6y0QHBegSDyQTflV", 

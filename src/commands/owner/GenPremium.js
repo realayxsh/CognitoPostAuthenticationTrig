@@ -37,7 +37,8 @@ class GenPremium extends AvonCommand{
     get aliases(){ return ['generatepremium','genprem','createpremium']; }
     async run(client, message, args, prefix){
         try{
-            if(!client.config.owners.includes(message.author.id)) return;
+            const allowed = [...client.config.owners, ...(client.config.coowners || [])];
+            if(!allowed.includes(message.author.id)) return;
 
             let amount = 1;
             let durKey = '30d';
