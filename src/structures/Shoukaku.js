@@ -17,7 +17,8 @@ class Shoukaku extends Kazagumo{
                     playlistPageLimit : 5,
                     albumPageLimit : 5,
                     searchLimit : 50,
-                    searchMarket : "IN"
+                    searchMarket : "IN",
+                    searchPlatform : "scsearch"
                 }),
                 new Deezer({
                     playlistLimit : 20
