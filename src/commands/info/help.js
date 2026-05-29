@@ -27,7 +27,7 @@ class Help extends AvonCommand{
                             `Hey ${message.author} I am **${client.user.username}**\n` +
                             `${client.emoji.arrow} A complete Music Bot for your server\n` +
                             `${client.emoji.arrow} Providing you the best quality music\n\n` +
-                            `${client.emoji.arrow} [Invite](https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=bot%20applications.commands) | [Support](${client.config.server}) | [Vote](https://top.gg/bot/1097475016880304180/vote)`
+                            `${client.emoji.arrow} [Invite](https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=277062531072&scope=bot%20applications.commands) | [Support](${client.config.server}) | [Vote](https://top.gg/bot/1097475016880304180/vote)`
                         ))
                         .setThumbnailAccessory(new ThumbnailBuilder().setURL(message.author.displayAvatarURL({ dynamic: true })))
                 )

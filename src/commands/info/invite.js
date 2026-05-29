@@ -10,7 +10,7 @@ class Invite extends AvonCommand{
             .addSectionComponents(
                 new SectionBuilder()
                     .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                        `Click **[here](https://discord.com/api/oauth2/authorize?client_id=1097475016880304180&permissions=36768832&scope=applications.commands%20bot)** to invite **${client.user.username}** to your server!`
+                        `Click **[here](https://discord.com/api/oauth2/authorize?client_id=1097475016880304180&permissions=277062531072&scope=bot%20applications.commands)** to invite **${client.user.username}** to your server!`
                     ))
                     .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL()))
             );
