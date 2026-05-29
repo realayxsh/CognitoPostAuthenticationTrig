@@ -17,6 +17,9 @@ class TrackError extends AvonClientEvent {
             if (player.queue.size > 0) {
                 player.stop();
             } else {
+                // Check 247 before destroying — in 247 mode keep the player alive
+                const is247 = await this.client.data.get(`${player.guildId}-247`);
+                if(is247 === `enabled`) return;
                 player.destroy();
             }
         } catch (e) { console.error('[TrackError handler]', e); }

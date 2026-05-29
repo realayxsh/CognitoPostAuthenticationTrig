@@ -8,6 +8,7 @@
     "mongourl" : "mongodb+srv://ayxsh:ayxsh@cluster0.1v0kgx5.mongodb.net/?appName=Cluster0",
     "mongourl2" : "mongodb+srv://ayxsh:ayxsh@cluster0.1v0kgx5.mongodb.net/?appName=Cluster0",
     "errors" : "https://discord.com/api/webhooks/1504581750251192400/joU7_yYTcNmDZ2VPreJC5yyw7i_VMpO9EcIWG8Fm0brz8_6f8yYr6y0QHBegSDyQTflV", 
+    "logwebhook" : "",
     "spotifyId" : "d0a7fc39e0ee431993a5c40f31bc80a8",
     "noprefix" : "871770313564753950",
     "spotifySecret" : "d9662351f3c949258af5dcaf30f3b446",

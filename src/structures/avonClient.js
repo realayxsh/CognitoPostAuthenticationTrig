@@ -11,6 +11,15 @@ const Lavasfy = require("./Lavasfy");
 const errorsUrl = process.env.errorswebhook || config.errors || '';
 const web = errorsUrl ? new WebhookClient({ url: errorsUrl }) : null;
 
+function sendErrorToWebhook(web, label, err) {
+    if (!web) return;
+    const stack = err?.stack || String(err);
+    const truncated = stack.length > 3800 ? stack.slice(0, 3800) + '\n...(truncated)' : stack;
+    const container = new ContainerBuilder()
+        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**[${label}]**\n\`\`\`js\n${truncated}\`\`\``));
+    web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {});
+}
+
 class Avon extends Client {
     constructor(){
         super({
@@ -39,12 +48,27 @@ class Avon extends Client {
         this.poru = new Shoukaku(this);
         this.lavasfy = new Lavasfy(this);
         this.poru.shoukaku.on('ready', (name) => { console.log(`[SHOUKAKU] => Node ${name} is connected`) });
-        this.poru.shoukaku.on('error', (name, error) => { console.log(`[SHOUKAKU] => Node ${name} got some error : ${error}`) });
-        this.poru.shoukaku.on('close', (name, code, reason) => { console.log(`[SHOUKAKU] => Node ${name} got closed due to reason : ${reason} and Code : ${code}`) });
-        this.poru.shoukaku.on('debug', (name, info) => { console.log(`[SHOUKAKU] => Node ${name} Debugging : ${info}`) });
+        this.poru.shoukaku.on('error', (name, error) => {
+            console.error(`[SHOUKAKU] => Node ${name} got error: ${error?.message || error}`);
+            sendErrorToWebhook(web, `Lavalink Node Error — ${name}`, error);
+        });
+        this.poru.shoukaku.on('close', (name, code, reason) => {
+            console.warn(`[SHOUKAKU] => Node ${name} closed | Code: ${code} | Reason: ${reason}`);
+            if(web){
+                const container = new ContainerBuilder()
+                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**[Lavalink Node Closed — ${name}]**\nCode: \`${code}\` | Reason: \`${reason || 'none'}\``));
+                web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {});
+            }
+        });
+        this.poru.shoukaku.on('debug', (name, info) => { console.log(`[SHOUKAKU] => Node ${name} Debug: ${info}`) });
         this.poru.shoukaku.on('disconnect', (name, players, moved) => {
             if(moved) return;
             console.warn(`[SHOUKAKU] => Node ${name}: Disconnected`);
+            if(web){
+                const container = new ContainerBuilder()
+                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**[Lavalink Node Disconnected — ${name}]**\nPlayers affected: \`${players?.length ?? 0}\``));
+                web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {});
+            }
         });
         this.poru.on("playerClosed", (player, data) => {
             console.warn(`[PORU] playerClosed => Guild: ${player?.guildId} | Code: ${data?.code} | Reason: ${data?.reason}`);
@@ -56,11 +80,11 @@ class Avon extends Client {
         this.login(process.env.token);
         process.on('unhandledRejection', async (er) => {
             console.error(er);
-            if(web){ const container = new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(`\`\`\`js\n${er}\`\`\``)); web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {}); }
+            sendErrorToWebhook(web, 'unhandledRejection', er);
         });
         process.on('uncaughtException', async (err) => {
             console.error(err);
-            if(web){ const container = new ContainerBuilder().addTextDisplayComponents(new TextDisplayBuilder().setContent(`\`\`\`js\n${err}\`\`\``)); web.send({ flags: [MessageFlags.IsComponentsV2], components: [container] }).catch(() => {}); }
+            sendErrorToWebhook(web, 'uncaughtException', err);
         });
     }
 }
