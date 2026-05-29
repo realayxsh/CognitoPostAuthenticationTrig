@@ -1,5 +1,4 @@
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, MessageFlags, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
-const { MediaGalleryBuilder, MediaGalleryItemBuilder } = require("@discordjs/builders");
 const AvonCommand = require("../../structures/avonCommand");
 const { getServerBrand } = require("../../structures/serverBrand");
 const ms = require("ms");
@@ -60,7 +59,7 @@ function buildFilterRow(player) {
     return new ActionRowBuilder().addComponents(menu);
 }
 
-function buildContainer(client, track, player, brandIcon, brandBanner) {
+function buildContainer(client, track, player, brandIcon) {
     let position = player.position || 0;
     let duration = track.length || 0;
     let size = 15;
@@ -86,14 +85,6 @@ function buildContainer(client, track, player, brandIcon, brandBanner) {
             new TextDisplayBuilder().setContent(`-# Updates every 5 seconds`)
         );
 
-    if (brandBanner) {
-        container.addMediaGalleryComponents(
-            new MediaGalleryBuilder().addItems(
-                new MediaGalleryItemBuilder().setURL(brandBanner)
-            )
-        );
-    }
-
     return container;
 }
 
@@ -117,12 +108,11 @@ class NowPlaying extends AvonCommand {
             }
 
             const brand = await getServerBrand(client, message.guild.id);
-            const brandIcon   = brand.icon   || null;
-            const brandBanner = brand.banner || null;
+            const brandIcon = brand.icon || null;
 
             let msg = await message.channel.send({
                 flags: [MessageFlags.IsComponentsV2],
-                components: [buildContainer(client, track, player, brandIcon, brandBanner), buildFilterRow(player)]
+                components: [buildContainer(client, track, player, brandIcon), buildFilterRow(player)]
             });
 
             let updates = 0;
@@ -146,7 +136,7 @@ class NowPlaying extends AvonCommand {
 
                     await msg.edit({
                         flags: [MessageFlags.IsComponentsV2],
-                        components: [buildContainer(client, currentTrack, currentPlayer, brandIcon, brandBanner), buildFilterRow(currentPlayer)]
+                        components: [buildContainer(client, currentTrack, currentPlayer, brandIcon), buildFilterRow(currentPlayer)]
                     }).catch(() => { clearInterval(interval); });
                 } catch (e) {
                     clearInterval(interval);
