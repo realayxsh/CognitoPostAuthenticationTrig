@@ -18,10 +18,12 @@ class Seek extends AvonCommand {
                 );
             return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
         };
-        if (!args[0] || isNaN(args[0])) return send(`${client.emoji.cross} **| Provide a valid seekable number**`);
+        if (!args[0]) return send(`${client.emoji.cross} **| Usage: \`${prefix}seek <seconds>\` e.g. \`${prefix}seek 90\`**`);
+        const secs = parseInt(args[0]);
+        if (isNaN(secs) || secs < 0) return send(`${client.emoji.cross} **| Provide a valid number of seconds**`);
         if (!player.queue.current.isSeekable) return send(`${client.emoji.cross} **| This track is not seekable**`);
-        player.seek(args[0]);
-        return send(`${client.emoji.tick} **| Seeked the track to ${args[0]}s**`);
+        player.seek(secs * 1000);
+        return send(`${client.emoji.tick} **| Seeked to ${secs}s**`);
     }
 }
 module.exports = Seek;

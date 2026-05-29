@@ -165,7 +165,7 @@ class AvonCommands extends EventEmitter {
             // ── Disabled channel check ──
             const disabledKey = `disabled_channel_${message.guild.id}_${message.channel.id}`;
             const channelDisabled = await this.client.data.get(disabledKey);
-            if(channelDisabled === `disabled` && !client?.config?.owners?.includes(message.author.id)) return;
+            if(channelDisabled === `disabled` && !this.client.config.owners.includes(message.author.id)) return;
 
             // Fire-and-forget webhook log — never blocks command execution
             const logContainer = new ContainerBuilder()

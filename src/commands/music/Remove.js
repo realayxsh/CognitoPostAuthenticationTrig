@@ -21,8 +21,10 @@ class Remove extends AvonCommand {
         let player = client.poru.players.get(message.guild.id);
         if (!player) return send(`${client.emoji.cross} **| No player is initiated**`);
         if (!args[0] || isNaN(args[0])) return send(`${client.emoji.cross} **| Provide a number to remove from queue**`);
-        if (args[0] === 1) return send(`${client.emoji.cross} **| You cannot remove the current song from queue**`);
-        player.queue.remove(args[0] - 1);
+        const idx = parseInt(args[0]);
+        if (idx < 2) return send(`${client.emoji.cross} **| You cannot remove the currently playing song**`);
+        if (idx > player.queue.length + 1) return send(`${client.emoji.cross} **| That position doesn't exist in the queue**`);
+        player.queue.remove(idx - 1);
         return send(`${client.emoji.tick} **| Removed the track**`);
     }
 }

@@ -8,11 +8,15 @@ class PlayerEmpty extends AvonClientEvent{
         let db = await this.client.data.get(`${player.guildId}-autoPlay`);
         if(!db || db === null) this.client.data.set(`${player.guildId}-autoPlay`, `disabled`);
         if(db === `enabled`){
-            let identifier = player.queue.current?.identifier || player.queue.previous?.identifier;
-            const search   = `https://www.youtube.com/watch?v=${identifier}&list=RD${identifier}`;
-            let result     = await player.search(search, { requester: this.client.user });
-            player.queue.add(result.tracks[Math.floor(Math.random() * result.tracks.length)]);
-            player.play();
+            try {
+                const title = player.queue.previous?.title || player.queue.current?.title || 'popular music';
+                const result = await player.search(`${title}`, { engine: 'soundcloud', requester: this.client.user });
+                if(result && result.tracks.length){
+                    const track = result.tracks[Math.floor(Math.random() * Math.min(result.tracks.length, 5))];
+                    player.queue.add(track);
+                    player.play();
+                }
+            } catch(e) { console.error('[Autoplay]', e); }
         }
         if(db === `disabled`){
             let ch    = this.client.channels.cache.get(player.textId);

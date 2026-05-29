@@ -20,6 +20,12 @@
         "url" : "lavalink.jirayu.net:443",
         "auth" : "youshallnotpass",
         "secure" : true
+        },
+        {
+        "name" : "Radio",
+        "url" : "lavalink.devamop.in:443",
+        "auth" : "devamop.in",
+        "secure" : true
         }
     ]
 }

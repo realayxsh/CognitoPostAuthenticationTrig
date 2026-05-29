@@ -42,7 +42,7 @@ class TrackStart extends AvonClientEvent {
         const anyFilterActive = player.data.get('8d') || player.data.get('bass') ||
             player.data.get('night') || player.data.get('vib') || player.data.get('trem') ||
             player.data.get('treble') || player.data.get('slow') || player.data.get('chip') ||
-            player.data.get('china') || player.data.get('vapor');
+            player.data.get('china') || player.data.get('vapor') || player.data.get('dolbyatmos');
         if (!anyFilterActive) {
             const userVol = (player.volume || 100) / 100;
             player.shoukaku.setFilters({ equalizer: CLARITY_EQ, volume: userVol }).catch(() => {});
