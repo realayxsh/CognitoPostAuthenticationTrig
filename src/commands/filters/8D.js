@@ -7,7 +7,6 @@ class Rotation extends AvonCommand {
     get player() { return true }
     get vote() { return true; }
     get cat() { return 'filters' }
-    get premium() { return true; }
     get inVoice() { return true }
     get sameVoice() { return true }
     async run(client, message, args, prefix, player) {

@@ -149,17 +149,12 @@ class Help extends AvonCommand{
                 )
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                    `${client.emoji.premium} **Premium** unlocks all audio filters!\n\n` +
+                    `${client.emoji.premium} **Premium** unlocks advanced audio filters!\n\n` +
                     `Contact the bot owner for a code, then use \`${prefix}redeem <code>\` to activate.\n\n` +
-                    `**__Audio Filters__**\n` +
-                    `${client.emoji.filters} \`${prefix}bassboost\` — Boost the bass frequencies\n` +
-                    `${client.emoji.filters} \`${prefix}nightcore\` — Faster speed, higher pitch\n` +
-                    `${client.emoji.filters} \`${prefix}8d\` — Rotating 8D audio effect\n` +
+                    `**__Premium Filters__**\n` +
                     `${client.emoji.filters} \`${prefix}china\` — China-style audio effect\n` +
                     `${client.emoji.filters} \`${prefix}chipmunk\` — High-pitched chipmunk voice\n` +
                     `${client.emoji.filters} \`${prefix}slowmode\` — Slower speed, lower pitch\n` +
-                    `${client.emoji.filters} \`${prefix}treblebass\` — Boost treble and bass\n` +
-                    `${client.emoji.filters} \`${prefix}tremolo\` — Oscillating volume effect\n` +
                     `${client.emoji.filters} \`${prefix}vaporwave\` — Slowed, lower-pitched vibe\n` +
                     `${client.emoji.filters} \`${prefix}vibrato\` — Oscillating pitch effect\n` +
                     `${client.emoji.filters} \`${prefix}dolbyatmos\` — Spatial surround sound\n` +
@@ -168,6 +163,15 @@ class Help extends AvonCommand{
                     `${client.emoji.filters} \`${prefix}heaven\` — Angelic high-pitch shimmer\n` +
                     `${client.emoji.filters} \`${prefix}slowedreverb\` — Slowed + deep reverb\n` +
                     `${client.emoji.filters} \`${prefix}clearfilters\` — Remove all active filters\n\n` +
+                    `**__Vote-Only Filters__** *(free — just vote!)*\n` +
+                    `${client.emoji.filters} \`${prefix}8d\` — Rotating 8D audio effect\n` +
+                    `${client.emoji.filters} \`${prefix}bassboost\` — Boost the bass frequencies\n` +
+                    `${client.emoji.filters} \`${prefix}nightcore\` — Faster speed, higher pitch\n` +
+                    `${client.emoji.filters} \`${prefix}treblebass\` — Boost treble and bass\n` +
+                    `${client.emoji.filters} \`${prefix}tremolo\` — Oscillating volume effect\n\n` +
+                    `**__Vote-Only Commands__** *(free — just vote!)*\n` +
+                    `${client.emoji.music} \`${prefix}lyrics\` — Fetch lyrics for the current song\n` +
+                    `${client.emoji.users} \`${prefix}badges\` — View your profile badges\n\n` +
                     `**__Premium Management__**\n` +
                     `${client.emoji.premium} \`${prefix}premium\` — Check this server's premium status\n` +
                     `${client.emoji.tick} \`${prefix}redeem <code>\` — Activate a premium code`

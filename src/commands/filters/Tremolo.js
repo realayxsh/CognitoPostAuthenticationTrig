@@ -9,7 +9,6 @@ class Tremolo extends AvonCommand {
     get cat() { return 'filters' }
     get vote() { return true; }
     get player() { return true; }
-    get premium() { return true; }
     async run(client, message, args, prefix, player) {
         const send = (text) => {
             const container = new ContainerBuilder()

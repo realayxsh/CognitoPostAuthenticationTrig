@@ -9,7 +9,6 @@ class BassBoost extends AvonCommand {
     get vote() { return true; }
     get cat() { return 'filters' }
     get player() { return true; }
-    get premium() { return true; }
     async run(client, message, args, prefix, player) {
         try {
             const send = (text) => {
