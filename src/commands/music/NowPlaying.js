@@ -1,9 +1,10 @@
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, MessageFlags } = require("discord.js");
+const { MediaGalleryBuilder, MediaGalleryItemBuilder } = require("@discordjs/builders");
 const AvonCommand = require("../../structures/avonCommand");
 const { getServerBrand } = require("../../structures/serverBrand");
 const ms = require("ms");
 
-function buildContainer(client, track, player, brandIcon) {
+function buildContainer(client, track, player, brandIcon, brandBanner) {
     let position = player.position || 0;
     let duration = track.length || 0;
     let size = 15;
@@ -12,7 +13,7 @@ function buildContainer(client, track, player, brandIcon) {
     let loopMode = player.loop === 'track' ? '🔂 Track' : player.loop === 'queue' ? '🔁 Queue' : '➡️ Off';
     const thumb = track.thumbnail || brandIcon || client.user.displayAvatarURL({ dynamic: true });
 
-    return new ContainerBuilder()
+    const container = new ContainerBuilder()
         .addSectionComponents(
             new SectionBuilder()
                 .addTextDisplayComponents(
@@ -28,6 +29,16 @@ function buildContainer(client, track, player, brandIcon) {
         .addTextDisplayComponents(
             new TextDisplayBuilder().setContent(`-# Updates every 5 seconds`)
         );
+
+    if (brandBanner) {
+        container.addMediaGalleryComponents(
+            new MediaGalleryBuilder().addItems(
+                new MediaGalleryItemBuilder().setURL(brandBanner)
+            )
+        );
+    }
+
+    return container;
 }
 
 class NowPlaying extends AvonCommand {
@@ -50,9 +61,10 @@ class NowPlaying extends AvonCommand {
             }
 
             const brand = await getServerBrand(client, message.guild.id);
-            const brandIcon = brand.icon || null;
+            const brandIcon   = brand.icon   || null;
+            const brandBanner = brand.banner || null;
 
-            let msg = await message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [buildContainer(client, track, player, brandIcon)] });
+            let msg = await message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [buildContainer(client, track, player, brandIcon, brandBanner)] });
 
             let updates = 0;
             let interval = setInterval(async () => {
@@ -73,7 +85,7 @@ class NowPlaying extends AvonCommand {
                         return;
                     }
 
-                    await msg.edit({ flags: [MessageFlags.IsComponentsV2], components: [buildContainer(client, currentTrack, currentPlayer, brandIcon)] }).catch(() => {
+                    await msg.edit({ flags: [MessageFlags.IsComponentsV2], components: [buildContainer(client, currentTrack, currentPlayer, brandIcon, brandBanner)] }).catch(() => {
                         clearInterval(interval);
                     });
                 } catch (e) {

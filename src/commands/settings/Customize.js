@@ -196,31 +196,18 @@ class Customize extends AvonCommand {
                     )]
                 });
 
-                let applyError = null;
-                try {
-                    const base64 = await urlToBase64(url);
-                    // Guild member banner via REST (discord.js may not expose this in .edit())
-                    await client.rest.patch(`/guilds/${message.guild.id}/members/@me`, {
-                        body: { banner: base64 }
-                    });
-                } catch (e) {
-                    applyError = e.message || 'Unknown error';
-                }
-
+                // Note: Discord does not support setting guild member banners for bots via REST.
+                // We save the banner URL to the DB and display it in the Now Playing card instead.
                 const data = await client.data4.get(dbKey) || {};
                 data.banner = url;
                 await client.data4.set(dbKey, data);
                 invalidateServerBrandCache(message.guild.id);
 
-                const resultText = applyError
-                    ? `**| Bot Banner — Partial Update**\n\n` +
-                      `${em.customize_banner} | Banner URL saved for **${message.guild.name}**.\n` +
-                      `${em.cross} | Could not apply to bot's server profile: \`${applyError}\`\n\n` +
-                      `-# The banner will still appear in bot panels on this server.`
-                    : `**| Bot Banner Updated**\n\n` +
-                      `${em.customize_banner} | Custom banner applied to the bot's profile in **${message.guild.name}**!\n\n` +
-                      `Click the bot in the member list to see it.\n\n` +
-                      `-# ${em.customize_reset} Use \`${prefix}customize reset banner\` to remove it.`;
+                const resultText =
+                    `**| Bot Banner Updated**\n\n` +
+                    `${em.customize_banner} | Custom banner saved for **${message.guild.name}**!\n\n` +
+                    `${em.tick} | The banner will appear at the bottom of every **Now Playing** card in this server.\n\n` +
+                    `-# ${em.customize_reset} Use \`${prefix}customize reset banner\` to remove it.`;
 
                 return working.edit({
                     flags: [MessageFlags.IsComponentsV2],
