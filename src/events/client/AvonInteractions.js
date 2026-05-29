@@ -188,7 +188,7 @@ class AvonInteractions extends AvonClientEvents{
                 player.data.set('8d',false); player.data.set('bass',false); player.data.set('night',false);
                 player.data.set('vib',false); player.data.set('trem',false); player.data.set('treble',false);
                 player.data.set('slow',false); player.data.set('chip',false); player.data.set('china',false);
-                player.data.set('vapor',false);
+                player.data.set('vapor',false); player.data.set('dolbyatmos',false);
 
                 const userVol = (player.volume || 100) / 100;
                 const em = this.client.emoji;
