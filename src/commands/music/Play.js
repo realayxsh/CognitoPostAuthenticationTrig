@@ -40,6 +40,14 @@ class Play extends AvonCommand {
 
             let query = args.join(" ");
 
+            // Resolve spotify.link short URLs to the full open.spotify.com URL
+            if (query.startsWith('https://spotify.link/')) {
+                try {
+                    const res = await fetch(query, { method: 'HEAD', redirect: 'follow' });
+                    if (res.url && res.url.includes('open.spotify.com')) query = res.url;
+                } catch(e) { /* keep original if fetch fails */ }
+            }
+
             const searchingContainer = new ContainerBuilder()
                 .addSectionComponents(
                     new SectionBuilder()
