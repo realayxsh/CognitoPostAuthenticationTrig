@@ -88,18 +88,22 @@ class TrackStart extends AvonClientEvent {
                         .setPlaceholder(`Select a filter...`)
                         .addOptions(
                             ...[ 
-                                { label: `None (Clear Filters)`, value: `none`,       desc: `Remove all active filters`,      key: `filter_none`       },
-                                { label: `8D`,                   value: `8d`,         desc: `Rotating 8D audio effect`,       key: `filter_8d`         },
-                                { label: `Bass Boost`,           value: `bassboost`,  desc: `Boost the bass frequencies`,     key: `filter_bassboost`  },
-                                { label: `Nightcore`,            value: `nightcore`,  desc: `Faster speed and higher pitch`,  key: `filter_nightcore`  },
-                                { label: `Vibrato`,              value: `vibrato`,    desc: `Oscillating pitch effect`,       key: `filter_vibrato`    },
-                                { label: `Tremolo`,              value: `tremolo`,    desc: `Oscillating volume effect`,      key: `filter_tremolo`    },
-                                { label: `Treblebass`,           value: `treblebass`, desc: `Boost both treble and bass`,     key: `filter_treblebass` },
-                                { label: `Slowmode`,             value: `slowmode`,   desc: `Slower speed, lower pitch`,      key: `filter_slowmode`   },
-                                { label: `Chipmunk`,             value: `chipmunk`,   desc: `High-pitched chipmunk voice`,    key: `filter_chipmunk`   },
-                                { label: `China`,                value: `china`,      desc: `China-style audio effect`,       key: `filter_china`      },
-                                { label: `Vaporwave`,            value: `vaporwave`,  desc: `Slowed, lower-pitched vibe`,     key: `filter_vaporwave`  },
-                                { label: `Dolby Atmos`,          value: `dolbyatmos`, desc: `Spatial surround sound effect`,  key: `filter_dolbyatmos` },
+                                { label: `None (Clear Filters)`, value: `none`,        desc: `Remove all active filters`,      key: `filter_none`        },
+                                { label: `8D`,                   value: `8d`,          desc: `Rotating 8D audio effect`,       key: `filter_8d`          },
+                                { label: `Bass Boost`,           value: `bassboost`,   desc: `Boost the bass frequencies`,     key: `filter_bassboost`   },
+                                { label: `Nightcore`,            value: `nightcore`,   desc: `Faster speed and higher pitch`,  key: `filter_nightcore`   },
+                                { label: `Vibrato`,              value: `vibrato`,     desc: `Oscillating pitch effect`,       key: `filter_vibrato`     },
+                                { label: `Tremolo`,              value: `tremolo`,     desc: `Oscillating volume effect`,      key: `filter_tremolo`     },
+                                { label: `Treblebass`,           value: `treblebass`,  desc: `Boost both treble and bass`,     key: `filter_treblebass`  },
+                                { label: `Slowmode`,             value: `slowmode`,    desc: `Slower speed, lower pitch`,      key: `filter_slowmode`    },
+                                { label: `Chipmunk`,             value: `chipmunk`,    desc: `High-pitched chipmunk voice`,    key: `filter_chipmunk`    },
+                                { label: `China`,                value: `china`,       desc: `China-style audio effect`,       key: `filter_china`       },
+                                { label: `Vaporwave`,            value: `vaporwave`,   desc: `Slowed, lower-pitched vibe`,     key: `filter_vaporwave`   },
+                                { label: `Dolby Atmos`,          value: `dolbyatmos`,  desc: `Spatial surround sound effect`,  key: `filter_dolbyatmos`  },
+                                { label: `Concert`,              value: `concert`,     desc: `Concert hall reverb effect`,     key: `filter_concert`     },
+                                { label: `Lofi`,                 value: `lofi`,        desc: `Chill lofi aesthetic`,           key: `filter_lofi`        },
+                                { label: `Heaven`,               value: `heaven`,      desc: `Angelic high-pitch shimmer`,     key: `filter_heaven`      },
+                                { label: `Slowed Reverb`,        value: `slowedreverb`,desc: `Slowed + deep reverb`,           key: `filter_slowedreverb`},
                             ].map(({ label, value, desc, key }) => {
                                 const opt = new StringSelectMenuOptionBuilder().setLabel(label).setValue(value).setDescription(desc);
                                 const e = this.client.emoji[key];
