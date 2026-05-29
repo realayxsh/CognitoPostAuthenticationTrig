@@ -70,28 +70,22 @@ class Play extends AvonCommand {
 
                 if (query.includes(`spotify`)) {
                     try {
-                        await client.lavasfy.requestToken();
-                        let node = client.lavasfy.nodes.get('Avon');
-                        let result = await node.load(query);
-                        if (!result || result.loadType === `LOAD_FAILED`) {
-                            return editMsg(searchingMsg, `**| Failed to load that Spotify link**`);
+                        let result = await player.search(query, { requester: message.author });
+                        if (!result || !result.tracks.length) {
+                            return editMsg(searchingMsg, `**| ${client.emoji.cross} | No results found for that Spotify link**`);
                         }
-                        if (result.loadType === `PLAYLIST_LOADED`) {
-                            let songs = result.tracks.map(t => new KazagumoTrack(t, message.author));
-                            player.queue.add(songs);
+                        if (result.type === `PLAYLIST`) {
+                            for (let track of result.tracks) player.queue.add(track);
                             if (!player.playing && !player.paused) player.play();
-                            return editMsg(searchingMsg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistInfo.name}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks.reduce((a, v) => a + v.info.length, 0))}`);
-                        }
-                        if (result.loadType === `TRACK_LOADED` || result.loadType === `SEARCH_RESULT`) {
-                            let convertedTrack = new KazagumoTrack(result.tracks[0], message.author);
-                            player.queue.add(convertedTrack);
+                            return editMsg(searchingMsg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.tracks.reduce((a, v) => a + (v.length || 0), 0))}\``);
+                        } else {
+                            player.queue.add(result.tracks[0]);
                             if (!player.playing && !player.paused) player.play();
-                            return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].info.title}](${result.tracks[0].info.uri})\n${client.emoji.users} **Requester:** ${message.author}`);
+                            return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
                         }
-                        return editMsg(searchingMsg, `**| Could not load that link**`);
                     } catch (e) {
                         console.error('[Play Spotify]', e);
-                        return editMsg(searchingMsg, `**| ${client.emoji.cross} | An error occurred loading that Spotify link**`);
+                        return editMsg(searchingMsg, `**| ${client.emoji.cross} | Failed to load that Spotify link. Make sure the link is valid and public.**`);
                     }
                 } else {
                     try {
