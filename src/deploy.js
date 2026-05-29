@@ -38,6 +38,8 @@ const commands = [
     new SlashCommandBuilder().setName('sources').setDescription('Show supported music sources'),
     new SlashCommandBuilder().setName('support').setDescription('Get the support server link'),
     new SlashCommandBuilder().setName('uptime').setDescription('Show how long the bot has been online'),
+    new SlashCommandBuilder().setName('profile').setDescription('View a user\'s profile and badges')
+        .addUserOption(o => o.setName('user').setDescription('The user to view (leave empty for yourself)')),
     new SlashCommandBuilder().setName('setprefix').setDescription('Set a custom prefix for this server').addStringOption(o => o.setName('prefix').setDescription('New prefix (max 3 characters)').setRequired(true).setMaxLength(3)),
     new SlashCommandBuilder().setName('247').setDescription('Toggle 24/7 mode (stay in voice channel)'),
     new SlashCommandBuilder().setName('autoplay').setDescription('Toggle autoplay mode'),
