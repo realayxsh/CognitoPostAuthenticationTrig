@@ -60,13 +60,25 @@ class Help extends AvonCommand{
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(`-# Developed By Radio Development`));
 
             const c1 = new ContainerBuilder()
+                .addSectionComponents(
+                    new SectionBuilder()
+                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`${client.emoji.music} **Music Commands**`))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL({ dynamic: true })))
+                )
+                .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                    `**__Music Commands__ [${musicCmds.size}]**\n\n${musicCmds.map(r => `\`${r.name}\``).sort().join(`, `) || 'None'}`
+                    musicCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.music} \`${r.name}\``).join(`\n`) || 'None'
                 ));
 
             const c2 = new ContainerBuilder()
+                .addSectionComponents(
+                    new SectionBuilder()
+                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`${client.emoji.filters} **Filter Commands**`))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL({ dynamic: true })))
+                )
+                .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                    `**__Filter Commands__ [${filterCmds.size}]**\n\n${filterCmds.map(r => `\`${r.name}\``).sort().join(`, `) || 'None'}`
+                    filterCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.filters} \`${r.name}\``).join(`\n`) || 'None'
                 ));
 
             const c3 = new ContainerBuilder()
@@ -85,23 +97,46 @@ class Help extends AvonCommand{
                 ));
 
             const c4 = new ContainerBuilder()
+                .addSectionComponents(
+                    new SectionBuilder()
+                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`${client.emoji.info} **Information Commands**`))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL({ dynamic: true })))
+                )
+                .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                    `**__Information Commands__ [${infoCmds.size}]**\n\n${infoCmds.map(r => `\`${r.name}\``).sort().join(`, `) || 'None'}`
+                    infoCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.info} \`${r.name}\``).join(`\n`) || 'None'
                 ));
 
             const c5 = new ContainerBuilder()
                 .addSectionComponents(
                     new SectionBuilder()
-                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**All Commands**`))
+                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`${client.emoji.allCommands} **All Commands**`))
                         .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL({ dynamic: true })))
                 )
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                    `**__Premium__ [${premCmds.size}]** — ${premCmds.map(r => `\`${r.name}\``).sort().join(`, `) || 'None'}\n` +
-                    `**__Music__ [${musicCmds.size}]** — ${musicCmds.map(r => `\`${r.name}\``).sort().join(`, `) || 'None'}\n` +
-                    `**__Filters__ [${filterCmds.size}]** — ${filterCmds.map(r => `\`${r.name}\``).sort().join(`, `) || 'None'}\n` +
-                    `**__Settings__ [${setCmds.size}]** — ${setCmds.map(r => `\`${r.name}\``).sort().join(`, `) || 'None'}\n` +
-                    `**__Information__ [${infoCmds.size}]** — ${infoCmds.map(r => `\`${r.name}\``).sort().join(`, `) || 'None'}`
+                    `${client.emoji.music} **Music [${musicCmds.size}]**\n` +
+                    musicCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.music} \`${r.name}\``).join(`  `)
+                ))
+                .addSeparatorComponents(new SeparatorBuilder().setDivider(false))
+                .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                    `${client.emoji.filters} **Filters [${filterCmds.size}]**\n` +
+                    filterCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.filters} \`${r.name}\``).join(`  `)
+                ))
+                .addSeparatorComponents(new SeparatorBuilder().setDivider(false))
+                .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                    `${client.emoji.settings} **Settings [${setCmds.size}]**\n` +
+                    setCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.settings} \`${r.name}\``).join(`  `)
+                ))
+                .addSeparatorComponents(new SeparatorBuilder().setDivider(false))
+                .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                    `${client.emoji.info} **Information [${infoCmds.size}]**\n` +
+                    infoCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.info} \`${r.name}\``).join(`  `)
+                ))
+                .addSeparatorComponents(new SeparatorBuilder().setDivider(false))
+                .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                    `${client.emoji.premium} **Premium [${premCmds.size}]**\n` +
+                    premCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.premium} \`${r.name}\``).join(`  `)
                 ))
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(`-# Developed By Radio Development`));
