@@ -45,5 +45,12 @@
     "filter_slowmode"  : "",
     "filter_chipmunk"  : "",
     "filter_china"     : "",
-    "filter_vaporwave" : ""
+    "filter_vaporwave" : "",
+    "filter_dolbyatmos": "",
+
+    "customize"        : "",
+    "customize_icon"   : "",
+    "customize_banner" : "",
+    "customize_reset"  : "",
+    "customize_view"   : ""
 }

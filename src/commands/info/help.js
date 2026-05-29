@@ -123,19 +123,33 @@ class Help extends AvonCommand{
                 )
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                    `**Premium** unlocks all audio filters for your server!\n\n` +
-                    `Contact the bot owner to receive a premium code, then use \`${prefix}redeem <code>\` to activate it.\n\n` +
-                    `**__Premium Commands__ [${premCmds.size}]**\n${premCmds.map(r => `\`${r.name}\``).sort().join(`, `) || 'None'}\n\n` +
-                    `**__What Premium Unlocks__**\n` +
-                    `${client.emoji.filters} BassBoost, Nightcore, 8D, China\n` +
-                    `${client.emoji.filters} Chipmunk, Slowmode, Treble Bass\n` +
-                    `${client.emoji.filters} Tremolo, Vaporwave, Vibrato, Clear All\n` +
-                    `${client.emoji.filters} Dolby Atmos\n` +
-                    `✨ Custom bot icon & banner per server`
+                    `${client.emoji.premium} **Premium** unlocks all audio filters and server customization!\n\n` +
+                    `Contact the bot owner for a code, then use \`${prefix}redeem <code>\` to activate.\n\n` +
+                    `**__Audio Filters__**\n` +
+                    `${client.emoji.filters} \`${prefix}bassboost\` — Boost the bass frequencies\n` +
+                    `${client.emoji.filters} \`${prefix}nightcore\` — Faster speed, higher pitch\n` +
+                    `${client.emoji.filters} \`${prefix}8d\` — Rotating 8D audio effect\n` +
+                    `${client.emoji.filters} \`${prefix}china\` — China-style audio effect\n` +
+                    `${client.emoji.filters} \`${prefix}chipmunk\` — High-pitched chipmunk voice\n` +
+                    `${client.emoji.filters} \`${prefix}slowmode\` — Slower speed, lower pitch\n` +
+                    `${client.emoji.filters} \`${prefix}treblebass\` — Boost treble and bass\n` +
+                    `${client.emoji.filters} \`${prefix}tremolo\` — Oscillating volume effect\n` +
+                    `${client.emoji.filters} \`${prefix}vaporwave\` — Slowed, lower-pitched vibe\n` +
+                    `${client.emoji.filters} \`${prefix}vibrato\` — Oscillating pitch effect\n` +
+                    `${client.emoji.filters} \`${prefix}dolbyatmos\` — Spatial surround sound\n` +
+                    `${client.emoji.filters} \`${prefix}clearfilters\` — Remove all active filters\n\n` +
+                    `**__Server Customization__**\n` +
+                    `${client.emoji.customize_view} \`${prefix}customize\` — View current bot appearance\n` +
+                    `${client.emoji.customize_icon} \`${prefix}customize icon <url>\` — Set a custom bot icon\n` +
+                    `${client.emoji.customize_banner} \`${prefix}customize banner <url>\` — Set a custom banner\n` +
+                    `${client.emoji.customize_reset} \`${prefix}customize reset [icon|banner]\` — Remove customization\n\n` +
+                    `**__Premium Management__**\n` +
+                    `${client.emoji.premium} \`${prefix}premium\` — Check this server's premium status\n` +
+                    `${client.emoji.tick} \`${prefix}redeem <code>\` — Activate a premium code`
                 ))
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                    `-# Use ${prefix}premium to check your server's premium status`
+                    `-# ${client.emoji.premium} Use \`${prefix}premium\` to check your server's premium status`
                 ));
 
             // makeMsg wraps a single container with buttons (used for all non-home pages)

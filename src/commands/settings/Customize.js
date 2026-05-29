@@ -23,11 +23,15 @@ class Customize extends AvonCommand {
 
     async run(client, message, args, prefix) {
         try {
+            const em = client.emoji;
+
             if (!message.member.permissions.has(8n) && !client.config.owners.includes(message.author.id)) {
-                const c = new ContainerBuilder().addTextDisplayComponents(
-                    new TextDisplayBuilder().setContent(`${client.emoji.cross} | Only server administrators can customize the bot's appearance.`)
-                );
-                return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [c] });
+                return message.channel.send({
+                    flags: [MessageFlags.IsComponentsV2],
+                    components: [new ContainerBuilder().addTextDisplayComponents(
+                        new TextDisplayBuilder().setContent(`${em.cross} | Only server administrators can customize the bot's appearance.`)
+                    )]
+                });
             }
 
             const send = (text, thumb) => {
@@ -53,31 +57,33 @@ class Customize extends AvonCommand {
                 const icon   = data.icon   || null;
                 const banner = data.banner || null;
 
-                let text =
+                const text =
                     `**| Bot Appearance — ${message.guild.name}**\n\n` +
-                    `${client.emoji.tick || '✅'} **Icon:** ${icon   ? `[View](${icon})`   : '`Not set — using default bot avatar`'}\n` +
-                    `${client.emoji.tick || '✅'} **Banner:** ${banner ? `[View](${banner})` : '`Not set`'}\n\n` +
+                    `${em.customize_icon} **Icon:** ${icon   ? `[View](${icon})`   : '`Not set — using default bot avatar`'}\n` +
+                    `${em.customize_banner} **Banner:** ${banner ? `[View](${banner})` : '`Not set`'}\n\n` +
                     `**How to customize:**\n` +
-                    `\`${prefix}customize icon <url>\` — Set a custom bot icon for this server\n` +
-                    `\`${prefix}customize banner <url>\` — Set a custom banner for this server\n` +
-                    `\`${prefix}customize reset icon\` — Remove custom icon\n` +
-                    `\`${prefix}customize reset banner\` — Remove custom banner\n` +
-                    `\`${prefix}customize reset\` — Remove all customization\n\n` +
-                    `-# Changes apply to how the bot appears in **this server only**. ✨ Premium`;
+                    `${em.customize_icon} \`${prefix}customize icon <url>\` — Set a custom bot icon\n` +
+                    `${em.customize_banner} \`${prefix}customize banner <url>\` — Set a custom banner\n` +
+                    `${em.customize_view} \`${prefix}customize\` — View this panel\n` +
+                    `${em.customize_reset} \`${prefix}customize reset icon\` — Remove icon\n` +
+                    `${em.customize_reset} \`${prefix}customize reset banner\` — Remove banner\n` +
+                    `${em.customize_reset} \`${prefix}customize reset\` — Remove everything\n\n` +
+                    `-# Changes apply to how the bot appears in **this server only**. ${em.premium} Premium`;
 
                 const components = [];
-                const container = new ContainerBuilder()
-                    .addSectionComponents(
-                        new SectionBuilder()
-                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
-                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(icon || client.user.displayAvatarURL({ dynamic: true })))
-                    );
-                components.push(container);
+                components.push(
+                    new ContainerBuilder()
+                        .addSectionComponents(
+                            new SectionBuilder()
+                                .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
+                                .setThumbnailAccessory(new ThumbnailBuilder().setURL(icon || client.user.displayAvatarURL({ dynamic: true })))
+                        )
+                );
 
                 if (banner) {
                     components.push(
                         new ContainerBuilder()
-                            .addTextDisplayComponents(new TextDisplayBuilder().setContent('**Current Banner:**'))
+                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(`${em.customize_banner} **Current Banner:**`))
                             .addMediaGalleryComponents(
                                 new MediaGalleryBuilder().addItems(
                                     new MediaGalleryItemBuilder().setURL(banner)
@@ -92,9 +98,12 @@ class Customize extends AvonCommand {
             // ── Set icon ──
             if (sub === 'icon') {
                 const url = args[1];
-                if (!url) return send(`${client.emoji.cross || '❌'} | Please provide an image URL.\nUsage: \`${prefix}customize icon <url>\``);
+                if (!url) return send(
+                    `${em.cross} | Please provide an image URL.\n` +
+                    `${em.customize_icon} Usage: \`${prefix}customize icon <url>\``
+                );
                 if (!isImageUrl(url)) return send(
-                    `${client.emoji.cross || '❌'} | That doesn't look like a valid image URL.\n` +
+                    `${em.cross} | That doesn't look like a valid image URL.\n` +
                     `Make sure it ends in \`.png\`, \`.jpg\`, \`.gif\`, or \`.webp\`, or use a Discord/Imgur CDN link.`
                 );
 
@@ -103,26 +112,33 @@ class Customize extends AvonCommand {
                 await client.data4.set(dbKey, data);
                 invalidateServerBrandCache(message.guild.id);
 
-                const container = new ContainerBuilder()
-                    .addSectionComponents(
-                        new SectionBuilder()
-                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                                `**| Bot Icon Updated**\n\n` +
-                                `${client.emoji.tick || '✅'} | Custom icon set for **${message.guild.name}**!\n\n` +
-                                `The bot will now use this icon in messages on this server.\n\n` +
-                                `-# Use \`${prefix}customize reset icon\` to remove it.`
-                            ))
-                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(url))
-                    );
-                return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+                return message.channel.send({
+                    flags: [MessageFlags.IsComponentsV2],
+                    components: [
+                        new ContainerBuilder()
+                            .addSectionComponents(
+                                new SectionBuilder()
+                                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                                        `**| Bot Icon Updated**\n\n` +
+                                        `${em.customize_icon} | Custom icon set for **${message.guild.name}**!\n\n` +
+                                        `The bot will now use this icon in messages on this server.\n\n` +
+                                        `-# ${em.customize_reset} Use \`${prefix}customize reset icon\` to remove it.`
+                                    ))
+                                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(url))
+                            )
+                    ]
+                });
             }
 
             // ── Set banner ──
             if (sub === 'banner') {
                 const url = args[1];
-                if (!url) return send(`${client.emoji.cross || '❌'} | Please provide an image URL.\nUsage: \`${prefix}customize banner <url>\``);
+                if (!url) return send(
+                    `${em.cross} | Please provide an image URL.\n` +
+                    `${em.customize_banner} Usage: \`${prefix}customize banner <url>\``
+                );
                 if (!isImageUrl(url)) return send(
-                    `${client.emoji.cross || '❌'} | That doesn't look like a valid image URL.\n` +
+                    `${em.cross} | That doesn't look like a valid image URL.\n` +
                     `Make sure it ends in \`.png\`, \`.jpg\`, \`.gif\`, or \`.webp\`, or use a Discord/Imgur CDN link.`
                 );
 
@@ -131,27 +147,29 @@ class Customize extends AvonCommand {
                 await client.data4.set(dbKey, data);
                 invalidateServerBrandCache(message.guild.id);
 
-                const components = [
-                    new ContainerBuilder()
-                        .addSectionComponents(
-                            new SectionBuilder()
-                                .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                                    `**| Bot Banner Updated**\n\n` +
-                                    `${client.emoji.tick || '✅'} | Custom banner set for **${message.guild.name}**!\n\n` +
-                                    `The bot will now display this banner in the help menu and other panels.\n\n` +
-                                    `-# Use \`${prefix}customize reset banner\` to remove it.`
-                                ))
-                                .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL({ dynamic: true })))
-                        ),
-                    new ContainerBuilder()
-                        .addTextDisplayComponents(new TextDisplayBuilder().setContent('**Banner Preview:**'))
-                        .addMediaGalleryComponents(
-                            new MediaGalleryBuilder().addItems(
-                                new MediaGalleryItemBuilder().setURL(url)
+                return message.channel.send({
+                    flags: [MessageFlags.IsComponentsV2],
+                    components: [
+                        new ContainerBuilder()
+                            .addSectionComponents(
+                                new SectionBuilder()
+                                    .addTextDisplayComponents(new TextDisplayBuilder().setContent(
+                                        `**| Bot Banner Updated**\n\n` +
+                                        `${em.customize_banner} | Custom banner set for **${message.guild.name}**!\n\n` +
+                                        `The bot will display this banner in the help menu and other panels.\n\n` +
+                                        `-# ${em.customize_reset} Use \`${prefix}customize reset banner\` to remove it.`
+                                    ))
+                                    .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL({ dynamic: true })))
+                            ),
+                        new ContainerBuilder()
+                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(`${em.customize_banner} **Banner Preview:**`))
+                            .addMediaGalleryComponents(
+                                new MediaGalleryBuilder().addItems(
+                                    new MediaGalleryItemBuilder().setURL(url)
+                                )
                             )
-                        )
-                ];
-                return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components });
+                    ]
+                });
             }
 
             // ── Reset ──
@@ -163,30 +181,30 @@ class Customize extends AvonCommand {
                     delete data.icon;
                     await client.data4.set(dbKey, data);
                     invalidateServerBrandCache(message.guild.id);
-                    return send(`${client.emoji.tick || '✅'} | Custom icon removed. The bot's default avatar will be used again.`);
+                    return send(`${em.customize_reset} | Custom icon removed. The bot's default avatar will be used again.`);
                 }
                 if (target === 'banner') {
                     delete data.banner;
                     await client.data4.set(dbKey, data);
                     invalidateServerBrandCache(message.guild.id);
-                    return send(`${client.emoji.tick || '✅'} | Custom banner removed.`);
+                    return send(`${em.customize_reset} | Custom banner removed.`);
                 }
 
                 await client.data4.delete(dbKey);
                 invalidateServerBrandCache(message.guild.id);
-                return send(`${client.emoji.tick || '✅'} | All bot customizations for **${message.guild.name}** have been reset.`);
+                return send(`${em.customize_reset} | All bot customizations for **${message.guild.name}** have been reset.`);
             }
 
             // ── Unknown subcommand ──
             return send(
                 `**| Customize Bot Appearance**\n\n` +
-                `${client.emoji.cross || '❌'} | Unknown option \`${sub}\`.\n\n` +
+                `${em.cross} | Unknown option \`${sub}\`.\n\n` +
                 `**Available options:**\n` +
-                `\`${prefix}customize\` — View current server customization\n` +
-                `\`${prefix}customize icon <url>\` — Set a custom bot icon\n` +
-                `\`${prefix}customize banner <url>\` — Set a custom banner\n` +
-                `\`${prefix}customize reset [icon|banner]\` — Remove customization\n\n` +
-                `-# ✨ This is a **Premium** feature for server admins.`
+                `${em.customize_view} \`${prefix}customize\` — View current server customization\n` +
+                `${em.customize_icon} \`${prefix}customize icon <url>\` — Set a custom bot icon\n` +
+                `${em.customize_banner} \`${prefix}customize banner <url>\` — Set a custom banner\n` +
+                `${em.customize_reset} \`${prefix}customize reset [icon|banner]\` — Remove customization\n\n` +
+                `-# ${em.premium} This is a **Premium** feature for server admins.`
             );
 
         } catch (e) { console.error(e); }
