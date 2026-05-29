@@ -59,8 +59,8 @@ class Redeem extends AvonCommand{
             }
 
             let durKey    = typeof entry === 'object' ? (entry.duration || '30d') : '30d';
-            let durMs     = DURATION_MS[durKey] ?? DURATION_MS['30d'];
-            let expiresAt = durMs !== null ? Date.now() + durMs : null;
+            let durMs     = DURATION_MS.hasOwnProperty(durKey) ? DURATION_MS[durKey] : DURATION_MS['30d'];
+            let expiresAt = (durMs === null) ? null : Date.now() + durMs;
             let label     = DURATION_LABELS[durKey] || '30 Days';
 
             let remaining = codes.filter(c => (typeof c === 'object' ? c.code : c) !== code);
