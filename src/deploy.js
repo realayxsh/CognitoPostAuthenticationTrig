@@ -42,6 +42,16 @@ const commands = [
     new SlashCommandBuilder().setName('247').setDescription('Toggle 24/7 mode (stay in voice channel)'),
     new SlashCommandBuilder().setName('autoplay').setDescription('Toggle autoplay mode'),
 
+    // Premium — server customization
+    new SlashCommandBuilder().setName('customize').setDescription('[Premium] Customize the bot\'s icon and banner for this server')
+        .addSubcommand(sub => sub.setName('view').setDescription('View current bot customization for this server'))
+        .addSubcommand(sub => sub.setName('icon').setDescription('Set a custom bot icon for this server')
+            .addStringOption(o => o.setName('url').setDescription('Direct image URL (.png, .jpg, .gif, .webp)').setRequired(true)))
+        .addSubcommand(sub => sub.setName('banner').setDescription('Set a custom banner for this server')
+            .addStringOption(o => o.setName('url').setDescription('Direct image URL (.png, .jpg, .gif, .webp)').setRequired(true)))
+        .addSubcommand(sub => sub.setName('reset').setDescription('Remove bot customization for this server')
+            .addStringOption(o => o.setName('target').setDescription('What to reset').addChoices({name:'Icon',value:'icon'},{name:'Banner',value:'banner'},{name:'Everything',value:'all'}))),
+
     // Premium commands
     new SlashCommandBuilder().setName('premium').setDescription('Check this server\'s premium status'),
     new SlashCommandBuilder().setName('redeem').setDescription('Redeem a premium code for this server')
