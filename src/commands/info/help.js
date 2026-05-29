@@ -88,9 +88,7 @@ class Help extends AvonCommand{
                     `**__Details__**\n` +
                     `\`${prefix}setprefix <prefix>\` — Change server prefix\n` +
                     `\`${prefix}247\` — Toggle 24/7 voice mode\n` +
-                    `\`${prefix}autoplay\` — Toggle autoplay mode\n` +
-                    `\`${prefix}customize icon <url>\` — Set custom bot icon ✨ **Premium**\n` +
-                    `\`${prefix}customize banner <url>\` — Set custom bot banner ✨ **Premium**`
+                    `\`${prefix}autoplay\` — Toggle autoplay mode`
                 ));
 
             const c4 = new ContainerBuilder()
@@ -123,7 +121,7 @@ class Help extends AvonCommand{
                 )
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                    `${client.emoji.premium} **Premium** unlocks all audio filters and server customization!\n\n` +
+                    `${client.emoji.premium} **Premium** unlocks all audio filters!\n\n` +
                     `Contact the bot owner for a code, then use \`${prefix}redeem <code>\` to activate.\n\n` +
                     `**__Audio Filters__**\n` +
                     `${client.emoji.filters} \`${prefix}bassboost\` — Boost the bass frequencies\n` +
@@ -138,11 +136,6 @@ class Help extends AvonCommand{
                     `${client.emoji.filters} \`${prefix}vibrato\` — Oscillating pitch effect\n` +
                     `${client.emoji.filters} \`${prefix}dolbyatmos\` — Spatial surround sound\n` +
                     `${client.emoji.filters} \`${prefix}clearfilters\` — Remove all active filters\n\n` +
-                    `**__Server Customization__**\n` +
-                    `${client.emoji.customize_view} \`${prefix}customize\` — View current bot appearance\n` +
-                    `${client.emoji.customize_icon} \`${prefix}customize icon <url>\` — Set a custom bot icon\n` +
-                    `${client.emoji.customize_banner} \`${prefix}customize banner <url>\` — Set a custom banner\n` +
-                    `${client.emoji.customize_reset} \`${prefix}customize reset [icon|banner]\` — Remove customization\n\n` +
                     `**__Premium Management__**\n` +
                     `${client.emoji.premium} \`${prefix}premium\` — Check this server's premium status\n` +
                     `${client.emoji.tick} \`${prefix}redeem <code>\` — Activate a premium code`
