@@ -34,18 +34,22 @@ async function isPremium(client, guildId) {
 }
 
 const FILTER_OPTIONS = [
-    { label: `None (Clear Filters)`, value: `none`,       desc: `Remove all active filters`,      key: `filter_none`       },
-    { label: `8D`,                   value: `8d`,         desc: `Rotating 8D audio effect`,       key: `filter_8d`         },
-    { label: `Bass Boost`,           value: `bassboost`,  desc: `Boost the bass frequencies`,     key: `filter_bassboost`  },
-    { label: `Nightcore`,            value: `nightcore`,  desc: `Faster speed and higher pitch`,  key: `filter_nightcore`  },
-    { label: `Vibrato`,              value: `vibrato`,    desc: `Oscillating pitch effect`,       key: `filter_vibrato`    },
-    { label: `Tremolo`,              value: `tremolo`,    desc: `Oscillating volume effect`,      key: `filter_tremolo`    },
-    { label: `Treblebass`,           value: `treblebass`, desc: `Boost both treble and bass`,     key: `filter_treblebass` },
-    { label: `Slowmode`,             value: `slowmode`,   desc: `Slower speed, lower pitch`,      key: `filter_slowmode`   },
-    { label: `Chipmunk`,             value: `chipmunk`,   desc: `High-pitched chipmunk voice`,    key: `filter_chipmunk`   },
-    { label: `China`,                value: `china`,      desc: `China-style audio effect`,       key: `filter_china`      },
-    { label: `Vaporwave`,            value: `vaporwave`,  desc: `Slowed, lower-pitched vibe`,     key: `filter_vaporwave`  },
-    { label: `Dolby Atmos`,          value: `dolbyatmos`, desc: `Spatial surround sound effect`,   key: `filter_dolbyatmos` },
+    { label: `None (Clear Filters)`, value: `none`,        desc: `Remove all active filters`,      key: `filter_none`       },
+    { label: `8D`,                   value: `8d`,          desc: `Rotating 8D audio effect`,       key: `filter_8d`         },
+    { label: `Bass Boost`,           value: `bassboost`,   desc: `Boost the bass frequencies`,     key: `filter_bassboost`  },
+    { label: `Nightcore`,            value: `nightcore`,   desc: `Faster speed and higher pitch`,  key: `filter_nightcore`  },
+    { label: `Vibrato`,              value: `vibrato`,     desc: `Oscillating pitch effect`,       key: `filter_vibrato`    },
+    { label: `Tremolo`,              value: `tremolo`,     desc: `Oscillating volume effect`,      key: `filter_tremolo`    },
+    { label: `Treblebass`,           value: `treblebass`,  desc: `Boost both treble and bass`,     key: `filter_treblebass` },
+    { label: `Slowmode`,             value: `slowmode`,    desc: `Slower speed, lower pitch`,      key: `filter_slowmode`   },
+    { label: `Chipmunk`,             value: `chipmunk`,    desc: `High-pitched chipmunk voice`,    key: `filter_chipmunk`   },
+    { label: `China`,                value: `china`,       desc: `China-style audio effect`,       key: `filter_china`      },
+    { label: `Vaporwave`,            value: `vaporwave`,   desc: `Slowed, lower-pitched vibe`,     key: `filter_vaporwave`  },
+    { label: `Dolby Atmos`,          value: `dolbyatmos`,  desc: `Spatial surround sound effect`,  key: `filter_dolbyatmos` },
+    { label: `Concert`,              value: `concert`,     desc: `Concert hall reverb effect`,     key: `filter_concert`    },
+    { label: `Lofi`,                 value: `lofi`,        desc: `Chill lofi aesthetic`,           key: `filter_lofi`       },
+    { label: `Heaven`,               value: `heaven`,      desc: `Angelic high-pitch shimmer`,     key: `filter_heaven`     },
+    { label: `Slowed Reverb`,        value: `slowedreverb`,desc: `Slowed + deep reverb`,           key: `filter_slowedreverb`},
 ];
 
 function buildNowPlayingComponents(client, player) {
@@ -254,6 +258,26 @@ class AvonInteractions extends AvonClientEvents{
                     player.data.set('dolbyatmos',true);
                     return reply(`${em.filter_dolbyatmos || '🎧'} **Enabled Dolby Atmos**`);
                 }
+                if(selected === 'concert'){
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.06},{band:1,gain:0.08},{band:2,gain:0.10},{band:3,gain:0.08},{band:4,gain:0.05},{band:5,gain:0.03},{band:6,gain:0.02},{band:7,gain:0.03},{band:8,gain:0.05},{band:9,gain:0.07},{band:10,gain:0.06},{band:11,gain:0.04},{band:12,gain:0.02},{band:13,gain:0.01}], lowPass:{ smoothing:8.0 }, tremolo:{ frequency:2.0, depth:0.08 }, volume: userVol });
+                    player.data.set('concert',true);
+                    return reply(`${em.filters} **Enabled Concert**`);
+                }
+                if(selected === 'lofi'){
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.10},{band:1,gain:0.08},{band:2,gain:0.05},{band:3,gain:0.02},{band:4,gain:0.00},{band:5,gain:-0.02},{band:6,gain:-0.03},{band:7,gain:-0.03},{band:8,gain:-0.02},{band:9,gain:-0.01},{band:10,gain:0.00},{band:11,gain:0.00},{band:12,gain:-0.01},{band:13,gain:-0.02}], timescale:{ speed:0.92, pitch:0.97, rate:0.95 }, lowPass:{ smoothing:20.0 }, volume: userVol });
+                    player.data.set('lofi',true);
+                    return reply(`${em.filters} **Enabled Lofi**`);
+                }
+                if(selected === 'heaven'){
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:-0.02},{band:1,gain:0.00},{band:2,gain:0.04},{band:3,gain:0.08},{band:4,gain:0.10},{band:5,gain:0.12},{band:6,gain:0.12},{band:7,gain:0.10},{band:8,gain:0.08},{band:9,gain:0.06},{band:10,gain:0.05},{band:11,gain:0.04},{band:12,gain:0.03},{band:13,gain:0.02}], timescale:{ speed:1.0, pitch:1.15, rate:1.0 }, tremolo:{ frequency:3.5, depth:0.06 }, volume: userVol });
+                    player.data.set('heaven',true);
+                    return reply(`${em.filters} **Enabled Heaven**`);
+                }
+                if(selected === 'slowedreverb'){
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.08},{band:1,gain:0.06},{band:2,gain:0.04},{band:3,gain:0.02},{band:4,gain:0.00},{band:5,gain:-0.01},{band:6,gain:-0.02},{band:7,gain:-0.02},{band:8,gain:0.00},{band:9,gain:0.02},{band:10,gain:0.03},{band:11,gain:0.03},{band:12,gain:0.02},{band:13,gain:0.01}], timescale:{ speed:0.78, pitch:0.88, rate:0.90 }, lowPass:{ smoothing:12.0 }, tremolo:{ frequency:1.5, depth:0.12 }, volume: userVol });
+                    player.data.set('slowedreverb',true);
+                    return reply(`${em.filters} **Enabled Slowed Reverb**`);
+                }
             } catch(e){ console.log(e); }
         }
 
@@ -262,6 +286,41 @@ class AvonInteractions extends AvonClientEvents{
                 await interaction.deferReply({ flags: [MessageFlags.IsComponentsV2] });
                 const client = this.client;
                 const commandName = interaction.commandName;
+
+                // ── /filters <filter> — unified filter slash command ──
+                if(commandName === 'filters'){
+                    const chosen = interaction.options.getString('filter');
+                    const player = client.poru.players.get(interaction.guild.id);
+                    if(!player || !player.queue.current)
+                        return interaction.editReply(cv2(`${client.emoji.cross} | Nothing is playing right now.`));
+                    if(interaction.guild.members.me.voice.channel && interaction.member.voice?.channelId !== interaction.guild.members.me.voice.channelId)
+                        return interaction.editReply(cv2(`${client.emoji.cross} | You must be in the same voice channel as me.`));
+
+                    const isOwner = client.config.owners.includes(interaction.user.id);
+                    if(!isOwner){
+                        const active = await isPremium(client, interaction.guild.id);
+                        if(!active) return interaction.editReply(cv2(`${client.emoji.cross} | Filters are **Premium Only!** Use \`+redeem <code>\` to activate.`));
+                    }
+
+                    const filterCmd = client.AvonCommands.commands.get(chosen === 'clearfilters' ? 'clearfilters' : chosen);
+                    if(!filterCmd) return interaction.editReply(cv2(`${client.emoji.cross} | Unknown filter.`));
+
+                    let replied = false;
+                    const sendFn = async (data) => {
+                        if(!replied){ replied = true; return interaction.editReply(data); }
+                        return interaction.followUp(data);
+                    };
+                    const fakeMessage = {
+                        guild: interaction.guild,
+                        author: interaction.user,
+                        member: interaction.member,
+                        content: `/${chosen}`,
+                        channel: { id: interaction.channelId, send: sendFn, name: interaction.channel?.name || 'unknown' },
+                        reply: sendFn,
+                        mentions: { members: { first: () => null } }
+                    };
+                    return await filterCmd.run(client, fakeMessage, [], `+`, player);
+                }
                 const avonCommand = client.AvonCommands.commands.get(commandName) || client.AvonCommands.commands.find(c => c.aliases && c.aliases.includes(commandName));
                 if(!avonCommand) return interaction.editReply(cv2(`Command not found.`));
 
