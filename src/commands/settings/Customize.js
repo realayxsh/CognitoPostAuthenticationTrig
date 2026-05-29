@@ -140,9 +140,12 @@ class Customize extends AvonCommand {
                 let applyError = null;
                 try {
                     const base64 = await urlToBase64(url);
-                    await message.guild.members.me.edit({ avatar: base64 });
+                    await client.rest.patch(`/guilds/${message.guild.id}/members/@me`, {
+                        body: { avatar: base64 }
+                    });
                 } catch (e) {
-                    applyError = e.message || 'Unknown error';
+                    applyError = e.rawError?.message || e.message || 'Unknown error';
+                    console.error('[Customize] icon error:', e);
                 }
 
                 // Save to DB regardless (used in embeds as fallback)
@@ -249,7 +252,7 @@ class Customize extends AvonCommand {
                     await client.data4.set(dbKey, data);
                     invalidateServerBrandCache(message.guild.id);
                     // Reset guild-specific avatar back to global
-                    try { await message.guild.members.me.edit({ avatar: null }); } catch {}
+                    try { await client.rest.patch(`/guilds/${message.guild.id}/members/@me`, { body: { avatar: null } }); } catch {}
                     return send(`${em.customize_reset} | Custom icon removed. The bot's default global avatar is restored in this server.`);
                 }
 
@@ -267,10 +270,7 @@ class Customize extends AvonCommand {
                 // Reset everything
                 await client.data4.delete(dbKey);
                 invalidateServerBrandCache(message.guild.id);
-                try { await message.guild.members.me.edit({ avatar: null }); } catch {}
-                try {
-                    await client.rest.patch(`/guilds/${message.guild.id}/members/@me`, { body: { banner: null } });
-                } catch {}
+                try { await client.rest.patch(`/guilds/${message.guild.id}/members/@me`, { body: { avatar: null, banner: null } }); } catch {}
                 return send(`${em.customize_reset} | All bot customizations for **${message.guild.name}** have been reset.`);
             }
 
