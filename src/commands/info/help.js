@@ -116,27 +116,27 @@ class Help extends AvonCommand{
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
                     `${client.emoji.music} **Music [${musicCmds.size}]**\n` +
-                    musicCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.music} \`${r.name}\``).join(`  `)
+                    musicCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `\`${r.name}\``).join(`  `)
                 ))
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(false))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
                     `${client.emoji.filters} **Filters [${filterCmds.size}]**\n` +
-                    filterCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.filters} \`${r.name}\``).join(`  `)
+                    filterCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `\`${r.name}\``).join(`  `)
                 ))
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(false))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
                     `${client.emoji.settings} **Settings [${setCmds.size}]**\n` +
-                    setCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.settings} \`${r.name}\``).join(`  `)
+                    setCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `\`${r.name}\``).join(`  `)
                 ))
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(false))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
                     `${client.emoji.info} **Information [${infoCmds.size}]**\n` +
-                    infoCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.info} \`${r.name}\``).join(`  `)
+                    infoCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `\`${r.name}\``).join(`  `)
                 ))
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(false))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                    `${client.emoji.premium} **Premium [${premCmds.size}]**\n` +
-                    premCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `${client.emoji.premium} \`${r.name}\``).join(`  `)
+                    `${client.emoji.premium} **Premium [${premCmds.size + 1}]**\n` +
+                    [...premCmds.sort((a,b) => a.name.localeCompare(b.name)).map(r => `\`${r.name}\``), `\`customize\``].join(`  `)
                 ))
                 .addSeparatorComponents(new SeparatorBuilder().setDivider(true))
                 .addTextDisplayComponents(new TextDisplayBuilder().setContent(`-# Developed By Radio Development`));
