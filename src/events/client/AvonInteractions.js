@@ -177,11 +177,11 @@ class AvonInteractions extends AvonClientEvents{
                 const reply = (text) => interaction.reply(cv2(text, true));
 
                 const CLARITY_EQ = [
-                    { band: 0,  gain: -0.05 }, { band: 1,  gain: -0.05 }, { band: 2,  gain:  0.0  },
-                    { band: 3,  gain:  0.02 }, { band: 4,  gain:  0.04 }, { band: 5,  gain:  0.02 },
-                    { band: 6,  gain:  0.0  }, { band: 7,  gain:  0.0  }, { band: 8,  gain:  0.06 },
-                    { band: 9,  gain:  0.06 }, { band: 10, gain:  0.04 }, { band: 11, gain:  0.02 },
-                    { band: 12, gain:  0.0  }, { band: 13, gain:  0.0  },
+                    { band: 0,  gain: -0.05 }, { band: 1,  gain:  0.00 }, { band: 2,  gain:  0.03 },
+                    { band: 3,  gain:  0.05 }, { band: 4,  gain:  0.04 }, { band: 5,  gain:  0.00 },
+                    { band: 6,  gain: -0.03 }, { band: 7,  gain:  0.00 }, { band: 8,  gain:  0.03 },
+                    { band: 9,  gain:  0.04 }, { band: 10, gain:  0.04 }, { band: 11, gain:  0.03 },
+                    { band: 12, gain:  0.02 }, { band: 13, gain:  0.02 },
                 ];
 
                 await player.shoukaku.clearFilters();
@@ -189,6 +189,9 @@ class AvonInteractions extends AvonClientEvents{
                 player.data.set('vib',false); player.data.set('trem',false); player.data.set('treble',false);
                 player.data.set('slow',false); player.data.set('chip',false); player.data.set('china',false);
                 player.data.set('vapor',false); player.data.set('dolbyatmos',false);
+
+                // Restore quality EQ after clearing user filters
+                await player.shoukaku.setFilters({ equalizer: CLARITY_EQ }).catch(() => {});
 
                 const userVol = (player.volume || 100) / 100;
                 const em = this.client.emoji;

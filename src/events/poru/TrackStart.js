@@ -3,6 +3,33 @@ const AvonClientEvent = require(`../../structures/Eventhandler`);
 const moment = require(`moment`);
 require(`moment-duration-format`);
 
+// Quality EQ — applied ONCE per player session on the very first track.
+// Lavalink persists filter state across tracks, so this never needs to be
+// reapplied mid-stream (which caused the audio interruption/replay bug).
+//
+// Design: subtle V-curve with clarity boost
+//   - Trims inaudible sub-rumble (25Hz)
+//   - Adds bass warmth (63–160Hz)
+//   - Cuts muddiness (400Hz)
+//   - Lifts presence & definition (1–4kHz)
+//   - Slight air on top (6–10kHz)
+const QUALITY_EQ = [
+    { band: 0,  gain: -0.05 },  // 25Hz   — cut inaudible sub rumble
+    { band: 1,  gain:  0.00 },  // 40Hz   — neutral
+    { band: 2,  gain:  0.03 },  // 63Hz   — bass warmth
+    { band: 3,  gain:  0.05 },  // 100Hz  — bass body
+    { band: 4,  gain:  0.04 },  // 160Hz  — bass punch
+    { band: 5,  gain:  0.00 },  // 250Hz  — neutral lower mids
+    { band: 6,  gain: -0.03 },  // 400Hz  — cut muddiness
+    { band: 7,  gain:  0.00 },  // 630Hz  — neutral mids
+    { band: 8,  gain:  0.03 },  // 1kHz   — presence
+    { band: 9,  gain:  0.04 },  // 1.6kHz — clarity
+    { band: 10, gain:  0.04 },  // 2.5kHz — upper mid detail
+    { band: 11, gain:  0.03 },  // 4kHz   — definition
+    { band: 12, gain:  0.02 },  // 6.3kHz — air
+    { band: 13, gain:  0.02 },  // 10kHz  — sparkle
+];
+
 class TrackStart extends AvonClientEvent {
     get name() { return 'playerStart' }
     async run(player, track) {
@@ -17,6 +44,19 @@ class TrackStart extends AvonClientEvent {
                     new TextDisplayBuilder().setContent(`${this.client.emoji.settings} Skipping this track as its duration is less than 30 seconds`)
                 );
             return channel?.send({ flags: [MessageFlags.IsComponentsV2], components: [skipContainer] });
+        }
+
+        // Apply quality EQ only on the first track of this session.
+        // The flag 'qualityInit' persists on the player so subsequent tracks
+        // never trigger setFilters — no audio interruptions.
+        const anyFilterActive = player.data.get('8d') || player.data.get('bass') ||
+            player.data.get('night') || player.data.get('vib') || player.data.get('trem') ||
+            player.data.get('treble') || player.data.get('slow') || player.data.get('chip') ||
+            player.data.get('china') || player.data.get('vapor') || player.data.get('dolbyatmos');
+
+        if (!player.data.get('qualityInit') && !anyFilterActive) {
+            player.data.set('qualityInit', true);
+            player.shoukaku.setFilters({ equalizer: QUALITY_EQ }).catch(() => {});
         }
 
         const container = new ContainerBuilder()
