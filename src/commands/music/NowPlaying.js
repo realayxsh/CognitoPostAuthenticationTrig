@@ -4,23 +4,25 @@ const AvonCommand = require("../../structures/avonCommand");
 const { getServerBrand } = require("../../structures/serverBrand");
 const ms = require("ms");
 
+const FILTER_EMOJI = { name: 'alll', id: '1163622008618233937' };
+
 const FILTERS = [
-    { label: '8D',           value: '8d',           description: 'Rotating 8D audio effect',         key: '8d',           emoji: { name: '🎧' } },
-    { label: 'Bass Boost',   value: 'bassboost',     description: 'Boost the bass frequencies',       key: 'bass',         emoji: { name: '🔊' } },
-    { label: 'China',        value: 'china',         description: 'China-style audio effect',         key: 'china',        emoji: { name: '🎵' } },
-    { label: 'Chipmunk',     value: 'chipmunk',      description: 'High-pitched chipmunk voice',      key: 'chipmunk',     emoji: { name: '🐿' } },
-    { label: 'Concert',      value: 'concert',       description: 'Concert hall reverb effect',       key: 'concert',      emoji: { name: '🎤' } },
-    { label: 'Dolby Atmos',  value: 'dolbyatmos',    description: 'Spatial surround sound',           key: 'dolbyatmos',   emoji: { name: '🔉' } },
-    { label: 'Heaven',       value: 'heaven',        description: 'Angelic high-pitch shimmer',       key: 'heaven',       emoji: { name: '✨' } },
-    { label: 'Lofi',         value: 'lofi',          description: 'Chill lofi aesthetic',             key: 'lofi',         emoji: { name: '🌙' } },
-    { label: 'Nightcore',    value: 'nightcore',     description: 'Faster speed, higher pitch',       key: 'night',        emoji: { name: '🌃' } },
-    { label: 'Slow Mode',    value: 'slowmode',      description: 'Slower speed, lower pitch',        key: 'slow',         emoji: { name: '🐢' } },
-    { label: 'Slowed Reverb',value: 'slowedreverb',  description: 'Slowed + deep reverb',             key: 'slowedreverb', emoji: { name: '💫' } },
-    { label: 'Treble Bass',  value: 'treblebass',    description: 'Boost treble and bass',            key: 'treblebass',   emoji: { name: '🎸' } },
-    { label: 'Tremolo',      value: 'tremolo',       description: 'Oscillating volume effect',        key: 'tremolo',      emoji: { name: '〰' } },
-    { label: 'Vaporwave',    value: 'vaporwave',     description: 'Slowed, lower-pitched vibe',       key: 'vapor',        emoji: { name: '🌊' } },
-    { label: 'Vibrato',      value: 'vibrato',       description: 'Oscillating pitch effect',         key: 'vibrato',      emoji: { name: '🎼' } },
-    { label: 'Clear Filters',value: 'clearfilters',  description: 'Remove all active filters',        key: null,           emoji: { name: '🗑' } },
+    { label: '8D',           value: '8d',           description: 'Rotating 8D audio effect',         key: '8d',           emoji: FILTER_EMOJI },
+    { label: 'Bass Boost',   value: 'bassboost',     description: 'Boost the bass frequencies',       key: 'bass',         emoji: FILTER_EMOJI },
+    { label: 'China',        value: 'china',         description: 'China-style audio effect',         key: 'china',        emoji: FILTER_EMOJI },
+    { label: 'Chipmunk',     value: 'chipmunk',      description: 'High-pitched chipmunk voice',      key: 'chipmunk',     emoji: FILTER_EMOJI },
+    { label: 'Concert',      value: 'concert',       description: 'Concert hall reverb effect',       key: 'concert',      emoji: FILTER_EMOJI },
+    { label: 'Dolby Atmos',  value: 'dolbyatmos',    description: 'Spatial surround sound',           key: 'dolbyatmos',   emoji: FILTER_EMOJI },
+    { label: 'Heaven',       value: 'heaven',        description: 'Angelic high-pitch shimmer',       key: 'heaven',       emoji: FILTER_EMOJI },
+    { label: 'Lofi',         value: 'lofi',          description: 'Chill lofi aesthetic',             key: 'lofi',         emoji: FILTER_EMOJI },
+    { label: 'Nightcore',    value: 'nightcore',     description: 'Faster speed, higher pitch',       key: 'night',        emoji: FILTER_EMOJI },
+    { label: 'Slow Mode',    value: 'slowmode',      description: 'Slower speed, lower pitch',        key: 'slow',         emoji: FILTER_EMOJI },
+    { label: 'Slowed Reverb',value: 'slowedreverb',  description: 'Slowed + deep reverb',             key: 'slowedreverb', emoji: FILTER_EMOJI },
+    { label: 'Treble Bass',  value: 'treblebass',    description: 'Boost treble and bass',            key: 'treblebass',   emoji: FILTER_EMOJI },
+    { label: 'Tremolo',      value: 'tremolo',       description: 'Oscillating volume effect',        key: 'tremolo',      emoji: FILTER_EMOJI },
+    { label: 'Vaporwave',    value: 'vaporwave',     description: 'Slowed, lower-pitched vibe',       key: 'vapor',        emoji: FILTER_EMOJI },
+    { label: 'Vibrato',      value: 'vibrato',       description: 'Oscillating pitch effect',         key: 'vibrato',      emoji: FILTER_EMOJI },
+    { label: 'Clear Filters',value: 'clearfilters',  description: 'Remove all active filters',        key: null,           emoji: FILTER_EMOJI },
 ];
 
 const FILTER_PRESETS = {
