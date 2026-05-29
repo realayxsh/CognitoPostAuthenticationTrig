@@ -3,6 +3,7 @@ const { Api } = require(`@top-gg/sdk`);
 const config = require(`../../../config.json`);
 const badge = require(`./badges.json`);
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
+const { MediaGalleryBuilder, MediaGalleryItemBuilder } = require("@discordjs/builders");
 
 async function safeHasVoted(userId) {
     const apiKey = process.env.topggapi || config.topggapi;
@@ -23,14 +24,39 @@ class Badges extends AvonCommand{
         const member = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
         const avatar = member.displayAvatarURL({ dynamic: true });
 
-        const send = (text) => {
+        // Fetch custom profile data (icon + banner set via +customize)
+        let customData = {};
+        try {
+            customData = await client.data4.get(`user_customize_${member.id}`) || {};
+        } catch (e) {}
+
+        const displayIcon   = customData.icon   || avatar;
+        const displayBanner = customData.banner  || null;
+        const hasPremiumProfile = !!(customData.icon || customData.banner);
+
+        const buildAndSend = (text) => {
+            const components = [];
+
             const container = new ContainerBuilder()
                 .addSectionComponents(
                     new SectionBuilder()
                         .addTextDisplayComponents(new TextDisplayBuilder().setContent(text))
-                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(avatar))
+                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(displayIcon))
                 );
-            return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
+            components.push(container);
+
+            if (displayBanner) {
+                components.push(
+                    new ContainerBuilder()
+                        .addMediaGalleryComponents(
+                            new MediaGalleryBuilder().addItems(
+                                new MediaGalleryItemBuilder().setURL(displayBanner)
+                            )
+                        )
+                );
+            }
+
+            return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components });
         };
 
         let guild;
@@ -38,7 +64,10 @@ class Badges extends AvonCommand{
             guild = await client.guilds.fetch('1509516630365835294');
         } catch (e) {
             console.error('[Profile] Failed to fetch support guild:', e.message);
-            return send(`**Profile for ${member.username}**\n\n__BADGES__\n\`No Badges Available\`\nYou must be in our [support server](${client.config.server}) to get badges.\nJoin **[here](${client.config.server})**.`);
+            const premiumLine = hasPremiumProfile ? `\n\n${client.emoji.tick || '✨'} *Custom profile active*` : '';
+            return buildAndSend(
+                `**Profile for ${member.username}**\n\n__BADGES__\n\`No Badges Available\`\nYou must be in our [support server](${client.config.server}) to get badges.\nJoin **[here](${client.config.server})**.${premiumLine}`
+            );
         }
 
         let guildMember;
@@ -47,7 +76,8 @@ class Badges extends AvonCommand{
         } catch (e) {
             const voted = await safeHasVoted(member.id);
             const badges = voted ? `\n${client.emoji.voter} **Voter**` : `\`No Badges Available\`\nYou must be in our [support server](${client.config.server}) to get badges.\nJoin **[here](${client.config.server})**.`;
-            return send(`**Profile for ${member.username}**\n\n__BADGES__\n${badges}`);
+            const premiumLine = hasPremiumProfile ? `\n\n${client.emoji.tick || '✨'} *Custom profile active*` : '';
+            return buildAndSend(`**Profile for ${member.username}**\n\n__BADGES__\n${badges}${premiumLine}`);
         }
 
         let badges = '';
@@ -70,7 +100,8 @@ class Badges extends AvonCommand{
         if (voted) badges += `\n${client.emoji.voter} **Voter**`;
         if (badges === '') badges += `\n${client.emoji.users} **User**`;
 
-        return send(`**Profile for ${member.username}**\n\n__BADGES__\n${badges}`);
+        const premiumLine = hasPremiumProfile ? `\n\n${client.emoji.tick || '✨'} *Custom profile active*` : '';
+        return buildAndSend(`**Profile for ${member.username}**\n\n__BADGES__\n${badges}${premiumLine}`);
     }
 }
 module.exports = Badges;

@@ -66,7 +66,9 @@ class Help extends AvonCommand{
                     `**__Details__**\n` +
                     `\`${prefix}setprefix <prefix>\` — Change server prefix\n` +
                     `\`${prefix}247\` — Toggle 24/7 voice mode\n` +
-                    `\`${prefix}autoplay\` — Toggle autoplay mode`
+                    `\`${prefix}autoplay\` — Toggle autoplay mode\n` +
+                    `\`${prefix}customize icon <url>\` — Set custom icon ✨ **Premium**\n` +
+                    `\`${prefix}customize banner <url>\` — Set custom banner ✨ **Premium**`
                 ));
 
             const c4 = new ContainerBuilder()
