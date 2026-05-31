@@ -11,10 +11,10 @@ class Lavasfy extends LavasfyClient{
             useSpotifyMetadata : true
         },[
             {
-                id : "Jirayu",
-                host : "lavalink.jirayu.net",
+                id : "DevamOP",
+                host : "lavalink.devamop.in",
                 port : 443,
-                password : "youshallnotpass",
+                password : "DevamOP",
                 secure : true
             }
         ]);
