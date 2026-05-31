@@ -3,11 +3,22 @@ const config = require('../../config.json');
 
 const WEBHOOK_URL = process.env.logwebhook || process.env.guildwebhook || process.env.errorswebhook || config.logwebhook || config.guildwebhook || '';
 let _web = null;
-try {
-    _web = WEBHOOK_URL ? new WebhookClient({ url: WEBHOOK_URL }) : null;
-    if (!_web) console.warn('[Webhook] No webhook URL configured — logs will not be sent to Discord.');
-} catch(e) {
-    console.error('[Webhook] Invalid webhook URL:', e.message);
+
+if (WEBHOOK_URL) {
+    // Parse the URL manually to extract id + token, bypassing discord.js URL validation
+    const match = WEBHOOK_URL.match(/webhooks\/(\d+)\/([^/?#\s]+)/);
+    if (match) {
+        try {
+            _web = new WebhookClient({ id: match[1], token: match[2] });
+            console.log(`[Webhook] Initialised — ID: ${match[1]}`);
+        } catch(e) {
+            console.error('[Webhook] Failed to create WebhookClient:', e.message);
+        }
+    } else {
+        console.warn('[Webhook] Could not parse webhook URL — logs will not be sent to Discord.');
+    }
+} else {
+    console.warn('[Webhook] No webhook URL configured — logs will not be sent to Discord.');
 }
 
 function web() { return _web; }
