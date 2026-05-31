@@ -29,7 +29,17 @@ async function fetchLyrics(artist, title) {
         }
     } catch (e) {}
 
-    // 2) lyrics.ovh — fallback
+    // 2) some-random-api — fast fallback
+    try {
+        const q = artist ? `${artist} ${title}` : title;
+        const r = await fetch(`https://some-random-api.com/lyrics?title=${encodeURIComponent(q)}`, { signal: AbortSignal.timeout(6000) });
+        if (r.ok) {
+            const d = await r.json();
+            if (d.lyrics && d.lyrics.trim().length > 20) return d.lyrics.trim();
+        }
+    } catch (e) {}
+
+    // 3) lyrics.ovh — last resort
     try {
         const urls = artist
             ? [`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`,
