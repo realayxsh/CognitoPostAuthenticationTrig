@@ -29,11 +29,11 @@ class Shoukaku extends Kazagumo{
         new Connectors.DiscordJS(client),
         config.nodes,
         {
-            resumeByLibrary       : true,
-            resumeTimeout         : 60,
-            reconnectTries        : Infinity,
-            reconnectInterval     : 5000,
-            restTimeout           : 15000,
+            resumeByLibrary       : false,
+            resumeTimeout         : 30,
+            reconnectTries        : 10,
+            reconnectInterval     : 3000,
+            restTimeout           : 10000,
             moveOnDisconnect      : true,
             voiceConnectionTimeout: 15000,
         }
