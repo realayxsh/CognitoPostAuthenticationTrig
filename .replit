@@ -102,12 +102,12 @@ args = "Start application"
 name = "Start application"
 author = "agent"
 
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "node src/sharding.js"
-
-[workflows.workflow.metadata]
-outputType = "console"
 
 [[ports]]
 localPort = 3000
@@ -116,7 +116,3 @@ externalPort = 80
 [userenv]
 
 [userenv.shared]
-mongourl5 = "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0"
-mongourl6 = "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0"
-guildwebhook = "https://discord.com/api/webhooks/1509525666716975154/29T7HhpQ9a0AbK0zjQuqr0OY-DJXkHr2DCVSampnWAU-moSqIryzunzpy_jsZdC4ujRr"
-errorswebhook = "https://discord.com/api/webhooks/1509525666716975154/29T7HhpQ9a0AbK0zjQuqr0OY-DJXkHr2DCVSampnWAU-moSqIryzunzpy_jsZdC4ujRr"
