@@ -21,10 +21,22 @@
     "mongourl6" : "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0",
     "nodes" : [
         {
-            "name" : "Local",
-            "url" : "localhost:2333",
+            "name" : "Jirayu",
+            "url" : "lavalink.jirayu.net:443",
             "auth" : "youshallnotpass",
-            "secure" : false
+            "secure" : true
+        },
+        {
+            "name" : "DevamOP",
+            "url" : "lavalink.devamop.in:443",
+            "auth" : "DevamOP",
+            "secure" : true
+        },
+        {
+            "name" : "Clxud",
+            "url" : "lavalink.clxud.net:443",
+            "auth" : "youshallnotpass",
+            "secure" : true
         }
     ]
 }
