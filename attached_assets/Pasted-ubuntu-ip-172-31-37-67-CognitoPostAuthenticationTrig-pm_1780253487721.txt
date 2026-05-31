@@ -1,0 +1,106 @@
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$ pm2 logs avon-bot --lines 50
+[TAILING] Tailing last 50 lines for [avon-bot] process (change the value with --lines option)
+/home/ubuntu/.pm2/logs/avon-bot-error.log last 50 lines:
+0|avon-bot |       at internalConnectMultiple (node:net:1122:18)
+0|avon-bot |       at internalConnectMultiple (node:net:1190:5)
+0|avon-bot |       at internalConnectMultiple (node:net:1190:5)
+0|avon-bot |       at Timeout.internalConnectMultipleTimeout (node:net:1716:5)
+0|avon-bot |       at listOnTimeout (node:internal/timers:583:11)
+0|avon-bot |       at process.processTimers (node:internal/timers:519:7) {
+0|avon-bot |     code: 'ETIMEDOUT',
+0|avon-bot |     [errors]: [ [Error], [Error], [Error] ]
+0|avon-bot |   }
+0|avon-bot | }
+0|avon-bot | KazagumoError: Player is already destroyed
+0|avon-bot |     at KazagumoPlayer.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Managers/KazagumoPlayer.js:369:23)
+0|avon-bot |     at Generator.next (<anonymous>)
+0|avon-bot |     at /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Managers/KazagumoPlayer.js:8:71
+0|avon-bot |     at new Promise (<anonymous>)
+0|avon-bot |     at __awaiter (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Managers/KazagumoPlayer.js:4:12)
+0|avon-bot |     at KazagumoPlayer.destroy (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Managers/KazagumoPlayer.js:367:16)
+0|avon-bot |     at PlayerEmpty.run (/home/ubuntu/CognitoPostAuthenticationTrig/src/events/poru/PlayerEmpty.js:56:22) {
+0|avon-bot |   code: 1
+0|avon-bot | }
+0|avon-bot | TypeError: fetch failed
+0|avon-bot |     at node:internal/deps/undici/undici:14976:13
+0|avon-bot |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+0|avon-bot |     at async Rest.fetch (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/shoukaku/dist/index.js:991:21)
+0|avon-bot |     at async Player.update (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/shoukaku/dist/index.js:710:5) {
+0|avon-bot |   [cause]: AggregateError [ETIMEDOUT]:
+0|avon-bot |       at internalConnectMultiple (node:net:1122:18)
+0|avon-bot |       at internalConnectMultiple (node:net:1190:5)
+0|avon-bot |       at internalConnectMultiple (node:net:1190:5)
+0|avon-bot |       at Timeout.internalConnectMultipleTimeout (node:net:1716:5)
+0|avon-bot |       at listOnTimeout (node:internal/timers:583:11)
+0|avon-bot |       at process.processTimers (node:internal/timers:519:7) {
+0|avon-bot |     code: 'ETIMEDOUT',
+0|avon-bot |     [errors]: [ [Error], [Error], [Error] ]
+0|avon-bot |   }
+0|avon-bot | }
+0|avon-bot | KazagumoError: Player is already destroyed
+0|avon-bot |     at KazagumoPlayer.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Managers/KazagumoPlayer.js:369:23)
+0|avon-bot |     at Generator.next (<anonymous>)
+0|avon-bot |     at /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Managers/KazagumoPlayer.js:8:71
+0|avon-bot |     at new Promise (<anonymous>)
+0|avon-bot |     at __awaiter (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Managers/KazagumoPlayer.js:4:12)
+0|avon-bot |     at KazagumoPlayer.destroy (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Managers/KazagumoPlayer.js:367:16)
+0|avon-bot |     at Stop.run (/home/ubuntu/CognitoPostAuthenticationTrig/src/commands/music/Stop.js:12:16)
+0|avon-bot |     at AvonCommands.run (/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/CommandHandler.js:253:25)
+0|avon-bot |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+0|avon-bot |   code: 1
+0|avon-bot | }
+0|avon-bot | (node:175844) DeprecationWarning: The ready event has been renamed to clientReady to distinguish it from the gateway READY event and will only emit under that name in v15. Please use clientReady instead.
+0|avon-bot | (Use `node --trace-deprecation ...` to show where the warning was created)
+
+/home/ubuntu/.pm2/logs/avon-bot-out.log last 50 lines:
+0|avon-bot | | resume         | ✅      |
+0|avon-bot | | seek           | ✅      |
+0|avon-bot | | shuffle        | ✅      |
+0|avon-bot | | skip           | ✅      |
+0|avon-bot | | stop           | ✅      |
+0|avon-bot | | volume         | ✅      |
+0|avon-bot | | addowner       | ✅      |
+0|avon-bot | | eval           | ✅      |
+0|avon-bot | | genpremium     | ✅      |
+0|avon-bot | | listpremium    | ✅      |
+0|avon-bot | | noprefix       | ✅      |
+0|avon-bot | | nplist         | ✅      |
+0|avon-bot | | revokepremium  | ✅      |
+0|avon-bot | | say            | ✅      |
+0|avon-bot | | serverlist     | ✅      |
+0|avon-bot | | stats          | ✅      |
+0|avon-bot | | 247            | ✅      |
+0|avon-bot | | autoplay       | ✅      |
+0|avon-bot | | customize      | ✅      |
+0|avon-bot | | disablechannel | ✅      |
+0|avon-bot | | setprefix      | ✅      |
+0|avon-bot | | premium        | ✅      |
+0|avon-bot | | redeem         | ✅      |
+0|avon-bot | '-------------------------'
+0|avon-bot | .-------------------------------.
+0|avon-bot | |    Client Events     | Status |
+0|avon-bot | |----------------------|--------|
+0|avon-bot | | AvonGuildCreate      | ✅      |
+0|avon-bot | | AvonGuildDelete      | ✅      |
+0|avon-bot | | AvonInteractions     | ✅      |
+0|avon-bot | | AvonReady            | ✅      |
+0|avon-bot | | AvonVoiceStateUpdate | ✅      |
+0|avon-bot | '-------------------------------'
+0|avon-bot | .------------------------.
+0|avon-bot | |  Poru Events  | Status |
+0|avon-bot | |---------------|--------|
+0|avon-bot | | PlayerDestroy | ✅      |
+0|avon-bot | | PlayerEmpty   | ✅      |
+0|avon-bot | | TrackEnd      | ✅      |
+0|avon-bot | | TrackError    | ✅      |
+0|avon-bot | | TrackStart    | ✅      |
+0|avon-bot | | TrackStuck    | ✅      |
+0|avon-bot | '------------------------'
+0|avon-bot | Express running on port 3000
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] -> [Jirayu] : Connecting to wss://lavalink.jirayu.net:443/v4/websocket ...
+0|avon-bot | Radio is Online!
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] <-> [Jirayu] : Connection Handshake Done => wss://lavalink.jirayu.net:443/v4/websocket | Resumed Header Value: false | Lavalink Api Version: undefined
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] -> [Jirayu] : Lavalink is ready to communicate !
+0|avon-bot | [SHOUKAKU] => Node Jirayu is connected
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] <- [Jirayu] : Node Status Update | Server Load: 0
+
