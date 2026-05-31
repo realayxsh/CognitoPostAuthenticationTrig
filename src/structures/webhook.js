@@ -3,13 +3,20 @@ const config = require('../../config.json');
 
 const WEBHOOK_URL = process.env.logwebhook || process.env.guildwebhook || process.env.errorswebhook || config.logwebhook || config.guildwebhook || '';
 let _web = null;
-try { _web = WEBHOOK_URL ? new WebhookClient({ url: WEBHOOK_URL }) : null; } catch(e) {}
+try {
+    _web = WEBHOOK_URL ? new WebhookClient({ url: WEBHOOK_URL }) : null;
+    if (!_web) console.warn('[Webhook] No webhook URL configured — logs will not be sent to Discord.');
+} catch(e) {
+    console.error('[Webhook] Invalid webhook URL:', e.message);
+}
 
 function web() { return _web; }
 
 function send(embed) {
     if (!_web) return;
-    _web.send({ embeds: [embed] }).catch(() => {});
+    _web.send({ embeds: [embed] }).catch((e) => {
+        console.error('[Webhook] Failed to send log:', e.message);
+    });
 }
 
 function info(title, desc, color = 0x5865F2) {
