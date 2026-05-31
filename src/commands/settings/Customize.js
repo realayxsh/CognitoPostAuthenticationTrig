@@ -196,17 +196,29 @@ class Customize extends AvonCommand {
                     )]
                 });
 
-                // Save to DB — shown on every Now Playing card in this server
+                let applyError = null;
+                try {
+                    const base64 = await urlToBase64(url);
+                    await client.rest.patch(`/guilds/${message.guild.id}/members/@me`, {
+                        body: { banner: base64 }
+                    });
+                } catch (e) {
+                    applyError = e.rawError?.message || e.message || 'Unknown error';
+                    console.error('[Customize] banner error:', e.rawError || e);
+                }
+
                 const data = await client.data4.get(dbKey) || {};
                 data.banner = url;
                 await client.data4.set(dbKey, data);
                 invalidateServerBrandCache(message.guild.id);
 
-                const resultText =
-                    `**| Bot Banner Updated**\n\n` +
-                    `${em.customize_banner} | Custom banner saved for **${message.guild.name}**!\n\n` +
-                    `${em.tick} | It will appear on every **Now Playing** card in this server.\n\n` +
-                    `-# ${em.customize_reset} Use \`${prefix}customize reset banner\` to remove it.`;
+                const resultText = applyError
+                    ? `**| Bot Banner — Failed**\n\n` +
+                      `${em.cross} | Could not apply banner: \`${applyError}\`\n\n` +
+                      `-# ${em.customize_reset} Use \`${prefix}customize reset banner\` to remove it.`
+                    : `**| Bot Banner Updated**\n\n` +
+                      `${em.customize_banner} | Custom banner applied to the bot's profile in **${message.guild.name}**!\n\n` +
+                      `-# ${em.customize_reset} Use \`${prefix}customize reset banner\` to remove it.`;
 
                 return working.edit({
                     flags: [MessageFlags.IsComponentsV2],
