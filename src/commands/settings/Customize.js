@@ -1,5 +1,4 @@
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
-const { MediaGalleryBuilder, MediaGalleryItemBuilder } = require("@discordjs/builders");
 const AvonCommand = require("../../structures/avonCommand");
 const { invalidateServerBrandCache } = require("../../structures/serverBrand");
 const https = require('https');
@@ -101,18 +100,6 @@ class Customize extends AvonCommand {
                                 .setThumbnailAccessory(new ThumbnailBuilder().setURL(icon || client.user.displayAvatarURL({ dynamic: true })))
                         )
                 ];
-
-                if (banner) {
-                    components.push(
-                        new ContainerBuilder()
-                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(`${em.customize_banner} **Current Banner:**`))
-                            .addMediaGalleryComponents(
-                                new MediaGalleryBuilder().addItems(
-                                    new MediaGalleryItemBuilder().setURL(banner)
-                                )
-                            )
-                    );
-                }
 
                 return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components });
             }
@@ -228,13 +215,6 @@ class Customize extends AvonCommand {
                                 new SectionBuilder()
                                     .addTextDisplayComponents(new TextDisplayBuilder().setContent(resultText))
                                     .setThumbnailAccessory(new ThumbnailBuilder().setURL(client.user.displayAvatarURL({ dynamic: true })))
-                            ),
-                        new ContainerBuilder()
-                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(`${em.customize_banner} **Banner Preview:**`))
-                            .addMediaGalleryComponents(
-                                new MediaGalleryBuilder().addItems(
-                                    new MediaGalleryItemBuilder().setURL(url)
-                                )
                             )
                     ]
                 });
