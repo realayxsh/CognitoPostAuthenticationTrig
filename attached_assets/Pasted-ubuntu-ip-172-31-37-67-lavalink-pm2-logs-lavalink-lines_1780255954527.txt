@@ -1,0 +1,36 @@
+ubuntu@ip-172-31-37-67:~/lavalink$ pm2 logs lavalink --lines 30 --nostream
+[TAILING] Tailing last 30 lines for [lavalink] process (change the value with --lines option)
+/home/ubuntu/.pm2/logs/lavalink-error.log last 30 lines:
+/home/ubuntu/.pm2/logs/lavalink-out.log last 30 lines:
+1|lavalink |
+1|lavalink |    Version:        4.2.2
+1|lavalink |    Build time:     06.03.2026 23:24:16 UTC
+1|lavalink |    Branch          HEAD
+1|lavalink |    Commit:         e8503fd
+1|lavalink |    Commit time:    06.03.2026 23:21:15 UTC
+1|lavalink |    JVM:            17.0.19
+1|lavalink |    Lavaplayer      2.2.6
+1|lavalink |
+1|lavalink | 2026-05-31T19:31:51.374Z  INFO 177891 --- [Lavalink] [           main] lavalink.server.Launcher                 : No active profile set, falling back to 1 default profile: "default"
+1|lavalink | 2026-05-31T19:31:52.740Z  WARN 177891 --- [Lavalink] [           main] io.undertow.websockets.jsr               : UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+1|lavalink | 2026-05-31T19:31:52.773Z  INFO 177891 --- [Lavalink] [           main] io.undertow.servlet                      : Initializing Spring embedded WebApplicationContext
+1|lavalink | 2026-05-31T19:31:52.775Z  INFO 177891 --- [Lavalink] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1388 ms
+1|lavalink | 2026-05-31T19:31:52.876Z  WARN 177891 --- [Lavalink] [           main] l.server.config.SentryConfiguration      : Turning off sentry
+1|lavalink | 2026-05-31T19:31:53.113Z  INFO 177891 --- [Lavalink] [           main] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+1|lavalink | 2026-05-31T19:31:53.489Z  WARN 177891 --- [Lavalink] [           main] l.s.config.AudioPlayerConfiguration      : The default Youtube source is now deprecated and won't receive further updates.
+1|lavalink | You should use the new Youtube source plugin instead.
+1|lavalink | https://github.com/lavalink-devs/youtube-source#plugin.
+1|lavalink | To disable this warning, set 'lavalink.server.sources.youtube' to false in your application.yml.
+1|lavalink | 2026-05-31T19:31:54.658Z  INFO 177891 --- [Lavalink] [           main] l.server.config.KoeConfiguration         : OS: LINUX, Arch: X86_64
+1|lavalink | 2026-05-31T19:31:54.659Z  INFO 177891 --- [Lavalink] [           main] l.server.config.KoeConfiguration         : Enabling JDA-NAS
+1|lavalink | 2026-05-31T19:31:54.669Z  INFO 177891 --- [Lavalink] [           main] c.s.l.c.natives.NativeLibraryLoader      : Native library udpqueue: loading with filter null
+1|lavalink | 2026-05-31T19:31:54.679Z  INFO 177891 --- [Lavalink] [           main] c.s.l.c.natives.NativeLibraryLoader      : Native library udpqueue: successfully loaded.
+1|lavalink | 2026-05-31T19:31:55.409Z  INFO 177891 --- [Lavalink] [           main] io.undertow                              : starting server: Undertow - 2.3.13.Final
+1|lavalink | 2026-05-31T19:31:55.437Z  INFO 177891 --- [Lavalink] [           main] org.xnio                                 : XNIO version 3.8.8.Final
+1|lavalink | 2026-05-31T19:31:55.461Z  INFO 177891 --- [Lavalink] [           main] org.xnio.nio                             : XNIO NIO Implementation Version 3.8.8.Final
+1|lavalink | 2026-05-31T19:31:55.656Z  INFO 177891 --- [Lavalink] [           main] org.jboss.threads                        : JBoss Threads version 3.5.0.Final
+1|lavalink | 2026-05-31T19:31:55.755Z  INFO 177891 --- [Lavalink] [           main] o.s.b.w.e.undertow.UndertowWebServer     : Undertow started on port 2333 (http) with context path '/'
+1|lavalink | 2026-05-31T19:31:55.778Z  INFO 177891 --- [Lavalink] [           main] lavalink.server.Launcher                 : Started Launcher in 4.571 seconds (process running for 9.456)
+1|lavalink | 2026-05-31T19:31:55.780Z  INFO 177891 --- [Lavalink] [           main] lavalink.server.Launcher                 : Lavalink is ready to accept connections.
+
+ubuntu@ip-172-31-37-67:~/lavalink$
