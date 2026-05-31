@@ -1,0 +1,46 @@
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$ pm2 logs avon-bot --lines 20
+[TAILING] Tailing last 20 lines for [avon-bot] process (change the value with --lines option)
+/home/ubuntu/.pm2/logs/avon-bot-error.log last 20 lines:
+0|avon-bot | (Use `node --trace-deprecation ...` to show where the warning was created)
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [Webhook] Invalid webhook URL: The provided webhook URL is not valid.
+0|avon-bot | (node:176001) DeprecationWarning: The ready event has been renamed to clientReady to distinguish it from the gateway READY event and will only emit under that name in v15. Please use clientReady instead.
+0|avon-bot | (Use `node --trace-deprecation ...` to show where the warning was created)
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | (node:176089) DeprecationWarning: The ready event has been renamed to clientReady to distinguish it from the gateway READY event and will only emit under that name in v15. Please use clientReady instead.
+0|avon-bot | (Use `node --trace-deprecation ...` to show where the warning was created)
+0|avon-bot | [Webhook] Failed to send log: Invalid Webhook Token
+0|avon-bot | [Webhook] Failed to send log: Invalid Webhook Token
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [Webhook] Failed to send log: Invalid Webhook Token
+0|avon-bot | [Webhook] Failed to send log: Invalid Webhook Token
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [Webhook] Failed to send log: Invalid Webhook Token
+0|avon-bot | [Webhook] Failed to send log: Invalid Webhook Token
+0|avon-bot | (node:176162) DeprecationWarning: The ready event has been renamed to clientReady to distinguish it from the gateway READY event and will only emit under that name in v15. Please use clientReady instead.
+0|avon-bot | (Use `node --trace-deprecation ...` to show where the warning was created)
+0|avon-bot | [Webhook] Log channel not found or not a text channel.
+
+/home/ubuntu/.pm2/logs/avon-bot-out.log last 20 lines:
+0|avon-bot | | AvonReady            | ✅      |
+0|avon-bot | | AvonVoiceStateUpdate | ✅      |
+0|avon-bot | '-------------------------------'
+0|avon-bot | .------------------------.
+0|avon-bot | |  Poru Events  | Status |
+0|avon-bot | |---------------|--------|
+0|avon-bot | | PlayerDestroy | ✅      |
+0|avon-bot | | PlayerEmpty   | ✅      |
+0|avon-bot | | TrackEnd      | ✅      |
+0|avon-bot | | TrackError    | ✅      |
+0|avon-bot | | TrackStart    | ✅      |
+0|avon-bot | | TrackStuck    | ✅      |
+0|avon-bot | '------------------------'
+0|avon-bot | Express running on port 3000
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] -> [Jirayu] : Connecting to wss://lavalink.jirayu.net:443/v4/websocket ...
+0|avon-bot | Radio is Online!
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] <-> [Jirayu] : Connection Handshake Done => wss://lavalink.jirayu.net:443/v4/websocket | Resumed Header Value: false | Lavalink Api Version: undefined
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] -> [Jirayu] : Lavalink is ready to communicate !
+0|avon-bot | [SHOUKAKU] => Node Jirayu is connected
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] <- [Jirayu] : Node Status Update | Server Load: 0
+
