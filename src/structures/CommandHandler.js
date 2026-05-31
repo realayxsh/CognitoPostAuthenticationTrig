@@ -1,8 +1,9 @@
-const { Collection, ButtonBuilder, ActionRowBuilder, ButtonStyle, ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, PermissionsBitField, MessageFlags } = require('discord.js');
+const { Collection, ButtonBuilder, ActionRowBuilder, ButtonStyle, ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, PermissionsBitField, MessageFlags, EmbedBuilder } = require('discord.js');
 const EventEmitter = require('events');
 const { readdirSync } = require('fs');
 const ascii = require(`ascii-table`);
 const config = require(`../../config.json`);
+const wh = require('./webhook');
 const table = new ascii().setHeading('Avon Commands', 'Status');
 const top = require(`@top-gg/sdk`);
 const voteApi = new top.Api(process.env.topggapi || config.topggapi);
@@ -170,6 +171,19 @@ class AvonCommands extends EventEmitter {
             if(!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ReadMessageHistory)) return message.channel.send({ content: `I don't have **Read Message History** permissions here` });
             if(!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.UseExternalEmojis)) return message.channel.send({ content: `I don't have **Use External Emojis** permissions here` });
             if(!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.EmbedLinks)) return message.channel.send({ content: `I don't have **Embed Links** permissions here` });
+
+            // Command usage log
+            wh.send(new EmbedBuilder()
+                .setTitle(`📋 Command Used`)
+                .setColor(0x5865F2)
+                .addFields(
+                    { name: `User`,    value: `${message.author.tag} (\`${message.author.id}\`)`,              inline: true  },
+                    { name: `Command`, value: `\`${avonCommand.name}\``,                                        inline: true  },
+                    { name: `Server`,  value: `${message.guild.name} (\`${message.guild.id}\`)`,               inline: false },
+                    { name: `Channel`, value: `<#${message.channel.id}> (\`${message.channel.name}\`)`,        inline: false }
+                )
+                .setTimestamp()
+            );
 
             let client = this.client;
             if(avonCommand.inVoice){

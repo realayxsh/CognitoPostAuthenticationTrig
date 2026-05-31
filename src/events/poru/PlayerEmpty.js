@@ -1,6 +1,7 @@
 const delay = require("delay");
-const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, MessageFlags } = require("discord.js");
+const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, MessageFlags, EmbedBuilder } = require("discord.js");
 const AvonClientEvent = require("../../structures/Eventhandler");
+const wh = require('../../structures/webhook');
 
 class PlayerEmpty extends AvonClientEvent{
     get name(){ return 'playerEmpty'; }
@@ -25,6 +26,15 @@ class PlayerEmpty extends AvonClientEvent{
                 }
             } catch(e) { console.error('[Autoplay]', e); }
         }
+
+        // Webhook log
+        const guild2 = this.client.guilds.cache.get(player.guildId);
+        wh.send(new EmbedBuilder()
+            .setTitle(`⏹️ Queue Ended`)
+            .setColor(0xFF8800)
+            .setDescription(`Queue concluded in **${guild2?.name || 'Unknown'}** (\`${player.guildId}\`)`)
+            .setTimestamp()
+        );
 
         // Only show "Queue Concluded" if NOT in 247 mode
         if(db !== `enabled` && !is247){

@@ -1,7 +1,8 @@
-const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, MessageFlags } = require("discord.js");
+const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, MessageFlags, EmbedBuilder } = require("discord.js");
 const AvonClientEvent = require(`../../structures/Eventhandler`);
 const moment = require(`moment`);
 require(`moment-duration-format`);
+const wh = require('../../structures/webhook');
 
 // Quality EQ — applied ONCE per player session on the very first track.
 // Lavalink persists filter state across tracks, so this never needs to be
@@ -118,6 +119,22 @@ class TrackStart extends AvonClientEvent {
                         )
                 )
             );
+
+        // Webhook log
+        const guild = this.client.guilds.cache.get(player.guildId);
+        wh.send(new EmbedBuilder()
+            .setTitle(`🎵 Now Playing`)
+            .setColor(0x1DB954)
+            .setThumbnail(track.thumbnail || null)
+            .addFields(
+                { name: `Track`,   value: `[${track.title}](${track.uri || 'https://discord.com'})`, inline: false },
+                { name: `Artist`,  value: `\`${track.author}\``,  inline: true },
+                { name: `Duration`,value: `\`${duration}\``,       inline: true },
+                { name: `Server`,  value: `${guild?.name || 'Unknown'} (\`${player.guildId}\`)`, inline: false },
+                { name: `Requested by`, value: `${track.requester?.tag || track.requester} (\`${track.requester?.id || '?'}\`)`, inline: false }
+            )
+            .setTimestamp()
+        );
 
         if (channel) {
             return channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] })

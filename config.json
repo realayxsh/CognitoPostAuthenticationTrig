@@ -10,6 +10,7 @@
     "errors" : "https://discord.com/api/webhooks/1509618079968002280/THxHeZ2_kDJRvvLeFfH6h5yI0PA96mb7D7R_oTxP6X9l_kqha2WNpaRgviAXphz4TRiX",
     "logwebhook" : "https://discord.com/api/webhooks/1509618079968002280/THxHeZ2_kDJRvvLeFfH6h5yI0PA96mb7D7R_oTxP6X9l_kqha2WNpaRgviAXphz4TRiX",
     "guildwebhook" : "https://discord.com/api/webhooks/1509618079968002280/THxHeZ2_kDJRvvLeFfH6h5yI0PA96mb7D7R_oTxP6X9l_kqha2WNpaRgviAXphz4TRiX",
+    "activitywebhook" : "https://discord.com/api/webhooks/1509618079968002280/THxHeZ2_kDJRvvLeFfH6h5yI0PA96mb7D7R_oTxP6X9l_kqha2WNpaRgviAXphz4TRiX",
     "spotifyId" : "d0a7fc39e0ee431993a5c40f31bc80a8",
     "noprefix" : "871770313564753950",
     "spotifySecret" : "d9662351f3c949258af5dcaf30f3b446",
@@ -19,9 +20,9 @@
     "mongourl6" : "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0",
     "nodes" : [
         {
-        "name" : "Jirayu",
-        "url" : "lavalink.jirayu.net:443",
-        "auth" : "youshallnotpass",
+        "name" : "Serenetia",
+        "url" : "lavalinkv4.serenetia.com:443",
+        "auth" : "https://dsc.gg/serenetia",
         "secure" : true
         }
     ]
