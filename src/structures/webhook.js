@@ -1,24 +1,42 @@
 const { WebhookClient, EmbedBuilder } = require('discord.js');
 const config = require('../../config.json');
 
-const WEBHOOK_URL = process.env.logwebhook || process.env.guildwebhook || process.env.errorswebhook || config.logwebhook || config.guildwebhook || '';
 let _web = null;
 
-if (WEBHOOK_URL) {
-    // Parse the URL manually to extract id + token, bypassing discord.js URL validation
-    const match = WEBHOOK_URL.match(/webhooks\/(\d+)\/([^/?#\s]+)/);
-    if (match) {
-        try {
-            _web = new WebhookClient({ id: match[1], token: match[2] });
-            console.log(`[Webhook] Initialised — ID: ${match[1]}`);
-        } catch(e) {
-            console.error('[Webhook] Failed to create WebhookClient:', e.message);
-        }
-    } else {
-        console.warn('[Webhook] Could not parse webhook URL — logs will not be sent to Discord.');
+// Called from AvonReady — bot auto-creates/finds its own webhook in the log channel
+async function initWebhook(client) {
+    const channelId = process.env.logChannelId || config.logChannelId;
+    if (!channelId) {
+        console.warn('[Webhook] No logChannelId set — webhook logging disabled.');
+        return;
     }
-} else {
-    console.warn('[Webhook] No webhook URL configured — logs will not be sent to Discord.');
+
+    try {
+        const channel = await client.channels.fetch(channelId).catch(() => null);
+        if (!channel || !channel.isTextBased()) {
+            console.warn('[Webhook] Log channel not found or not a text channel.');
+            return;
+        }
+
+        const hooks = await channel.fetchWebhooks();
+        let hook = hooks.find(h => h.name === 'Avon Logs' && h.owner?.id === client.user.id);
+
+        if (!hook) {
+            hook = await channel.createWebhook({
+                name: 'Avon Logs',
+                avatar: client.user.displayAvatarURL(),
+                reason: 'Auto-created by Avon for log delivery'
+            });
+            console.log('[Webhook] Created new webhook in log channel.');
+        } else {
+            console.log('[Webhook] Found existing webhook in log channel.');
+        }
+
+        _web = new WebhookClient({ id: hook.id, token: hook.token });
+        console.log(`[Webhook] Ready — ID: ${hook.id}`);
+    } catch (e) {
+        console.error('[Webhook] Failed to init webhook:', e.message);
+    }
 }
 
 function web() { return _web; }
@@ -40,4 +58,4 @@ function error(title, err) {
     send(new EmbedBuilder().setTitle(`🔴 ${title}`).setDescription(`\`\`\`js\n${truncated}\`\`\``).setColor(0xFF0000).setTimestamp());
 }
 
-module.exports = { web, send, info, error };
+module.exports = { web, send, info, error, initWebhook };

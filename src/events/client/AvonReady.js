@@ -1,11 +1,13 @@
 const { ActivityType } = require("discord.js");
 const AvonClientEvent = require("../../structures/Eventhandler");
+const { initWebhook } = require("../../structures/webhook");
 class AvonReady extends AvonClientEvent{
     get name(){
         return 'clientReady';
     }
     async run(){
         console.log(`${this.client.user.username} is Online!`);
+        initWebhook(this.client);
         let statuses = [`${this.client.config.prefix}help`,`${this.client.config.prefix}play`]
         setInterval(() => {
             let status = statuses[Math.floor(Math.random()*statuses.length)];           
