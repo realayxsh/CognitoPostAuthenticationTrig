@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection, WebhookClient, Partials, EmbedBuilder } = require(`discord.js`);
+const { Client, GatewayIntentBits, Collection, Partials } = require(`discord.js`);
 const { Guilds, MessageContent, GuildInvites, GuildVoiceStates, GuildMessages, DirectMessages } = GatewayIntentBits;
 const { User, Channel, Reaction, Message, GuildMember } = Partials;
 const { Database } = require("quickmongo");
@@ -8,21 +8,6 @@ const AvonCommands = require("./CommandHandler");
 const config = require(`../../config.json`);
 const Shoukaku = require("./Shoukaku");
 const Lavasfy = require("./Lavasfy");
-const errorsUrl = process.env.errorswebhook || config.errors || '';
-let web = null;
-try { web = errorsUrl ? new WebhookClient({ url: errorsUrl }) : null; } catch (e) { console.warn('[WEBHOOK] Invalid webhook URL, error logging disabled:', e.message); }
-
-function sendErrorToWebhook(web, label, err) {
-    if (!web) return;
-    const stack = err?.stack || String(err);
-    const truncated = stack.length > 3800 ? stack.slice(0, 3800) + '\n...(truncated)' : stack;
-    const embed = new EmbedBuilder()
-        .setTitle(`🔴 ${label}`)
-        .setDescription(`\`\`\`js\n${truncated}\`\`\``)
-        .setColor(0xFF0000)
-        .setTimestamp();
-    web.send({ embeds: [embed] }).catch(() => {});
-}
 
 class Avon extends Client {
     constructor(){
@@ -52,31 +37,12 @@ class Avon extends Client {
         this.poru = new Shoukaku(this);
         this.lavasfy = new Lavasfy(this);
         this.poru.shoukaku.on('ready', (name) => { console.log(`[SHOUKAKU] => Node ${name} is connected`) });
-        this.poru.shoukaku.on('error', (name, error) => {
-            console.error(`[SHOUKAKU] => Node ${name} got error: ${error?.message || error}`);
-            sendErrorToWebhook(web, `Lavalink Node Error — ${name}`, error);
-        });
-        this.poru.shoukaku.on('close', (name, code, reason) => {
-            console.warn(`[SHOUKAKU] => Node ${name} closed | Code: ${code} | Reason: ${reason}`);
-            if(web){
-                const embed = new EmbedBuilder()
-                    .setTitle(`🟠 Lavalink Node Closed — ${name}`)
-                    .setDescription(`**Code:** \`${code}\`\n**Reason:** \`${reason || 'none'}\``)
-                    .setColor(0xFF8800).setTimestamp();
-                web.send({ embeds: [embed] }).catch(() => {});
-            }
-        });
+        this.poru.shoukaku.on('error', (name, error) => { console.error(`[SHOUKAKU] => Node ${name} got error: ${error?.message || error}`); });
+        this.poru.shoukaku.on('close', (name, code, reason) => { console.warn(`[SHOUKAKU] => Node ${name} closed | Code: ${code} | Reason: ${reason}`); });
         this.poru.shoukaku.on('debug', (name, info) => { console.log(`[SHOUKAKU] => Node ${name} Debug: ${info}`) });
         this.poru.shoukaku.on('disconnect', (name, players, moved) => {
             if(moved) return;
             console.warn(`[SHOUKAKU] => Node ${name}: Disconnected`);
-            if(web){
-                const embed = new EmbedBuilder()
-                    .setTitle(`🔴 Lavalink Node Disconnected — ${name}`)
-                    .setDescription(`**Players affected:** \`${players?.length ?? 0}\``)
-                    .setColor(0xFF0000).setTimestamp();
-                web.send({ embeds: [embed] }).catch(() => {});
-            }
         });
         this.poru.on("playerClosed", (player, data) => {
             console.warn(`[PORU] playerClosed => Guild: ${player?.guildId} | Code: ${data?.code} | Reason: ${data?.reason}`);
@@ -86,14 +52,8 @@ class Avon extends Client {
         this.AvonCommands = new AvonCommands(this).loadCommands();
         this.events = new AvonEvents(this).loadEvents();
         this.login(process.env.token);
-        process.on('unhandledRejection', async (er) => {
-            console.error(er);
-            sendErrorToWebhook(web, 'unhandledRejection', er);
-        });
-        process.on('uncaughtException', async (err) => {
-            console.error(err);
-            sendErrorToWebhook(web, 'uncaughtException', err);
-        });
+        process.on('unhandledRejection', async (er) => { console.error(er); });
+        process.on('uncaughtException', async (err) => { console.error(err); });
     }
 }
 module.exports = Avon;

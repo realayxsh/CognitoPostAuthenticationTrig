@@ -1,11 +1,8 @@
-const { Collection, ButtonBuilder, ActionRowBuilder, ButtonStyle, ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, PermissionsBitField, WebhookClient, EmbedBuilder, MessageFlags } = require('discord.js');
+const { Collection, ButtonBuilder, ActionRowBuilder, ButtonStyle, ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, PermissionsBitField, MessageFlags } = require('discord.js');
 const EventEmitter = require('events');
 const { readdirSync } = require('fs');
 const ascii = require(`ascii-table`);
 const config = require(`../../config.json`);
-const webhookUrl = process.env.logwebhook || config.logwebhook || '';
-let web = null;
-try { web = webhookUrl ? new WebhookClient({ url: webhookUrl }) : null; } catch (e) { console.warn('[WEBHOOK] Invalid logwebhook URL, logging disabled:', e.message); }
 const table = new ascii().setHeading('Avon Commands', 'Status');
 const top = require(`@top-gg/sdk`);
 const voteApi = new top.Api(process.env.topggapi || config.topggapi);
@@ -167,22 +164,6 @@ class AvonCommands extends EventEmitter {
             const disabledKey = `disabled_channel_${message.guild.id}_${message.channel.id}`;
             const channelDisabled = await this.client.data.get(disabledKey);
             if(channelDisabled === `disabled` && !this.client.config.owners.includes(message.author.id)) return;
-
-            // Fire-and-forget webhook log — never blocks command execution
-            if(web){
-                const logEmbed = new EmbedBuilder()
-                    .setTitle(`📋 Command Used`)
-                    .setColor(0x5865F2)
-                    .setThumbnail(message.guild.iconURL({ dynamic: true }) || this.client.user.displayAvatarURL())
-                    .addFields(
-                        { name: `Author`,   value: `${message.author.tag} (\`${message.author.id}\`)`, inline: true },
-                        { name: `Command`,  value: `\`${avonCommand.name}\``,                           inline: true },
-                        { name: `Guild`,    value: `${message.guild.name} (\`${message.guild.id}\`)`,  inline: false },
-                        { name: `Channel`,  value: `<#${message.channel.id}> (\`${message.channel.name}\`)`, inline: false }
-                    )
-                    .setTimestamp();
-                web.send({ embeds: [logEmbed] }).catch(() => {});
-            }
 
             if(!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.ViewChannel)) return;
             if(!message.guild.members.me.permissionsIn(message.channel).has(PermissionsBitField.Flags.SendMessages)) return message.author.send({ content: `I don't have **Send Messages** permissions in that channel` }).catch(e => null);
