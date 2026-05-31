@@ -1,5 +1,7 @@
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, SeparatorBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, MessageFlags } = require("discord.js");
+const { MediaGalleryBuilder, MediaGalleryItemBuilder } = require("@discordjs/builders");
 const AvonClientEvent = require(`../../structures/Eventhandler`);
+const { getServerBrand } = require(`../../structures/serverBrand`);
 const moment = require(`moment`);
 require(`moment-duration-format`);
 
@@ -36,6 +38,7 @@ class TrackStart extends AvonClientEvent {
         let url = track.uri || '';
         const channel = this.client.channels.cache.get(player.textId);
         let duration = moment.duration(player.queue.current.length).format("hh:mm:ss");
+        const brand = await getServerBrand(this.client, player.guildId).catch(() => ({}));
 
         if (player.queue.current.length < 30000) {
             player.skip();
@@ -120,7 +123,18 @@ class TrackStart extends AvonClientEvent {
             );
 
         if (channel) {
-            return channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] })
+            const components = [container];
+            if (brand?.banner) {
+                components.push(
+                    new ContainerBuilder()
+                        .addMediaGalleryComponents(
+                            new MediaGalleryBuilder().addItems(
+                                new MediaGalleryItemBuilder().setURL(brand.banner)
+                            )
+                        )
+                );
+            }
+            return channel.send({ flags: [MessageFlags.IsComponentsV2], components })
                 .then(x => player.data.set("music", x));
         }
     }
