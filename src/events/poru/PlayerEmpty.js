@@ -28,18 +28,21 @@ class PlayerEmpty extends AvonClientEvent{
 
         // Only show "Queue Concluded" if NOT in 247 mode
         if(db !== `enabled` && !is247){
-            let ch    = this.client.channels.cache.get(player.textId);
+            let ch = this.client.channels.cache.get(player.textId);
+            if(!ch) ch = await this.client.channels.fetch(player.textId).catch(() => null);
             let guild = this.client.guilds.cache.get(player.guildId);
-            const container = new ContainerBuilder()
-                .addSectionComponents(
-                    new SectionBuilder()
-                        .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| Queue Concluded**`))
-                        .setThumbnailAccessory(new ThumbnailBuilder().setURL(guild?.iconURL({ dynamic: true }) || this.client.user.displayAvatarURL()))
+            if(ch){
+                const container = new ContainerBuilder()
+                    .addSectionComponents(
+                        new SectionBuilder()
+                            .addTextDisplayComponents(new TextDisplayBuilder().setContent(`**| Queue Concluded**`))
+                            .setThumbnailAccessory(new ThumbnailBuilder().setURL(guild?.iconURL({ dynamic: true }) || this.client.user.displayAvatarURL()))
+                    );
+                const row = new ActionRowBuilder().addComponents(
+                    new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(`https://top.gg/bot/1097475016880304180/vote`).setLabel(`Vote`)
                 );
-            const row = new ActionRowBuilder().addComponents(
-                new ButtonBuilder().setStyle(ButtonStyle.Link).setURL(`https://top.gg/bot/1097475016880304180/vote`).setLabel(`Vote`)
-            );
-            ch?.send({ flags: [MessageFlags.IsComponentsV2], components: [container, row] });
+                ch.send({ flags: [MessageFlags.IsComponentsV2], components: [container, row] }).catch(() => {});
+            }
         }
 
         // If 247 is enabled, just stay silent in the VC — no destroy, no message
