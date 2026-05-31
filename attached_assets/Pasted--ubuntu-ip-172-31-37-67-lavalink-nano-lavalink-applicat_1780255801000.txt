@@ -1,0 +1,65 @@
+
+ubuntu@ip-172-31-37-67:~/lavalink$ nano ~/lavalink/application.yml
+ubuntu@ip-172-31-37-67:~/lavalink$ server:
+  port: 2333
+  address: 0.0.0.0
+lavalink:
+  server:
+    password: "youshallnotpass"
+    sources:
+      youtube: true
+      soundcloud: true
+      http: true
+      local: false
+    bufferDurationMs: 400
+    frameBufferDurationMs: 5000
+    youtubePlaylistLoadLimit: 6
+    playerUpdateInterval: 5
+    youtubeSearchEnabled: true
+    soundcloudSearchEnabled: true
+logging:
+  level:
+    root: INFO
+    lavalink: INFO
+server:: command not found
+Command 'port:' not found, did you mean:
+  command 'portx' from snap portx (2.2.15)
+  command 'port' from snap port (1.10.0)
+See 'snap info <snapname>' for additional versions.
+address:: command not found
+lavalink:: command not found
+server:: command not found
+Command 'password:' not found, did you mean:
+  command 'passwordz' from snap passwordz (1.0.0)
+See 'snap info <snapname>' for additional versions.
+sources:: command not found
+youtube:: command not found
+soundcloud:: command not found
+Command 'http:' not found, did you mean:
+  command 'httpx' from snap httpx (v1.2.1)
+  command 'https' from snap httpie (3.2.2)
+  command 'http' from snap http (2.4.0)
+  command 'http' from snap httpie (3.2.2)
+  command 'http' from deb httpie (3.2.4-4)
+  command 'httpx' from deb python3-httpx (0.28.1-1build1)
+  command 'https' from deb httpie (3.2.4-4)
+See 'snap info <snapname>' for additional versions.
+Command 'local:' not found, did you mean:
+  command 'localc' from deb libreoffice-calc (4:26.2.2.2-0ubuntu1)
+  command 'locale' from deb libc-bin (2.43-2ubuntu2)
+Try: sudo apt install <deb name>
+bufferDurationMs:: command not found
+frameBufferDurationMs:: command not found
+youtubePlaylistLoadLimit:: command not found
+playerUpdateInterval:: command not found
+youtubeSearchEnabled:: command not found
+soundcloudSearchEnabled:: command not found
+logging:: command not found
+level:: command not found
+Command 'root:' not found, did you mean:
+  command 'roots' from snap root-framework (v6-36-04)
+  command 'root' from snap root-framework (v6-36-04)
+  command 'rootv' from deb xawtv (3.107-4build1)
+See 'snap info <snapname>' for additional versions.
+lavalink:: command not found
+ubuntu@ip-172-31-37-67:~/lavalink$
