@@ -1,7 +1,7 @@
 const { WebhookClient, EmbedBuilder } = require('discord.js');
 const config = require('../../config.json');
 
-const WEBHOOK_URL = process.env.logwebhook || config.logwebhook || '';
+const WEBHOOK_URL = process.env.logwebhook || process.env.guildwebhook || process.env.errorswebhook || config.logwebhook || config.guildwebhook || '';
 let _web = null;
 try { _web = WEBHOOK_URL ? new WebhookClient({ url: WEBHOOK_URL }) : null; } catch(e) {}
 
