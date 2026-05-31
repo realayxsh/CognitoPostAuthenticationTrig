@@ -1,0 +1,46 @@
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$ pm2 logs lavalink --lines 40 --nostream
+[TAILING] Tailing last 40 lines for [lavalink] process (change the value with --lines option)
+/home/ubuntu/.pm2/logs/lavalink-error.log last 40 lines:
+/home/ubuntu/.pm2/logs/lavalink-out.log last 40 lines:
+1|lavalink |
+1|lavalink |        .   _                  _ _       _    __ _ _
+1|lavalink |       /\\ | | __ ___   ____ _| (_)_ __ | | __\ \ \ \
+1|lavalink |      ( ( )| |/ _` \ \ / / _` | | | '_ \| |/ / \ \ \ \
+1|lavalink |       \\/ | | (_| |\ V / (_| | | | | | |   <   ) ) ) )
+1|lavalink |        '  |_|\__,_| \_/ \__,_|_|_|_| |_|_|\_\ / / / /
+1|lavalink |     =========================================/_/_/_/
+1|lavalink |
+1|lavalink |    Version:        4.2.2
+1|lavalink |    Build time:     06.03.2026 23:24:16 UTC
+1|lavalink |    Branch          HEAD
+1|lavalink |    Commit:         e8503fd
+1|lavalink |    Commit time:    06.03.2026 23:21:15 UTC
+1|lavalink |    JVM:            17.0.19
+1|lavalink |    Lavaplayer      2.2.6
+1|lavalink |
+1|lavalink | 2026-05-31T19:34:54.745Z  INFO 178025 --- [Lavalink] [           main] lavalink.server.Launcher                 : No active profile set, falling back to 1 default profile: "default"
+1|lavalink | 2026-05-31T19:34:56.172Z  WARN 178025 --- [Lavalink] [           main] io.undertow.websockets.jsr               : UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+1|lavalink | 2026-05-31T19:34:56.216Z  INFO 178025 --- [Lavalink] [           main] io.undertow.servlet                      : Initializing Spring embedded WebApplicationContext
+1|lavalink | 2026-05-31T19:34:56.219Z  INFO 178025 --- [Lavalink] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1461 ms
+1|lavalink | 2026-05-31T19:34:57.024Z  INFO 178025 --- [Lavalink] [           main] dev.lavalink.youtube.plugin.PluginInfo   : ********************************************
+1|lavalink | YOUTUBE-SOURCE VERSION 1.18.1 AVAILABLE
+1|lavalink | https://github.com/lavalink-devs/youtube-source/releases/tag/1.18.1
+1|lavalink | Update to ensure the YouTube source remains operational!
+1|lavalink | ********************************************
+1|lavalink | 2026-05-31T19:34:57.064Z  INFO 178025 --- [Lavalink] [           main] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+1|lavalink | 2026-05-31T19:34:57.540Z  WARN 178025 --- [Lavalink] [           main] d.l.youtube.plugin.ClientProvider        : Failed to resolve ANDROID_TESTSUITE into a Client
+1|lavalink | 2026-05-31T19:34:57.575Z  INFO 178025 --- [Lavalink] [           main] d.l.youtube.plugin.YoutubePluginLoader   : YouTube source initialised with clients: WEB_REMIX, WEB, TVHTML5_SIMPLY_EMBEDDED_PLAYER
+1|lavalink | 2026-05-31T19:34:57.589Z  WARN 178025 --- [Lavalink] [           main] l.server.config.SentryConfiguration      : Turning off sentry
+1|lavalink | 2026-05-31T19:34:58.079Z  INFO 178025 --- [Lavalink] [           main] l.server.config.KoeConfiguration         : OS: LINUX, Arch: X86_64
+1|lavalink | 2026-05-31T19:34:58.080Z  INFO 178025 --- [Lavalink] [           main] l.server.config.KoeConfiguration         : Enabling JDA-NAS
+1|lavalink | 2026-05-31T19:34:58.086Z  INFO 178025 --- [Lavalink] [           main] c.s.l.c.natives.NativeLibraryLoader      : Native library udpqueue: loading with filter null
+1|lavalink | 2026-05-31T19:34:58.093Z  INFO 178025 --- [Lavalink] [           main] c.s.l.c.natives.NativeLibraryLoader      : Native library udpqueue: successfully loaded.
+1|lavalink | 2026-05-31T19:34:58.748Z  INFO 178025 --- [Lavalink] [           main] io.undertow                              : starting server: Undertow - 2.3.13.Final
+1|lavalink | 2026-05-31T19:34:58.766Z  INFO 178025 --- [Lavalink] [           main] org.xnio                                 : XNIO version 3.8.8.Final
+1|lavalink | 2026-05-31T19:34:58.790Z  INFO 178025 --- [Lavalink] [           main] org.xnio.nio                             : XNIO NIO Implementation Version 3.8.8.Final
+1|lavalink | 2026-05-31T19:34:58.963Z  INFO 178025 --- [Lavalink] [           main] org.jboss.threads                        : JBoss Threads version 3.5.0.Final
+1|lavalink | 2026-05-31T19:34:59.043Z  INFO 178025 --- [Lavalink] [           main] o.s.b.w.e.undertow.UndertowWebServer     : Undertow started on port 2333 (http) with context path '/'
+1|lavalink | 2026-05-31T19:34:59.057Z  INFO 178025 --- [Lavalink] [           main] lavalink.server.Launcher                 : Started Launcher in 4.462 seconds (process running for 13.088)
+1|lavalink | 2026-05-31T19:34:59.061Z  INFO 178025 --- [Lavalink] [           main] lavalink.server.Launcher                 : Lavalink is ready to accept connections.
+
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$
