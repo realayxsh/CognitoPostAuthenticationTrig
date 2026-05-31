@@ -9,7 +9,7 @@ class Stop extends AvonCommand {
     get inVoice() { return true; }
     get sameVoice() { return true; }
     async run(client, message, args, prefix, player) {
-        player.destroy();
+        player.destroy().catch(() => {});
         const container = new ContainerBuilder()
             .addSectionComponents(
                 new SectionBuilder()

@@ -53,7 +53,7 @@ class PlayerEmpty extends AvonClientEvent{
         let activePlayer = this.client.poru.players.get(player.guildId);
         if(!activePlayer) return;
         if(activePlayer.isPlaying || activePlayer.queue.size > 0 || activePlayer.queue.current) return;
-        activePlayer.destroy();
+        activePlayer.destroy().catch(() => {});
         let ch = this.client.channels.cache.get(player.textId);
         if(!ch){
             let channel = await this.client.channels.fetch(player.textId).catch(() => null);

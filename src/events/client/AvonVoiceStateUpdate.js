@@ -16,7 +16,7 @@ class AvonVoiceStateUpdate extends AvonClientEvent {
         if (os.id === this.client.user.id) {
             // Bot was disconnected from VC
             if (!ns.channelId) {
-                if (player) player.destroy();
+                if (player) player.destroy().catch(() => {});
                 return;
             }
 
@@ -64,7 +64,7 @@ class AvonVoiceStateUpdate extends AvonClientEvent {
         const stillEmpty = freshVc.members.filter(m => !m.user.bot).size === 0;
         if (!stillEmpty) return;
 
-        freshPlayer.destroy();
+        freshPlayer.destroy().catch(() => {});
         const ch = this.client.channels.cache.get(freshPlayer.textId);
         if (ch) {
             const { ContainerBuilder, TextDisplayBuilder, MessageFlags } = require('discord.js');
