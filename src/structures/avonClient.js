@@ -9,7 +9,8 @@ const config = require(`../../config.json`);
 const Shoukaku = require("./Shoukaku");
 const Lavasfy = require("./Lavasfy");
 const errorsUrl = process.env.errorswebhook || config.errors || '';
-const web = errorsUrl ? new WebhookClient({ url: errorsUrl }) : null;
+let web = null;
+try { web = errorsUrl ? new WebhookClient({ url: errorsUrl }) : null; } catch (e) { console.warn('[WEBHOOK] Invalid webhook URL, error logging disabled:', e.message); }
 
 function sendErrorToWebhook(web, label, err) {
     if (!web) return;

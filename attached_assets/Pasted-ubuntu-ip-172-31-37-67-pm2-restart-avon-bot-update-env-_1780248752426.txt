@@ -1,0 +1,45 @@
+ubuntu@ip-172-31-37-67:~$ pm2 restart avon-bot --update-env
+pm2 logs avon-bot --lines 15 --nostream
+[PM2] Applying action restartProcessId on app [avon-bot](ids: [ 0 ])
+[PM2] [avon-bot](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ avon-bot           │ fork     │ 4512 │ online    │ 0%       │ 9.2mb    │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+[TAILING] Tailing last 15 lines for [avon-bot] process (change the value with --lines option)
+/home/ubuntu/.pm2/logs/avon-bot-error.log last 15 lines:
+0|avon-bot |     at Module.require (node:internal/modules/cjs/loader:1289:19)
+0|avon-bot |     at require (node:internal/modules/helpers:182:18)
+0|avon-bot |     at Object.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/src/structures/avonClient.js:7:22)
+0|avon-bot |     at Module._compile (node:internal/modules/cjs/loader:1521:14) {
+0|avon-bot |   code: 'WebhookURLInvalid'
+0|avon-bot | }
+0|avon-bot |
+0|avon-bot | Node.js v20.20.2
+0|avon-bot | Error: CLUSTERING_READY_DIED | ClusterId: 0
+0|avon-bot |     at Cluster.onDeath (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:150:24)
+0|avon-bot |     at Object.onceWrapper (node:events:639:26)
+0|avon-bot |     at Cluster.emit (node:events:524:28)
+0|avon-bot |     at Cluster._handleExit (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/discord-hybrid-sharding/dist/Core/Cluster.js:276:14)
+0|avon-bot |     at ChildProcess.emit (node:events:524:28)
+0|avon-bot |     at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+
+/home/ubuntu/.pm2/logs/avon-bot-out.log last 15 lines:
+0|avon-bot | ◇ injected env (1) from .env // tip: ⌘ suppress logs { quiet: true }
+0|avon-bot | ◇ injected env (1) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+0|avon-bot | ◇ injected env (1) from .env // tip: ⌘ custom filepath { path: '/custom/path/.env' }
+0|avon-bot | ◇ injected env (1) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+0|avon-bot | ◇ injected env (1) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+0|avon-bot | ◇ injected env (1) from .env // tip: ⌘ suppress logs { quiet: true }
+0|avon-bot | ◇ injected env (1) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+0|avon-bot | ◇ injected env (1) from .env // tip: ⌁ auth for agents [www.vestauth.com]
+0|avon-bot | ◇ injected env (12) from .env // tip: ⌘ override existing { override: true }
+0|avon-bot | Cluster Launched: 0
+0|avon-bot | ◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+0|avon-bot | ◇ injected env (0) from .env // tip: ◈ secrets for agents [www.dotenvx.com]
+0|avon-bot | ◇ injected env (0) from .env // tip: ◈ encrypted .env [www.dotenvx.com]
+0|avon-bot | ◇ injected env (0) from .env // tip: ⌘ multiple files { path: ['.env.local', '.env'] }
+0|avon-bot | ◇ injected env (12) from .env // tip: ⌘ suppress logs { quiet: true }
+
+ubuntu@ip-172-31-37-67:~$
