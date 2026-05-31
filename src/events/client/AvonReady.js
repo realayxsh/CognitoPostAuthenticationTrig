@@ -2,13 +2,13 @@ const { ActivityType } = require("discord.js");
 const AvonClientEvent = require("../../structures/Eventhandler");
 class AvonReady extends AvonClientEvent{
     get name(){
-        return 'ready';
+        return 'clientReady';
     }
     async run(){
         console.log(`${this.client.user.username} is Online!`);
         let statuses = [`${this.client.config.prefix}help`,`${this.client.config.prefix}play`]
         setInterval(() => {
-            let status = statuses[Math.floor(Math.random()*statuses.length)];		
+            let status = statuses[Math.floor(Math.random()*statuses.length)];           
               this.client.user.setPresence({
                   activities: [
                       {
