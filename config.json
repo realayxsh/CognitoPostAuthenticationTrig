@@ -29,6 +29,18 @@
         "url" : "lavalinkv4.serenetia.com:443",
         "auth" : "https://seretia.link/discord",
         "secure" : true
+        },
+        {
+        "name" : "DevamOP",
+        "url" : "lavalink.devamop.in:443",
+        "auth" : "DevamOP",
+        "secure" : true
+        },
+        {
+        "name" : "Freelink",
+        "url" : "freelink1.gaylaxy.dev:443",
+        "auth" : "freelink",
+        "secure" : true
         }
     ]
 }

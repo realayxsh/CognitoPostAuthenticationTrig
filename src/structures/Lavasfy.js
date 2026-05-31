@@ -23,6 +23,20 @@ class Lavasfy extends LavasfyClient{
                 port : 443,
                 password : "https://seretia.link/discord",
                 secure : true
+            },
+            {
+                id : "DevamOP",
+                host : "lavalink.devamop.in",
+                port : 443,
+                password : "DevamOP",
+                secure : true
+            },
+            {
+                id : "Freelink",
+                host : "freelink1.gaylaxy.dev",
+                port : 443,
+                password : "freelink",
+                secure : true
             }
         ]);
     }
