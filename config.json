@@ -21,22 +21,34 @@
     "mongourl6" : "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0",
     "nodes" : [
         {
+            "name" : "Serenetia",
+            "url" : "lavalinkv4.serenetia.com:443",
+            "auth" : "https://dsc.gg/ajidevserver",
+            "secure" : true
+        },
+        {
             "name" : "Jirayu",
             "url" : "lavalink.jirayu.net:443",
             "auth" : "youshallnotpass",
             "secure" : true
         },
         {
-            "name" : "DevamOP",
-            "url" : "lavalink.devamop.in:443",
-            "auth" : "DevamOP",
+            "name" : "Millohost",
+            "url" : "lava-v4.millohost.my.id:443",
+            "auth" : "https://discord.gg/mjS5J2K3ep",
             "secure" : true
         },
         {
-            "name" : "Clxud",
-            "url" : "lavalink.clxud.net:443",
-            "auth" : "youshallnotpass",
+            "name" : "NextGenCoders",
+            "url" : "lavalink.nextgencoders.xyz:443",
+            "auth" : "nextgencoderspvt",
             "secure" : true
+        },
+        {
+            "name" : "Nexcloud",
+            "url" : "n3.nexcloud.in:2026",
+            "auth" : "nexcloud",
+            "secure" : false
         }
     ]
 }

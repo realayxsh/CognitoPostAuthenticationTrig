@@ -14,7 +14,7 @@ class Lavasfy extends LavasfyClient{
                 id : "Serenetia",
                 host : "lavalinkv4.serenetia.com",
                 port : 443,
-                password : "https://dsc.gg/serenetia",
+                password : "https://dsc.gg/ajidevserver",
                 secure : true
             }
         ]);
