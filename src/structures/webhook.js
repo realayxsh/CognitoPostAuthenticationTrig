@@ -19,11 +19,11 @@ async function initWebhook(client) {
         }
 
         const hooks = await channel.fetchWebhooks();
-        let hook = hooks.find(h => h.name === 'Avon Logs' && h.owner?.id === client.user.id);
+        let hook = hooks.find(h => h.name === 'Radio Logs' && h.owner?.id === client.user.id);
 
         if (!hook) {
             hook = await channel.createWebhook({
-                name: 'Avon Logs',
+                name: 'Radio Logs',
                 avatar: client.user.displayAvatarURL(),
                 reason: 'Auto-created by Avon for log delivery'
             });
