@@ -1,5 +1,3 @@
-/// <reference types="node" />
-/// <reference types="node" />
 import { Serializable } from 'child_process';
 import { Worker as Worker_Thread, WorkerOptions, parentPort } from 'worker_threads';
 export interface WorkerThreadOptions extends WorkerOptions {

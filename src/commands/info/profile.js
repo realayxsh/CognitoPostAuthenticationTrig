@@ -1,6 +1,6 @@
 const AvonCommand = require("../../structures/avonCommand");
 const { Api } = require(`@top-gg/sdk`);
-const config = require(`../../../config.json`);
+const config = require(`../../config.js`);
 const badge = require(`./badges.json`);
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 

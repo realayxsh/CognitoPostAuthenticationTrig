@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { REST, Routes, SlashCommandBuilder } = require('discord.js');
-const config = require('../config.json');
+const config = require('./config.js');
 
 const commands = [
     new SlashCommandBuilder().setName('play').setDescription('Play a song or playlist').addStringOption(o => o.setName('query').setDescription('Song name, Spotify/Deezer/SoundCloud URL').setRequired(true)),

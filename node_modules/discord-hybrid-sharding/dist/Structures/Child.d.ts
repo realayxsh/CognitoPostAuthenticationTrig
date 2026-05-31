@@ -1,5 +1,3 @@
-/// <reference types="node" />
-/// <reference types="node" />
 import { ChildProcess, ForkOptions, Serializable } from 'child_process';
 export interface ChildProcessOptions extends ForkOptions {
     clusterData: NodeJS.ProcessEnv | undefined;

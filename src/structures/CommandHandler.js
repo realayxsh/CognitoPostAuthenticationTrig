@@ -2,7 +2,7 @@ const { Collection, ButtonBuilder, ActionRowBuilder, ButtonStyle, ContainerBuild
 const EventEmitter = require('events');
 const { readdirSync } = require('fs');
 const ascii = require(`ascii-table`);
-const config = require(`../../config.json`);
+const config = require(`../config.js`);
 const wh = require('./webhook');
 const table = new ascii().setHeading('Avon Commands', 'Status');
 const top = require(`@top-gg/sdk`);

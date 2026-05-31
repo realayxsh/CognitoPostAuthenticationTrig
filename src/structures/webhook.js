@@ -1,5 +1,5 @@
 const { WebhookClient, EmbedBuilder } = require('discord.js');
-const config = require('../../config.json');
+const config = require('../config.js');
 
 let _web = null;
 

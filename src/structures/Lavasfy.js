@@ -1,5 +1,5 @@
 const { LavasfyClient } = require("lavasfy");
-const config = require(`../../config.json`);
+const config = require(`../config.js`);
 class Lavasfy extends LavasfyClient{
     constructor(client){
         super({

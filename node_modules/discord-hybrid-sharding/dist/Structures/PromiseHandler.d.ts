@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { RawMessage } from './IPCMessage';
 export interface StoredPromise {
     resolve(value: any): void;

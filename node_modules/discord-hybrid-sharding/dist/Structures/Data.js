@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getInfo = void 0;
+exports.getInfo = getInfo;
 const worker_threads_1 = require("worker_threads");
 function getInfo() {
     const clusterMode = process.env.CLUSTER_MANAGER_MODE;
@@ -30,4 +30,3 @@ function getInfo() {
     }
     return data;
 }
-exports.getInfo = getInfo;

@@ -1,7 +1,5 @@
 const { ContainerBuilder, TextDisplayBuilder, MessageFlags } = require("discord.js");
 const AvonCommand = require("../../structures/avonCommand");
-const fs = require("fs");
-const path = require("path");
 
 class AddOwner extends AvonCommand {
     get name() { return "addowner"; }
@@ -16,10 +14,8 @@ class AddOwner extends AvonCommand {
             return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
         };
 
-        const configPath = path.join(process.cwd(), "config.json");
-
         const saveConfig = () => {
-            fs.writeFileSync(configPath, JSON.stringify(client.config, null, 4));
+            // owners are stored in memory only; for persistence add to your secrets
         };
 
         const alias = message.content.split(" ")[0].slice(prefix.length).toLowerCase();

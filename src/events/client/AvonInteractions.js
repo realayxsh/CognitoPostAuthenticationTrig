@@ -2,7 +2,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle, ContainerBuilder, TextDisp
 const ms = require('ms');
 const AvonClientEvents = require(`../../structures/Eventhandler`);
 const { Api } = require(`@top-gg/sdk`);
-const config = require(`../../../config.json`);
+const config = require(`../../config.js`);
 const voteApi = new Api(process.env.topggapi || config.topggapi);
 
 // ── Vote cache: TTL 5 minutes, gracefully handles missing/invalid API token ──
