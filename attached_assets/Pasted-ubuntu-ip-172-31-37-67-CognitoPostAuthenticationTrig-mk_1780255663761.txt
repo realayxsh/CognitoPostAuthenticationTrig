@@ -1,0 +1,21 @@
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$ mkdir ~/lavalink && cd ~/lavalink
+wget https://github.com/lavalink-devs/Lavalink/releases/latest/download/Lavalink.jar
+--2026-05-31 19:27:16--  https://github.com/lavalink-devs/Lavalink/releases/latest/download/Lavalink.jar
+Resolving github.com (github.com)... 20.207.73.82
+Connecting to github.com (github.com)|20.207.73.82|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://github.com/lavalink-devs/Lavalink/releases/download/4.2.2/Lavalink.jar [following]
+--2026-05-31 19:27:16--  https://github.com/lavalink-devs/Lavalink/releases/download/4.2.2/Lavalink.jar
+Reusing existing connection to github.com:443.
+HTTP request sent, awaiting response... 302 Found
+Location: https://release-assets.githubusercontent.com/github-production-release-asset/97382188/4b9c51fb-110e-4c82-9d76-990c736db8b2?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-05-31T20%3A02%3A25Z&rscd=attachment%3B+filename%3DLavalink.jar&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-05-31T19%3A01%3A49Z&ske=2026-05-31T20%3A02%3A25Z&sks=b&skv=2018-11-09&sig=B%2FwRN7V9L7z5zi%2FosVXp%2BONE%2FIpaXtJwHlacaUuZNNk%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4MDI1NzQzNiwibmJmIjoxNzgwMjU1NjM2LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.RMBBQ5DC_Bpckq3zYPpOR6-_QnbmifEIxM0fKBEdSKE&response-content-disposition=attachment%3B%20filename%3DLavalink.jar&response-content-type=application%2Foctet-stream [following]
+--2026-05-31 19:27:17--  https://release-assets.githubusercontent.com/github-production-release-asset/97382188/4b9c51fb-110e-4c82-9d76-990c736db8b2?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-05-31T20%3A02%3A25Z&rscd=attachment%3B+filename%3DLavalink.jar&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-05-31T19%3A01%3A49Z&ske=2026-05-31T20%3A02%3A25Z&sks=b&skv=2018-11-09&sig=B%2FwRN7V9L7z5zi%2FosVXp%2BONE%2FIpaXtJwHlacaUuZNNk%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4MDI1NzQzNiwibmJmIjoxNzgwMjU1NjM2LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.RMBBQ5DC_Bpckq3zYPpOR6-_QnbmifEIxM0fKBEdSKE&response-content-disposition=attachment%3B%20filename%3DLavalink.jar&response-content-type=application%2Foctet-stream
+Resolving release-assets.githubusercontent.com (release-assets.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.109.133, ...
+Connecting to release-assets.githubusercontent.com (release-assets.githubusercontent.com)|185.199.111.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 100609059 (96M) [application/octet-stream]
+Saving to: ‘Lavalink.jar’
+
+Lavalink.jar                  100%[=================================================>]  95.95M  50.9MB/s    in 1.9s
+
+2026-05-31 19:27:19 (50.9 MB/s) - ‘Lavalink.jar’ saved [100609059/100609059]
