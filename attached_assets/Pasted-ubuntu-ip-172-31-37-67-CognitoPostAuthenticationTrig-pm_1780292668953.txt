@@ -1,0 +1,47 @@
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$ pm2 logs avon-bot --lines 20 --nostream
+[TAILING] Tailing last 20 lines for [avon-bot] process (change the value with --lines option)
+/home/ubuntu/.pm2/logs/avon-bot-out.log last 20 lines:
+0|avon-bot | [SHOUKAKU] => Node Millohost Debug: [Socket] -> [Millohost] : Connecting to wss://lava-v4.millohost.my.id:443/v4/websocket ...
+0|avon-bot | [SHOUKAKU] => Node NextGenCoders Debug: [Socket] -> [NextGenCoders] : Connecting to wss://lavalink.nextgencoders.xyz:443/v4/websocket ...
+0|avon-bot | [SHOUKAKU] => Node Nexcloud Debug: [Socket] -> [Nexcloud] : Connecting to ws://n3.nexcloud.in:2026/v4/websocket ...
+0|avon-bot | Radio is Online!
+0|avon-bot | [Webhook] Found existing webhook in log channel.
+0|avon-bot | [Webhook] Ready — ID: 1510721119793975447
+0|avon-bot | [SHOUKAKU] => Node Millohost Debug: [Socket] <-> [Millohost] : Connection Handshake Done => wss://lava-v4.millohost.my.id:443/v4/websocket | Resumed Header Value: false | Lavalink Api Version: 4
+0|avon-bot | [SHOUKAKU] => Node Millohost Debug: [Socket] -> [Millohost] : Lavalink is ready to communicate !
+0|avon-bot | [SHOUKAKU] => Node Millohost is connected
+0|avon-bot | [SHOUKAKU] => Node Millohost Debug: [Socket] <- [Millohost] : Node Status Update | Server Load: 0
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] <-> [Jirayu] : Connection Handshake Done => wss://lavalink.jirayu.net:443/v4/websocket | Resumed Header Value: false | Lavalink Api Version: undefined
+0|avon-bot | [SHOUKAKU] => Node NextGenCoders Debug: [Socket] -> [NextGenCoders] : Reconnecting in 3000 seconds. 10 tries left
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] -> [Jirayu] : Lavalink is ready to communicate !
+0|avon-bot | [SHOUKAKU] => Node Jirayu is connected
+0|avon-bot | [SHOUKAKU] => Node Jirayu Debug: [Socket] <- [Jirayu] : Node Status Update | Server Load: 0
+0|avon-bot | [SHOUKAKU] => Node Nexcloud Debug: [Socket] <-> [Nexcloud] : Connection Handshake Done => ws://n3.nexcloud.in:2026/v4/websocket | Resumed Header Value: false | Lavalink Api Version: 4
+0|avon-bot | [SHOUKAKU] => Node Nexcloud Debug: [Socket] -> [Nexcloud] : Lavalink is ready to communicate !
+0|avon-bot | [SHOUKAKU] => Node Nexcloud is connected
+0|avon-bot | [SHOUKAKU] => Node Nexcloud Debug: [Socket] <- [Nexcloud] : Node Status Update | Server Load: 0
+0|avon-bot | [SHOUKAKU] => Node Serenetia Debug: [Socket] -> [Serenetia] : Reconnecting in 3000 seconds. 10 tries left
+
+/home/ubuntu/.pm2/logs/avon-bot-error.log last 20 lines:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | [SHOUKAKU] => Node Jirayu closed | Code: 1006 | Reason:
+0|avon-bot | (node:191011) DeprecationWarning: The ready event has been renamed to clientReady to distinguish it from the gateway READY event and will only emit under that name in v15. Please use clientReady instead.
+0|avon-bot | (Use `node --trace-deprecation ...` to show where the warning was created)
+0|avon-bot | [SHOUKAKU] => Node NextGenCoders error: write EPROTO C0FC54E309780000:error:0A000458:SSL routines:ssl3_read_bytes:tlsv1 unrecognized name:../deps/openssl/openssl/ssl/record/rec_layer_s3.c:1601:SSL alert number 112
+0|avon-bot |
+0|avon-bot | [SHOUKAKU] => Node Serenetia error: AggregateError
+
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$
