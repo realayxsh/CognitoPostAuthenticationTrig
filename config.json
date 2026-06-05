@@ -21,6 +21,24 @@
     "mongourl6" : "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0",
     "nodes" : [
         {
+            "name" : "G3V",
+            "url" : "lava.g3v.co.uk:9008",
+            "auth" : "lavalinklol",
+            "secure" : false
+        },
+        {
+            "name" : "TriniumSSL",
+            "url" : "lavalink-v4.triniumhost.com:443",
+            "auth" : "free",
+            "secure" : true
+        },
+        {
+            "name" : "Nyxbot",
+            "url" : "sg1-nodelink.nyxbot.app:3000",
+            "auth" : "nyxbot.app/support",
+            "secure" : false
+        },
+        {
             "name" : "Millohost",
             "url" : "lava-v4.millohost.my.id:443",
             "auth" : "https://discord.gg/mjS5J2K3ep",

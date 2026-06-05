@@ -11,11 +11,11 @@ class Lavasfy extends LavasfyClient{
             useSpotifyMetadata : true
         },[
             {
-                id : "Serenetia",
-                host : "lavalinkv4.serenetia.com",
-                port : 443,
-                password : "https://dsc.gg/ajidevserver",
-                secure : true
+                id : "G3V",
+                host : "lava.g3v.co.uk",
+                port : 9008,
+                password : "lavalinklol",
+                secure : false
             }
         ]);
     }
