@@ -187,8 +187,8 @@ class AvonCommands extends EventEmitter {
 
             let client = this.client;
             if(avonCommand.inVoice){
-                if(message.guild.members.me.voice.channel && !message.member.voice.channel)
-                    return message.channel.send(cv2(`${client.emoji.cross} | You must be connected to a voice channel.`));
+                if(!message.member.voice.channel)
+                    return message.channel.send(cv2(`${client.emoji.cross} | You need to join a voice channel first.`));
             }
             if(avonCommand.sameVoice){
                 if(message.guild.members.me.voice.channelId !== message.member.voice.channelId && message.guild.members.me.voice.channel)
