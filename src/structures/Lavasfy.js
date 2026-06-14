@@ -1,5 +1,17 @@
 const { LavasfyClient } = require("lavasfy");
 const config = require(`../config.js`);
+
+const lavasfyNodes = config.nodes.map(node => {
+    const [host, port] = node.url.split(":");
+    return {
+        id: node.name,
+        host: host,
+        port: parseInt(port),
+        password: node.auth,
+        secure: node.secure
+    };
+});
+
 class Lavasfy extends LavasfyClient{
     constructor(client){
         super({
@@ -9,15 +21,7 @@ class Lavasfy extends LavasfyClient{
             audioOnlyResults : true,
             autoResolve : true,
             useSpotifyMetadata : true
-        },[
-            {
-                id : "G3V",
-                host : "lava.g3v.co.uk",
-                port : 9008,
-                password : "lavalinklol",
-                secure : false
-            }
-        ]);
+        }, lavasfyNodes);
     }
 }
 module.exports = Lavasfy;

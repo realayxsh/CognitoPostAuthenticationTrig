@@ -21,34 +21,34 @@
     "mongourl6" : "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0",
     "nodes" : [
         {
-            "name" : "G3V",
-            "url" : "lava.g3v.co.uk:9008",
-            "auth" : "lavalinklol",
+            "name" : "Lavalink1",
+            "url" : "lavalink.devz.cloud:80",
+            "auth" : "horizxon.xyz",
             "secure" : false
         },
         {
-            "name" : "TriniumSSL",
-            "url" : "lavalink-v4.triniumhost.com:443",
-            "auth" : "free",
+            "name" : "Lavalink2",
+            "url" : "lavalink.jirayu.net:13592",
+            "auth" : "youshallnotpass",
+            "secure" : false
+        },
+        {
+            "name" : "Lavalink3",
+            "url" : "lavalink.lewdhutao.my.eu.org:443",
+            "auth" : "cat",
             "secure" : true
         },
         {
-            "name" : "Nyxbot",
-            "url" : "sg1-nodelink.nyxbot.app:3000",
-            "auth" : "nyxbot.app/support",
+            "name" : "Lavalink4",
+            "url" : "lava.link:80",
+            "auth" : "dismusic",
             "secure" : false
         },
         {
-            "name" : "Millohost",
-            "url" : "lava-v4.millohost.my.id:443",
-            "auth" : "https://discord.gg/mjS5J2K3ep",
+            "name" : "Lavalink5",
+            "url" : "lavalink.darrennathanael.com:443",
+            "auth" : "itsmegathanael",
             "secure" : true
-        },
-        {
-            "name" : "Nexcloud",
-            "url" : "n3.nexcloud.in:2026",
-            "auth" : "nexcloud",
-            "secure" : false
         }
     ]
 }
