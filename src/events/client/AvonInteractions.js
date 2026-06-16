@@ -211,9 +211,11 @@ class AvonInteractions extends AvonClientEvents{
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
                     if(!_isRequester)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | Only the song requester can use these controls.`, true));
-                    if(!player.queue.previous || player.queue.previous === null)
+                    const prevTrack = player.data.get('previousTrack') || player.queue.previous;
+                    if(!prevTrack)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | No previous song available.`, true));
-                    player.queue.unshift(player.queue.previous); player.skip();
+                    player.queue.unshift(prevTrack);
+                    player.skip();
                     return interaction.reply(cv2(`${this.client.emoji.tick} | Playing previous track`, true));
                 }
                 if(interaction.customId === `pl5`){

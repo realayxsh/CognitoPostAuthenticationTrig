@@ -4,13 +4,11 @@ class TrackEnd extends AvonClientEvent{
     get name(){
         return 'playerEnd';
     }
-    async run(player){
+    async run(player, track){
         try{
-            player.data.get('music').delete()
-        } catch(e)
-        {
-            
-        }
+            if(track) player.data.set('previousTrack', track);
+            player.data.get('music')?.delete().catch(() => {});
+        } catch(e){}
     }
 }
 module.exports = TrackEnd;

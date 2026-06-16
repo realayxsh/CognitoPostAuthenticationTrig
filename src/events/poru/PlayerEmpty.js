@@ -5,7 +5,6 @@ const AvonClientEvent = require("../../structures/Eventhandler");
 class PlayerEmpty extends AvonClientEvent{
     get name(){ return 'playerEmpty'; }
     async run(player){
-        // Check 247 FIRST so we never show "Queue Concluded" while in 247 mode
         let data = await this.client.data.get(`${player.guildId}-247`);
         if(!data || data === null) this.client.data.set(`${player.guildId}-247`, `disabled`);
         const is247 = data === `enabled`;
@@ -15,10 +14,23 @@ class PlayerEmpty extends AvonClientEvent{
 
         if(db === `enabled`){
             try {
-                const title = player.queue.previous?.title || player.queue.current?.title || 'popular music';
-                const result = await player.search(`${title}`, { engine: 'soundcloud', requester: this.client.user });
+                const prev = player.data.get('previousTrack') || player.queue.previous;
+                const title  = prev?.title  || 'popular music';
+                const author = prev?.author || '';
+
+                // Build a query that preserves genre/language context:
+                // "Artist Name mix" on YouTube Music surfaces related same-genre tracks
+                const query = author
+                    ? `${author} - ${title} mix`
+                    : `${title} mix`;
+
+                const result = await player.search(query, { engine: 'youtube music', requester: this.client.user });
                 if(result && result.tracks.length){
-                    const track = result.tracks[Math.floor(Math.random() * Math.min(result.tracks.length, 5))];
+                    // Skip the first result (usually the same song) and pick a random one from the rest
+                    const pool = result.tracks.slice(1, 8);
+                    const track = pool.length
+                        ? pool[Math.floor(Math.random() * pool.length)]
+                        : result.tracks[0];
                     player.queue.add(track);
                     player.play();
                     return;
@@ -26,7 +38,6 @@ class PlayerEmpty extends AvonClientEvent{
             } catch(e) { console.error('[Autoplay]', e); }
         }
 
-        // Only show "Queue Concluded" if NOT in 247 mode
         if(db !== `enabled` && !is247){
             let ch = this.client.channels.cache.get(player.textId);
             if(!ch) ch = await this.client.channels.fetch(player.textId).catch(() => null);
@@ -45,10 +56,8 @@ class PlayerEmpty extends AvonClientEvent{
             }
         }
 
-        // If 247 is enabled, just stay silent in the VC — no destroy, no message
         if(is247) return;
 
-        // Not 247: wait 3 minutes then destroy if still idle
         await delay(180000);
         let activePlayer = this.client.poru.players.get(player.guildId);
         if(!activePlayer) return;

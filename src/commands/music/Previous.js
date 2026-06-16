@@ -18,8 +18,9 @@ class Previous extends AvonCommand {
                 );
             return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
         };
-        if (player.queue.previous === null) return send(`${client.emoji.cross} **| No previous song available**`);
-        player.queue.unshift(player.queue.previous);
+        const prevTrack = player.data.get('previousTrack') || player.queue.previous;
+        if (!prevTrack) return send(`${client.emoji.cross} **| No previous song available**`);
+        player.queue.unshift(prevTrack);
         player.skip();
         return send(`${client.emoji.tick} **| Playing previous track**`);
     }
