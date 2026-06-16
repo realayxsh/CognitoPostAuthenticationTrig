@@ -312,7 +312,7 @@ class AvonInteractions extends AvonClientEvents{
                     return reply(`${em.filter_none} **Cleared all filters**`);
                 }
                 if(selected === '8d'){
-                    await player.shoukaku.setFilters({ rotation:{ rotationHz:0.2 }, volume: userVol });
+                    await player.shoukaku.setFilters({ equalizer: CLARITY_EQ, rotation:{ rotationHz:0.5 }, volume: userVol });
                     player.data.set('8d',true);
                     return reply(`${em.filter_8d} **Enabled 8D**`);
                 }
@@ -362,7 +362,7 @@ class AvonInteractions extends AvonClientEvents{
                     return reply(`${em.filter_vaporwave} **Enabled Vaporwave**`);
                 }
                 if(selected === 'dolbyatmos'){
-                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.08},{band:1,gain:0.10},{band:2,gain:0.07},{band:3,gain:0.04},{band:4,gain:0.02},{band:5,gain:0.00},{band:6,gain:0.01},{band:7,gain:0.03},{band:8,gain:0.05},{band:9,gain:0.07},{band:10,gain:0.06},{band:11,gain:0.04},{band:12,gain:0.03},{band:13,gain:0.02}], rotation:{ rotationHz:0.08 }, vibrato:{ frequency:4.0, depth:0.05 }, volume: userVol });
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.08},{band:1,gain:0.10},{band:2,gain:0.07},{band:3,gain:0.04},{band:4,gain:0.02},{band:5,gain:0.00},{band:6,gain:0.01},{band:7,gain:0.03},{band:8,gain:0.05},{band:9,gain:0.07},{band:10,gain:0.06},{band:11,gain:0.04},{band:12,gain:0.03},{band:13,gain:0.02}], rotation:{ rotationHz:0.25 }, vibrato:{ frequency:4.0, depth:0.05 }, volume: userVol });
                     player.data.set('dolbyatmos',true);
                     return reply(`${em.filter_dolbyatmos || '🎧'} **Enabled Dolby Atmos**`);
                 }
