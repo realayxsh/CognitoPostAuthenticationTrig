@@ -64,8 +64,9 @@ class PlayerEmpty extends AvonClientEvent{
                 player.data.set('apQueryIdx', qIdx + 1);
                 const query = queries[qIdx];
 
-                // Try YouTube Music first, then Spotify as fallback
-                const engines = ['youtube music', 'spotify'];
+                // Try YouTube Music first, then plain YouTube as fallback
+                // Valid Kazagumo engine names: 'youtube_music', 'youtube', 'soundcloud'
+                const engines = ['youtube_music', 'youtube'];
                 let picked = null;
 
                 for (const engine of engines) {

@@ -1,1 +1,2 @@
 - [Lavalink setup](lavalink-setup.md) — Jirayu node (port 443, v4) is the only confirmed-working Lavalink from Replit; requires shoukaku@4 + kazagumo@3; filter API uses player.shoukaku.setFilters()
+- [Kazagumo engine names](kazagumo-engine-names.md) — valid engine names are 'youtube', 'youtube_music', 'soundcloud' — NOT 'youtube music' (space) or 'spotify'

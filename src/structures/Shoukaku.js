@@ -6,7 +6,7 @@ const { Connectors } = require(`shoukaku`);
 class Shoukaku extends Kazagumo{
     constructor(client){
         super({
-            defaultSearchEngine: 'youtube music',
+            defaultSearchEngine: 'youtube_music',
             send : (guildId,payload) => {
                 const guild = client.guilds.cache.get(guildId);
                 if(guild) guild.shard.send(payload);
