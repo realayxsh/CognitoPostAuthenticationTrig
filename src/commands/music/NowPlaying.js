@@ -160,6 +160,12 @@ class NowPlaying extends AvonCommand {
                     return int.reply({ content: `${client.emoji.cross} You must be in the same voice channel to apply filters.`, ephemeral: true });
                 }
 
+                const isOwnerNp = client.config.owners.includes(int.user.id);
+                const npRequesterId = currentPlayer.queue.current?.requester?.id;
+                if (npRequesterId && int.user.id !== npRequesterId && !isOwnerNp) {
+                    return int.reply({ content: `${client.emoji.cross} Only the song requester can change filters.`, ephemeral: true });
+                }
+
                 const chosen = int.values[0];
 
                 if (chosen === 'clearfilters') {

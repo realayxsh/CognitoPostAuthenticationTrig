@@ -170,16 +170,24 @@ class AvonInteractions extends AvonClientEvents{
                     });
                 }
 
+                const _isOwnerBtn = this.client.config.owners.includes(interaction.user.id);
+                const _requesterId = player?.queue?.current?.requester?.id;
+                const _isRequester = !_requesterId || interaction.user.id === _requesterId || _isOwnerBtn;
+
                 if(interaction.customId === `pl1`){
                     if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
+                    if(!_isRequester)
+                        return interaction.reply(cv2(`${this.client.emoji.cross} | Only the song requester can use these controls.`, true));
                     player.destroy(); return;
                 }
                 if(interaction.customId === `pl2`){
                     if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
+                    if(!_isRequester)
+                        return interaction.reply(cv2(`${this.client.emoji.cross} | Only the song requester can use these controls.`, true));
                     player.pause(!player.paused);
                     const updatedPause = buildNowPlayingComponents(this.client, player);
                     if(updatedPause) return interaction.update(updatedPause);
@@ -189,6 +197,8 @@ class AvonInteractions extends AvonClientEvents{
                     if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
+                    if(!_isRequester)
+                        return interaction.reply(cv2(`${this.client.emoji.cross} | Only the song requester can use these controls.`, true));
                     if(player.loop === `queue`){ player.setLoop(`none`); }
                     else { player.setLoop(`queue`); }
                     const updatedLoop = buildNowPlayingComponents(this.client, player);
@@ -199,6 +209,8 @@ class AvonInteractions extends AvonClientEvents{
                     if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
+                    if(!_isRequester)
+                        return interaction.reply(cv2(`${this.client.emoji.cross} | Only the song requester can use these controls.`, true));
                     if(!player.queue.previous || player.queue.previous === null)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | No previous song available.`, true));
                     player.queue.unshift(player.queue.previous); player.skip();
@@ -208,6 +220,8 @@ class AvonInteractions extends AvonClientEvents{
                     if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
+                    if(!_isRequester)
+                        return interaction.reply(cv2(`${this.client.emoji.cross} | Only the song requester can use these controls.`, true));
                     player.skip();
                     return interaction.reply(cv2(`${this.client.emoji.tick} | **Skipped** the track`, true));
                 }
@@ -221,6 +235,10 @@ class AvonInteractions extends AvonClientEvents{
                     return interaction.reply(cv2(`${this.client.emoji.cross} | Nothing is playing right now.`, true));
                 if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                     return interaction.reply(cv2(`${this.client.emoji.cross} | You must be in the same voice channel as me.`, true));
+                const _isOwnerFilter = this.client.config.owners.includes(interaction.user.id);
+                const _filterRequesterId = player.queue.current?.requester?.id;
+                if(_filterRequesterId && interaction.user.id !== _filterRequesterId && !_isOwnerFilter)
+                    return interaction.reply(cv2(`${this.client.emoji.cross} | Only the song requester can use these controls.`, true));
 
                 const selected = interaction.values[0];
 
