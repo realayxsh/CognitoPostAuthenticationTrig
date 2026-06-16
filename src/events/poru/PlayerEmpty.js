@@ -2,6 +2,32 @@ const delay = require("delay");
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle, MessageFlags } = require("discord.js");
 const AvonClientEvent = require("../../structures/Eventhandler");
 
+// Max history size — keeps last N song URIs to avoid repeats
+const HISTORY_LIMIT = 30;
+
+function getHistory(player) {
+    if (!player.data.get('apHistory')) player.data.set('apHistory', []);
+    return player.data.get('apHistory');
+}
+
+function addToHistory(player, track) {
+    const history = getHistory(player);
+    const id = track.uri || track.title;
+    if (!history.includes(id)) {
+        history.push(id);
+        if (history.length > HISTORY_LIMIT) history.shift();
+    }
+    player.data.set('apHistory', history);
+}
+
+function filterNew(tracks, player) {
+    const history = getHistory(player);
+    return tracks.filter(t => {
+        const id = t.uri || t.title;
+        return !history.includes(id);
+    });
+}
+
 class PlayerEmpty extends AvonClientEvent{
     get name(){ return 'playerEmpty'; }
     async run(player){
@@ -15,23 +41,56 @@ class PlayerEmpty extends AvonClientEvent{
         if(db === `enabled`){
             try {
                 const prev = player.data.get('previousTrack') || player.queue.previous;
-                const title  = prev?.title  || 'popular music';
+                const title  = prev?.title  || '';
                 const author = prev?.author || '';
 
-                // Build a query that preserves genre/language context:
-                // "Artist Name mix" on YouTube Music surfaces related same-genre tracks
-                const query = author
-                    ? `${author} - ${title} mix`
-                    : `${title} mix`;
+                // Add the last played track to history so it doesn't repeat
+                if (prev) addToHistory(player, prev);
 
-                const result = await player.search(query, { engine: 'youtube music', requester: this.client.user });
-                if(result && result.tracks.length){
-                    // Skip the first result (usually the same song) and pick a random one from the rest
-                    const pool = result.tracks.slice(1, 8);
-                    const track = pool.length
-                        ? pool[Math.floor(Math.random() * pool.length)]
-                        : result.tracks[0];
-                    player.queue.add(track);
+                // Build multiple query strategies — rotate so each autoplay pick
+                // uses a different angle but stays in the same genre/language.
+                const queries = [];
+                if (author && title) {
+                    queries.push(`${author} - ${title} radio`);   // most specific
+                    queries.push(`${author} mix`);                  // same artist variety
+                    queries.push(`${title} similar songs`);         // title-based related
+                }
+                if (author) queries.push(`${author} songs`);
+                if (title)  queries.push(`${title} mix`);
+                queries.push('popular songs');                      // last-resort fallback
+
+                // Rotate query index so repeated autoplay doesn't always use the same query
+                const qIdx = (player.data.get('apQueryIdx') || 0) % queries.length;
+                player.data.set('apQueryIdx', qIdx + 1);
+                const query = queries[qIdx];
+
+                // Try YouTube Music first, then Spotify as fallback
+                const engines = ['youtube music', 'spotify'];
+                let picked = null;
+
+                for (const engine of engines) {
+                    try {
+                        const result = await player.search(query, { engine, requester: this.client.user });
+                        if (!result || !result.tracks.length) continue;
+
+                        // Filter out songs already played this session
+                        const fresh = filterNew(result.tracks, player);
+                        const pool = fresh.length ? fresh : result.tracks.filter(t => {
+                            const id = t.uri || t.title;
+                            const prev_id = prev ? (prev.uri || prev.title) : null;
+                            return id !== prev_id; // at minimum avoid exact same song
+                        });
+
+                        if (pool.length) {
+                            // Pick randomly from up to first 8 results for variety
+                            picked = pool[Math.floor(Math.random() * Math.min(pool.length, 8))];
+                            break;
+                        }
+                    } catch(e) { console.error(`[Autoplay][${engine}]`, e); }
+                }
+
+                if (picked) {
+                    player.queue.add(picked);
                     player.play();
                     return;
                 }
