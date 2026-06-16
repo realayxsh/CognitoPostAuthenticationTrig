@@ -6,7 +6,7 @@ const { Connectors } = require(`shoukaku`);
 class Shoukaku extends Kazagumo{
     constructor(client){
         super({
-            defaultSearchEngine: 'soundcloud',
+            defaultSearchEngine: 'youtube music',
             send : (guildId,payload) => {
                 const guild = client.guilds.cache.get(guildId);
                 if(guild) guild.shard.send(payload);
@@ -19,7 +19,7 @@ class Shoukaku extends Kazagumo{
                     albumPageLimit : 5,
                     searchLimit : 50,
                     searchMarket : "IN",
-                    searchPlatform : "scsearch"
+                    searchPlatform : "ytmsearch"
                 }),
                 new Deezer({
                     playlistLimit : 20
