@@ -24,7 +24,7 @@ const FILTERS = [
     { label: 'Clear Filters',value: 'clearfilters',  description: 'Remove all active filters',        key: null,           emoji: FILTER_EMOJI },
 ];
 
-const Q_EQ = [
+why const Q_EQ = [
     {band:0,gain:-0.05},{band:1,gain:0.00},{band:2,gain:0.03},{band:3,gain:0.05},
     {band:4,gain:0.04},{band:5,gain:0.00},{band:6,gain:-0.03},{band:7,gain:0.00},
     {band:8,gain:0.03},{band:9,gain:0.04},{band:10,gain:0.04},{band:11,gain:0.03},
@@ -32,12 +32,12 @@ const Q_EQ = [
 ];
 
 const FILTER_PRESETS = {
-    '8d':          (p) => p.shoukaku.setFilters({ equalizer: Q_EQ, rotation: { rotationHz: 0.5 } }),
+    '8d':          (p) => p.shoukaku.setFilters({ rotation: { rotationHz: 0.2 } }),
     'bassboost':   (p) => p.shoukaku.setFilters({ equalizer: [{band:0,gain:0.30},{band:1,gain:0.25},{band:2,gain:0.20},{band:3,gain:0.15},{band:4,gain:0.10},{band:5,gain:0.05},{band:6,gain:0.00},{band:7,gain:-0.02},{band:8,gain:-0.02},{band:9,gain:0.00},{band:10,gain:0.02},{band:11,gain:0.02},{band:12,gain:0.02},{band:13,gain:0.02}] }),
     'china':       (p) => p.shoukaku.setFilters({ equalizer: [{band:0,gain:-0.05},{band:1,gain:-0.03},{band:2,gain:0.00},{band:3,gain:0.10},{band:4,gain:0.15},{band:5,gain:0.10},{band:6,gain:0.00},{band:7,gain:-0.03},{band:8,gain:0.00},{band:9,gain:0.05},{band:10,gain:0.08},{band:11,gain:0.10},{band:12,gain:0.15},{band:13,gain:0.15}], timescale: { speed: 1.0, pitch: 1.25, rate: 1.15 } }),
     'chipmunk':    (p) => p.shoukaku.setFilters({ equalizer: Q_EQ, timescale: { speed: 1.05, pitch: 1.35, rate: 1.25 } }),
     'concert':     (p) => p.shoukaku.setFilters({ equalizer: [{band:0,gain:0.06},{band:1,gain:0.08},{band:2,gain:0.10},{band:3,gain:0.08},{band:4,gain:0.05},{band:5,gain:0.03},{band:6,gain:0.02},{band:7,gain:0.03},{band:8,gain:0.05},{band:9,gain:0.07},{band:10,gain:0.06},{band:11,gain:0.04},{band:12,gain:0.02},{band:13,gain:0.01}], lowPass: { smoothing: 8.0 }, tremolo: { frequency: 2.0, depth: 0.08 } }),
-    'dolbyatmos':  (p) => p.shoukaku.setFilters({ equalizer: [{band:0,gain:0.08},{band:1,gain:0.10},{band:2,gain:0.07},{band:3,gain:0.04},{band:4,gain:0.02},{band:5,gain:0.00},{band:6,gain:0.01},{band:7,gain:0.03},{band:8,gain:0.05},{band:9,gain:0.07},{band:10,gain:0.06},{band:11,gain:0.04},{band:12,gain:0.03},{band:13,gain:0.02}], rotation: { rotationHz: 0.25 }, vibrato: { frequency: 4.0, depth: 0.05 } }),
+    'dolbyatmos':  (p) => p.shoukaku.setFilters({ equalizer: [{band:0,gain:0.10},{band:1,gain:0.10},{band:2,gain:0.05},{band:3,gain:0.02},{band:4,gain:0.00},{band:5,gain:0.00},{band:6,gain:0.00},{band:7,gain:0.00},{band:8,gain:0.02},{band:9,gain:0.04},{band:10,gain:0.06},{band:11,gain:0.08},{band:12,gain:0.10},{band:13,gain:0.08}], rotation: { rotationHz: 0.05 }, lowPass: { smoothing: 5.0 } }),
     'heaven':      (p) => p.shoukaku.setFilters({ equalizer: [{band:0,gain:-0.02},{band:1,gain:0.00},{band:2,gain:0.04},{band:3,gain:0.08},{band:4,gain:0.10},{band:5,gain:0.12},{band:6,gain:0.12},{band:7,gain:0.10},{band:8,gain:0.08},{band:9,gain:0.06},{band:10,gain:0.05},{band:11,gain:0.04},{band:12,gain:0.03},{band:13,gain:0.02}], timescale: { speed: 1.0, pitch: 1.15, rate: 1.0 }, tremolo: { frequency: 3.5, depth: 0.06 } }),
     'lofi':        (p) => p.shoukaku.setFilters({ equalizer: [{band:0,gain:0.10},{band:1,gain:0.08},{band:2,gain:0.05},{band:3,gain:0.02},{band:4,gain:0.00},{band:5,gain:-0.02},{band:6,gain:-0.03},{band:7,gain:-0.03},{band:8,gain:-0.02},{band:9,gain:-0.01},{band:10,gain:0.00},{band:11,gain:0.00},{band:12,gain:-0.01},{band:13,gain:-0.02}], timescale: { speed: 0.92, pitch: 0.97, rate: 0.95 }, lowPass: { smoothing: 20.0 } }),
     'nightcore':   (p) => p.shoukaku.setFilters({ equalizer: Q_EQ, timescale: { speed: 1.1, pitch: 1.125, rate: 1.05 } }),
