@@ -296,72 +296,86 @@ class AvonInteractions extends AvonClientEvents{
                     { band: 12, gain:  0.02 }, { band: 13, gain:  0.02 },
                 ];
 
+                // Clear all filters and reset all tracking flags
                 await player.shoukaku.clearFilters();
-                player.data.set('8d',false); player.data.set('bass',false); player.data.set('night',false);
-                player.data.set('vib',false); player.data.set('trem',false); player.data.set('treble',false);
-                player.data.set('slow',false); player.data.set('chip',false); player.data.set('china',false);
-                player.data.set('vapor',false); player.data.set('dolbyatmos',false);
-
-                // Restore quality EQ after clearing user filters
-                await player.shoukaku.setFilters({ equalizer: CLARITY_EQ }).catch(() => {});
+                const ALL_FILTER_KEYS = ['8d','bass','night','vib','trem','treble','slow','chip','china','vapor','dolbyatmos','concert','lofi','heaven','slowedreverb'];
+                ALL_FILTER_KEYS.forEach(k => player.data.set(k, false));
 
                 const userVol = (player.volume || 100) / 100;
                 const em = this.client.emoji;
+
+                // Quality EQ used as base for filters that don't define their own EQ
+                const Q_EQ = [
+                    {band:0,gain:-0.05},{band:1,gain:0.00},{band:2,gain:0.03},{band:3,gain:0.05},
+                    {band:4,gain:0.04},{band:5,gain:0.00},{band:6,gain:-0.03},{band:7,gain:0.00},
+                    {band:8,gain:0.03},{band:9,gain:0.04},{band:10,gain:0.04},{band:11,gain:0.03},
+                    {band:12,gain:0.02},{band:13,gain:0.02}
+                ];
+
                 if(selected === 'none'){
-                    await player.shoukaku.setFilters({ equalizer: CLARITY_EQ, volume: userVol }).catch(() => {});
+                    await player.shoukaku.setFilters({ equalizer: Q_EQ, volume: userVol });
                     return reply(`${em.filter_none} **Cleared all filters**`);
                 }
                 if(selected === '8d'){
-                    await player.shoukaku.setFilters({ equalizer: CLARITY_EQ, rotation:{ rotationHz:0.5 }, volume: userVol });
+                    // Q_EQ + rotation for spatial left/right panning
+                    await player.shoukaku.setFilters({ equalizer: Q_EQ, rotation:{ rotationHz:0.5 }, volume: userVol });
                     player.data.set('8d',true);
                     return reply(`${em.filter_8d} **Enabled 8D**`);
                 }
                 if(selected === 'bassboost'){
-                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.10},{band:1,gain:0.10},{band:2,gain:0.05},{band:3,gain:0.05},{band:4,gain:-0.05},{band:5,gain:-0.05},{band:6,gain:0},{band:7,gain:-0.05},{band:8,gain:-0.05},{band:9,gain:0},{band:10,gain:0.05},{band:11,gain:0.05},{band:12,gain:0.10},{band:13,gain:0.10}], volume: userVol });
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.30},{band:1,gain:0.25},{band:2,gain:0.20},{band:3,gain:0.15},{band:4,gain:0.10},{band:5,gain:0.05},{band:6,gain:0.00},{band:7,gain:-0.02},{band:8,gain:-0.02},{band:9,gain:0.00},{band:10,gain:0.02},{band:11,gain:0.02},{band:12,gain:0.02},{band:13,gain:0.02}], volume: userVol });
                     player.data.set('bass',true);
                     return reply(`${em.filter_bassboost} **Enabled Bass Boost**`);
                 }
                 if(selected === 'nightcore'){
-                    await player.shoukaku.setFilters({ timescale:{ speed:1.1, pitch:1.125, rate:1.05 }, volume: userVol });
+                    // Q_EQ + speed/pitch up
+                    await player.shoukaku.setFilters({ equalizer: Q_EQ, timescale:{ speed:1.1, pitch:1.125, rate:1.05 }, volume: userVol });
                     player.data.set('night',true);
                     return reply(`${em.filter_nightcore} **Enabled Nightcore**`);
                 }
                 if(selected === 'vibrato'){
-                    await player.shoukaku.setFilters({ vibrato:{ frequency:4.0, depth:0.75 }, volume: userVol });
+                    // Q_EQ + vibrato — moderate values to avoid distortion
+                    await player.shoukaku.setFilters({ equalizer: Q_EQ, vibrato:{ frequency:4.0, depth:0.55 }, volume: userVol });
                     player.data.set('vib',true);
                     return reply(`${em.filter_vibrato} **Enabled Vibrato**`);
                 }
                 if(selected === 'tremolo'){
-                    await player.shoukaku.setFilters({ tremolo:{ frequency:4.0, depth:0.75 }, volume: userVol });
+                    // Q_EQ + tremolo volume pulse
+                    await player.shoukaku.setFilters({ equalizer: Q_EQ, tremolo:{ frequency:4.0, depth:0.55 }, volume: userVol });
                     player.data.set('trem',true);
                     return reply(`${em.filter_tremolo} **Enabled Tremolo**`);
                 }
                 if(selected === 'treblebass'){
-                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.6},{band:1,gain:0.67},{band:2,gain:0.67},{band:3,gain:0},{band:4,gain:-0.5},{band:5,gain:0.15},{band:6,gain:-0.45},{band:7,gain:0.23},{band:8,gain:0.35},{band:9,gain:0.45},{band:10,gain:0.55},{band:11,gain:0.6},{band:12,gain:0.55},{band:13,gain:0}], volume: userVol });
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.40},{band:1,gain:0.35},{band:2,gain:0.25},{band:3,gain:0.00},{band:4,gain:-0.05},{band:5,gain:0.00},{band:6,gain:-0.05},{band:7,gain:0.00},{band:8,gain:0.10},{band:9,gain:0.20},{band:10,gain:0.30},{band:11,gain:0.40},{band:12,gain:0.45},{band:13,gain:0.40}], volume: userVol });
                     player.data.set('treble',true);
                     return reply(`${em.filter_treblebass} **Enabled Treblebass**`);
                 }
                 if(selected === 'slowmode'){
-                    await player.shoukaku.setFilters({ timescale:{ speed:0.5, pitch:1.0, rate:0.8 }, volume: userVol });
+                    // Q_EQ + slow timescale
+                    await player.shoukaku.setFilters({ equalizer: Q_EQ, timescale:{ speed:0.75, pitch:1.0, rate:0.9 }, volume: userVol });
                     player.data.set('slow',true);
                     return reply(`${em.filter_slowmode} **Enabled Slowmode**`);
                 }
                 if(selected === 'chipmunk'){
-                    await player.shoukaku.setFilters({ timescale:{ speed:1.05, pitch:1.35, rate:1.25 }, volume: userVol });
+                    // Q_EQ + high pitch/speed
+                    await player.shoukaku.setFilters({ equalizer: Q_EQ, timescale:{ speed:1.05, pitch:1.35, rate:1.25 }, volume: userVol });
                     player.data.set('chip',true);
                     return reply(`${em.filter_chipmunk} **Enabled Chipmunk**`);
                 }
                 if(selected === 'china'){
-                    await player.shoukaku.setFilters({ timescale:{ speed:0.75, pitch:1.25, rate:1.25 }, volume: userVol });
+                    // Pentatonic-style EQ + slightly higher pitch + faster rate
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:-0.05},{band:1,gain:-0.03},{band:2,gain:0.00},{band:3,gain:0.10},{band:4,gain:0.15},{band:5,gain:0.10},{band:6,gain:0.00},{band:7,gain:-0.03},{band:8,gain:0.00},{band:9,gain:0.05},{band:10,gain:0.08},{band:11,gain:0.10},{band:12,gain:0.15},{band:13,gain:0.15}], timescale:{ speed:1.0, pitch:1.25, rate:1.15 }, volume: userVol });
                     player.data.set('china',true);
                     return reply(`${em.filter_china} **Enabled China**`);
                 }
                 if(selected === 'vaporwave'){
-                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0},{band:1,gain:0},{band:2,gain:0},{band:3,gain:0},{band:4,gain:0},{band:5,gain:0},{band:6,gain:0},{band:7,gain:0},{band:8,gain:0.15},{band:9,gain:0.15},{band:10,gain:0.15},{band:11,gain:0.15},{band:12,gain:0.15},{band:13,gain:0.15}], timescale:{ pitch:0.55 }, volume: userVol });
+                    // Warm bass EQ + slowed + slightly lower pitch (vaporwave aesthetic)
+                    await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.15},{band:1,gain:0.12},{band:2,gain:0.08},{band:3,gain:0.04},{band:4,gain:0.00},{band:5,gain:-0.02},{band:6,gain:-0.03},{band:7,gain:-0.02},{band:8,gain:0.00},{band:9,gain:0.02},{band:10,gain:0.03},{band:11,gain:0.03},{band:12,gain:0.02},{band:13,gain:0.00}], timescale:{ speed:0.85, pitch:0.88, rate:0.90 }, volume: userVol });
                     player.data.set('vapor',true);
                     return reply(`${em.filter_vaporwave} **Enabled Vaporwave**`);
                 }
                 if(selected === 'dolbyatmos'){
+                    // Wide EQ + strong rotation + subtle vibrato for spatial surround
                     await player.shoukaku.setFilters({ equalizer:[{band:0,gain:0.08},{band:1,gain:0.10},{band:2,gain:0.07},{band:3,gain:0.04},{band:4,gain:0.02},{band:5,gain:0.00},{band:6,gain:0.01},{band:7,gain:0.03},{band:8,gain:0.05},{band:9,gain:0.07},{band:10,gain:0.06},{band:11,gain:0.04},{band:12,gain:0.03},{band:13,gain:0.02}], rotation:{ rotationHz:0.25 }, vibrato:{ frequency:4.0, depth:0.05 }, volume: userVol });
                     player.data.set('dolbyatmos',true);
                     return reply(`${em.filter_dolbyatmos || '🎧'} **Enabled Dolby Atmos**`);
