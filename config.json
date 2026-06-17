@@ -25,24 +25,6 @@
             "url" : "localhost:2333",
             "auth" : "avonmusic2024",
             "secure" : false
-        },
-        {
-            "name" : "Jirayu",
-            "url" : "lavalink.jirayu.net:13592",
-            "auth" : "youshallnotpass",
-            "secure" : false
-        },
-        {
-            "name" : "JirayuSecure",
-            "url" : "lavalink.jirayu.net:443",
-            "auth" : "youshallnotpass",
-            "secure" : true
-        },
-        {
-            "name" : "Serenetia",
-            "url" : "lavalinkv4.serenetia.com:443",
-            "auth" : "youshallnotpass",
-            "secure" : true
         }
     ]
 }
