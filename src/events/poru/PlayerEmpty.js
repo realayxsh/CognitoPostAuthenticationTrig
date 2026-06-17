@@ -5,6 +5,82 @@ const AvonClientEvent = require("../../structures/Eventhandler");
 // Max history size — keeps last N song URIs to avoid repeats
 const HISTORY_LIMIT = 30;
 
+// Detect language from song title + author so autoplay stays in the same language
+function detectLanguage(title, author) {
+    const text = `${title} ${author}`;
+    // Gurmukhi script (Punjabi)
+    if (/[\u0A00-\u0A7F]/.test(text)) return 'punjabi';
+    // Devanagari script (Hindi)
+    if (/[\u0900-\u097F]/.test(text)) return 'hindi';
+
+    const lower = text.toLowerCase();
+
+    // Well-known Punjabi artists (romanized)
+    const punjabiArtists = [
+        'diljit','sidhu moosewala','moosewala','ap dhillon','shubh','karan aujla',
+        'babbu maan','gurdas maan','ammy virk','jordan sandhu','parmish verma',
+        'mankirt aulakh','b praak','jassi gill','harrdy sandhu','kulwinder billa',
+        'ninja','satinder sartaaj','jazzy b','sukshinder shinda','hans raj hans',
+        'gurnam bhullar','himmat sandhu','ranjit bawa','dilpreet dhillon','jass manak',
+        'guri','deep jandu','bohemia','imran khan','garry sandhu','sharry mann',
+        'akhil','jaani','surjit bindrakhia','labh heera','kanwar grewal'
+    ];
+    // Well-known Hindi/Bollywood artists (romanized)
+    const hindiArtists = [
+        'arijit singh','shreya ghoshal','atif aslam','lata mangeshkar','kishore kumar',
+        'jubin nautiyal','darshan raval','armaan malik','neha kakkar','yo yo honey singh',
+        'badshah','guru randhawa','vishal mishra','mohd rafi','mukesh','sonu nigam',
+        'kumar sanu','udit narayan','alka yagnik','asha bhosle','sunidhi chauhan',
+        'palak muchhal','asees kaur','tulsi kumar','kanika kapoor','mika singh',
+        'himesh reshammiya','ankit tiwari','dev negi','akhil sachdeva','javed ali',
+        'shankar mahadevan','kailash kher','rahat fateh ali','bollywood','filmi'
+    ];
+    // Punjabi keywords in titles
+    const punjabiKeywords = ['punjabi','punjab','bhangra','giddha','patiala','ludhiana','chandigarh'];
+    // Hindi keywords in titles
+    const hindiKeywords = ['hindi','bollywood','filmi','desi','hindustani','urdu'];
+
+    if (punjabiArtists.some(a => lower.includes(a))) return 'punjabi';
+    if (hindiArtists.some(a => lower.includes(a))) return 'hindi';
+    if (punjabiKeywords.some(k => lower.includes(k))) return 'punjabi';
+    if (hindiKeywords.some(k => lower.includes(k))) return 'hindi';
+
+    return 'english';
+}
+
+// Build language-locked queries so autoplay stays in the same language/genre
+function buildQueries(title, author, lang) {
+    const yr = new Date().getFullYear();
+    if (lang === 'punjabi') {
+        const q = [];
+        if (author) q.push(`${author} Punjabi songs`);
+        if (author) q.push(`${author} new songs`);
+        if (title)  q.push(`${title} Punjabi`);
+        q.push(`new Punjabi songs ${yr}`);
+        q.push(`top Punjabi hits ${yr}`);
+        q.push('best Punjabi songs');
+        return q;
+    }
+    if (lang === 'hindi') {
+        const q = [];
+        if (author) q.push(`${author} Hindi songs`);
+        if (author) q.push(`${author} new songs`);
+        if (title)  q.push(`${title} Bollywood`);
+        q.push(`new Hindi songs ${yr}`);
+        q.push(`top Bollywood hits ${yr}`);
+        q.push('best Hindi songs');
+        return q;
+    }
+    // English / default
+    const q = [];
+    if (author && title) q.push(`${author} - ${title} radio`);
+    if (author)          q.push(`${author} mix`);
+    if (title)           q.push(`${title} similar songs`);
+    if (author)          q.push(`${author} songs`);
+    q.push('popular songs');
+    return q;
+}
+
 function getHistory(player) {
     if (!player.data.get('apHistory')) player.data.set('apHistory', []);
     return player.data.get('apHistory');
@@ -44,24 +120,16 @@ class PlayerEmpty extends AvonClientEvent{
                 const title  = prev?.title  || '';
                 const author = prev?.author || '';
 
-                console.log(`[Autoplay] Guild: ${player.guildId} | Prev: "${title}" by "${author}"`);
+                // Detect language so queries stay in the same language
+                const lang = detectLanguage(title, author);
+                console.log(`[Autoplay] Guild: ${player.guildId} | Prev: "${title}" by "${author}" | Lang: ${lang}`);
 
                 // Add the last played track to history so it doesn't repeat
                 if (prev) addToHistory(player, prev);
 
-                // Build multiple query strategies — rotate so each autoplay pick
-                // uses a different angle but stays in the same genre/language.
-                const queries = [];
-                if (author && title) {
-                    queries.push(`${author} - ${title} radio`);
-                    queries.push(`${author} mix`);
-                    queries.push(`${title} similar songs`);
-                }
-                if (author) queries.push(`${author} songs`);
-                if (title)  queries.push(`${title} mix`);
-                queries.push('popular songs');
+                // Build language-aware queries and rotate through them
+                const queries = buildQueries(title, author, lang);
 
-                // Rotate query index so repeated autoplay doesn't always use the same query
                 const qIdx = (player.data.get('apQueryIdx') || 0) % queries.length;
                 player.data.set('apQueryIdx', qIdx + 1);
                 const query = queries[qIdx];
