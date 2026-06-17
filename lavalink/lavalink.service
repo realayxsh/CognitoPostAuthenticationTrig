@@ -5,8 +5,8 @@ Wants=network-online.target
 
 [Service]
 User=ubuntu
-WorkingDirectory=/home/ubuntu/lavalink
-ExecStart=/usr/bin/java -Xmx512m -jar /home/ubuntu/lavalink/Lavalink.jar
+WorkingDirectory=/home/ubuntu/CognitoPostAuthenticationTrig/lavalink
+ExecStart=/usr/bin/java -Xmx512m -jar /home/ubuntu/CognitoPostAuthenticationTrig/lavalink/Lavalink.jar
 Restart=always
 RestartSec=10
 StandardOutput=journal
