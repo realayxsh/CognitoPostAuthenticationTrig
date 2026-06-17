@@ -175,7 +175,7 @@ class AvonInteractions extends AvonClientEvents{
                 const _isRequester = !_requesterId || interaction.user.id === _requesterId || _isOwnerBtn;
 
                 if(interaction.customId === `pl1`){
-                    if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
+                    if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete().catch(() => {});
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
                     if(!_isRequester)
@@ -183,7 +183,7 @@ class AvonInteractions extends AvonClientEvents{
                     player.destroy(); return;
                 }
                 if(interaction.customId === `pl2`){
-                    if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
+                    if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete().catch(() => {});
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
                     if(!_isRequester)
@@ -194,7 +194,7 @@ class AvonInteractions extends AvonClientEvents{
                     return interaction.reply(cv2(`${this.client.emoji.tick} | ${player.paused ? 'Paused' : 'Resumed'}`, true));
                 }
                 if(interaction.customId === `pl3`){
-                    if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
+                    if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete().catch(() => {});
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
                     if(!_isRequester)
@@ -206,7 +206,7 @@ class AvonInteractions extends AvonClientEvents{
                     return interaction.reply(cv2(player.loop !== 'none' ? `${this.client.emoji.tick} | **Loop enabled**` : `${this.client.emoji.cross} | **Loop disabled**`, true));
                 }
                 if(interaction.customId === `pl4`){
-                    if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
+                    if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete().catch(() => {});
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
                     if(!_isRequester)
@@ -219,7 +219,7 @@ class AvonInteractions extends AvonClientEvents{
                     return interaction.reply(cv2(`${this.client.emoji.tick} | Playing previous track`, true));
                 }
                 if(interaction.customId === `pl5`){
-                    if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete();
+                    if(interaction.message.id !== player.data.get('music').id) return interaction.message.delete().catch(() => {});
                     if(interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId)
                         return interaction.reply(cv2(`${this.client.emoji.cross} | You cannot use this button until you connect to ${interaction.guild.members.me.voice.channel}`, true));
                     if(!_isRequester)
