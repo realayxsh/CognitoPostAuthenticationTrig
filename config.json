@@ -21,10 +21,22 @@
     "mongourl6" : "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0",
     "nodes" : [
         {
-            "name" : "SelfHosted",
-            "url" : "localhost:2333",
+            "name" : "Jirayu",
+            "url" : "lavalink.jirayu.net:13592",
             "auth" : "youshallnotpass",
             "secure" : false
+        },
+        {
+            "name" : "JirayuSecure",
+            "url" : "lavalink.jirayu.net:443",
+            "auth" : "youshallnotpass",
+            "secure" : true
+        },
+        {
+            "name" : "Serenetia",
+            "url" : "lavalinkv4.serenetia.com:443",
+            "auth" : "youshallnotpass",
+            "secure" : true
         }
     ]
 }
