@@ -1,0 +1,32 @@
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$ sudo journalctl -u lavalink -n 30 --no-pager
+Jun 17 05:20:19 ip-172-31-37-67 lavalink[653326]:         Commit:         e8503fd
+Jun 17 05:20:19 ip-172-31-37-67 lavalink[653326]:         Commit time:    06.03.2026 23:21:15 UTC
+Jun 17 05:20:19 ip-172-31-37-67 lavalink[653326]:         JVM:            17.0.19
+Jun 17 05:20:19 ip-172-31-37-67 lavalink[653326]:         Lavaplayer      2.2.6
+Jun 17 05:20:19 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:19.896Z  INFO 653326 --- [Lavalink] [           main] lavalink.server.Launcher                 : No active profile set, falling back to 1 default profile: "default"
+Jun 17 05:20:22 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:22.928Z  WARN 653326 --- [Lavalink] [           main] io.undertow.websockets.jsr               : UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+Jun 17 05:20:23 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:23.022Z  INFO 653326 --- [Lavalink] [           main] io.undertow.servlet                      : Initializing Spring embedded WebApplicationContext
+Jun 17 05:20:23 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:23.025Z  INFO 653326 --- [Lavalink] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3119 ms
+Jun 17 05:20:24 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:24.069Z  INFO 653326 --- [Lavalink] [           main] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+Jun 17 05:20:24 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:24.994Z  WARN 653326 --- [Lavalink] [           main] d.l.youtube.plugin.ClientProvider        : Failed to resolve TVHTML5EMBEDDED into a Client
+Jun 17 05:20:25 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:25.058Z  INFO 653326 --- [Lavalink] [           main] d.l.youtube.plugin.YoutubePluginLoader   : YouTube source initialised with clients: WEB_REMIX, WEB
+Jun 17 05:20:25 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:25.085Z  WARN 653326 --- [Lavalink] [           main] l.server.config.SentryConfiguration      : Turning off sentry
+Jun 17 05:20:26 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:26.075Z  INFO 653326 --- [Lavalink] [           main] l.server.config.KoeConfiguration         : OS: LINUX, Arch: X86_64
+Jun 17 05:20:26 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:26.079Z  INFO 653326 --- [Lavalink] [           main] l.server.config.KoeConfiguration         : Enabling JDA-NAS
+Jun 17 05:20:26 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:26.230Z  INFO 653326 --- [Lavalink] [           main] c.s.l.c.natives.NativeLibraryLoader      : Native library udpqueue: loading with filter null
+Jun 17 05:20:26 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:26.245Z  INFO 653326 --- [Lavalink] [           main] c.s.l.c.natives.NativeLibraryLoader      : Native library udpqueue: successfully loaded.
+Jun 17 05:20:27 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:27.359Z  INFO 653326 --- [Lavalink] [           main] io.undertow                              : starting server: Undertow - 2.3.13.Final
+Jun 17 05:20:27 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:27.393Z  INFO 653326 --- [Lavalink] [           main] org.xnio                                 : XNIO version 3.8.8.Final
+Jun 17 05:20:27 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:27.445Z  INFO 653326 --- [Lavalink] [           main] org.xnio.nio                             : XNIO NIO Implementation Version 3.8.8.Final
+Jun 17 05:20:27 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:27.717Z  INFO 653326 --- [Lavalink] [           main] org.jboss.threads                        : JBoss Threads version 3.5.0.Final
+Jun 17 05:20:27 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:27.880Z  INFO 653326 --- [Lavalink] [           main] o.s.b.w.e.undertow.UndertowWebServer     : Undertow started on port 2333 (http) with context path '/'
+Jun 17 05:20:27 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:27.913Z  INFO 653326 --- [Lavalink] [           main] lavalink.server.Launcher                 : Started Launcher in 8.268 seconds (process running for 15.439)
+Jun 17 05:20:27 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:27.918Z  INFO 653326 --- [Lavalink] [           main] lavalink.server.Launcher                 : Lavalink is ready to accept connections.
+Jun 17 05:20:30 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:30.868Z  INFO 653326 --- [Lavalink] [  XNIO-1 task-2] io.undertow.servlet                      : Initializing Spring DispatcherServlet 'dispatcherServlet'
+Jun 17 05:20:30 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:30.871Z  INFO 653326 --- [Lavalink] [  XNIO-1 task-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+Jun 17 05:20:30 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:30.877Z  INFO 653326 --- [Lavalink] [  XNIO-1 task-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+Jun 17 05:20:31 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:31.000Z ERROR 653326 --- [Lavalink] [  XNIO-1 task-2] l.server.io.HandshakeInterceptorImpl     : Authentication failed from /127.0.0.1:33964
+Jun 17 05:20:31 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:20:31.002Z  INFO 653326 --- [Lavalink] [  XNIO-1 task-2] l.server.io.RequestLoggingFilter         : GET /v4/websocket
+Jun 17 05:22:37 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:22:37.588Z ERROR 653326 --- [Lavalink] [  XNIO-1 task-2] l.server.io.HandshakeInterceptorImpl     : Authentication failed from /127.0.0.1:52072
+Jun 17 05:22:37 ip-172-31-37-67 lavalink[653326]: 2026-06-17T05:22:37.592Z  INFO 653326 --- [Lavalink] [  XNIO-1 task-2] l.server.io.RequestLoggingFilter         : GET /v4/websocket
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$

@@ -1,0 +1,132 @@
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$ pm2 logs --lines 30 --nostream
+[TAILING] Tailing last 30 lines for [all] processes (change the value with --lines option)
+/home/ubuntu/.pm2/pm2.log last 30 lines:
+PM2        | 2026-06-17T05:22:16: PM2 log: App [lavalink:1] starting in -fork mode-
+PM2        | 2026-06-17T05:22:16: PM2 log: App [lavalink:1] online
+PM2        | 2026-06-17T05:22:28: PM2 log: Stopping app:avon-bot id:0
+PM2        | 2026-06-17T05:22:28: PM2 log: App [avon-bot:0] exited with code [0] via signal [SIGINT]
+PM2        | 2026-06-17T05:22:28: PM2 log: pid=653359 msg=process tree killed (2 pids)
+PM2        | 2026-06-17T05:22:28: PM2 log: App [avon-bot:0] starting in -fork mode-
+PM2        | 2026-06-17T05:22:28: PM2 log: App [avon-bot:0] online
+PM2        | 2026-06-17T05:22:28: PM2 log: Stopping app:lavalink id:1
+PM2        | 2026-06-17T05:22:28: PM2 log: pid=653688 msg=failed to kill - retrying in 100ms
+PM2        | 2026-06-17T05:22:29: PM2 log: pid=653688 msg=failed to kill - retrying in 100ms
+PM2        | 2026-06-17T05:22:29: PM2 log: pid=653688 msg=failed to kill - retrying in 100ms
+PM2        | 2026-06-17T05:22:29: PM2 log: App [lavalink:1] exited with code [130] via signal [SIGINT]
+PM2        | 2026-06-17T05:22:29: PM2 log: pid=653688 msg=process tree killed (1 pids)
+PM2        | 2026-06-17T05:22:29: PM2 log: App [lavalink:1] starting in -fork mode-
+PM2        | 2026-06-17T05:22:29: PM2 log: App [lavalink:1] online
+PM2        | 2026-06-17T05:22:43: PM2 log: App [lavalink:1] exited with code [1] via signal [SIGINT]
+PM2        | 2026-06-17T05:22:43: PM2 log: App [lavalink:1] starting in -fork mode-
+PM2        | 2026-06-17T05:22:43: PM2 log: App [lavalink:1] online
+PM2        | 2026-06-17T05:22:55: PM2 log: App [lavalink:1] exited with code [1] via signal [SIGINT]
+PM2        | 2026-06-17T05:22:55: PM2 log: App [lavalink:1] starting in -fork mode-
+PM2        | 2026-06-17T05:22:55: PM2 log: App [lavalink:1] online
+PM2        | 2026-06-17T05:23:08: PM2 log: App [lavalink:1] exited with code [1] via signal [SIGINT]
+PM2        | 2026-06-17T05:23:08: PM2 log: App [lavalink:1] starting in -fork mode-
+PM2        | 2026-06-17T05:23:08: PM2 log: App [lavalink:1] online
+PM2        | 2026-06-17T05:23:19: PM2 log: App [lavalink:1] exited with code [1] via signal [SIGINT]
+PM2        | 2026-06-17T05:23:19: PM2 log: App [lavalink:1] starting in -fork mode-
+PM2        | 2026-06-17T05:23:19: PM2 log: App [lavalink:1] online
+PM2        | 2026-06-17T05:23:31: PM2 log: App [lavalink:1] exited with code [1] via signal [SIGINT]
+PM2        | 2026-06-17T05:23:31: PM2 log: App [lavalink:1] starting in -fork mode-
+PM2        | 2026-06-17T05:23:31: PM2 log: App [lavalink:1] online
+
+/home/ubuntu/.pm2/logs/lavalink-error.log last 30 lines:
+/home/ubuntu/.pm2/logs/avon-bot-out.log last 30 lines:
+0|avon-bot | | setprefix      | ✅      |
+0|avon-bot | | premium        | ✅      |
+0|avon-bot | | redeem         | ✅      |
+0|avon-bot | '-------------------------'
+0|avon-bot | .-------------------------------.
+0|avon-bot | |    Client Events     | Status |
+0|avon-bot | |----------------------|--------|
+0|avon-bot | | AvonGuildCreate      | ✅      |
+0|avon-bot | | AvonGuildDelete      | ✅      |
+0|avon-bot | | AvonInteractions     | ✅      |
+0|avon-bot | | AvonReady            | ✅      |
+0|avon-bot | | AvonVoiceStateUpdate | ✅      |
+0|avon-bot | '-------------------------------'
+0|avon-bot | .------------------------.
+0|avon-bot | |  Poru Events  | Status |
+0|avon-bot | |---------------|--------|
+0|avon-bot | | PlayerDestroy | ✅      |
+0|avon-bot | | PlayerEmpty   | ✅      |
+0|avon-bot | | TrackEnd      | ✅      |
+0|avon-bot | | TrackError    | ✅      |
+0|avon-bot | | TrackStart    | ✅      |
+0|avon-bot | | TrackStuck    | ✅      |
+0|avon-bot | '------------------------'
+0|avon-bot | Express running on port 3000
+0|avon-bot | Cluster Ready: 0
+0|avon-bot | [SHOUKAKU] => Node SelfHosted Debug: [Socket] -> [SelfHosted] : Connecting to ws://localhost:2333/v4/websocket ...
+0|avon-bot | Radio is Online!
+0|avon-bot | [SHOUKAKU] => Node SelfHosted Debug: [Socket] -> [SelfHosted] : Reconnecting in 3000 seconds. 10 tries left
+0|avon-bot | [Webhook] Found existing webhook in log channel.
+0|avon-bot | [Webhook] Ready — ID: 1510721119793975447
+
+/home/ubuntu/.pm2/logs/avon-bot-error.log last 30 lines:
+0|avon-bot | (node:653395) DeprecationWarning: The ready event has been renamed to clientReady to distinguish it from the gateway READY event and will only emit under that name in v15. Please use clientReady instead.
+0|avon-bot | (Use `node --trace-deprecation ...` to show where the warning was created)
+0|avon-bot | [SHOUKAKU] => Node SelfHosted error: Unexpected server response: 401
+0|avon-bot | [SHOUKAKU] => Node Serenetia error: AggregateError
+0|avon-bot | [SHOUKAKU] => Node JirayuSecure closed | Code: 1006 | Reason:
+0|avon-bot | (node:653785) DeprecationWarning: The ready event has been renamed to clientReady to distinguish it from the gateway READY event and will only emit under that name in v15. Please use clientReady instead.
+0|avon-bot | (Use `node --trace-deprecation ...` to show where the warning was created)
+0|avon-bot | [SHOUKAKU] => Node SelfHosted error: Unexpected server response: 401
+0|avon-bot | [Play] KazagumoError: No node found
+0|avon-bot |     at Shoukaku.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Kazagumo.js:117:23)
+0|avon-bot |     at Generator.next (<anonymous>)
+0|avon-bot |     at /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Kazagumo.js:8:71
+0|avon-bot |     at new Promise (<anonymous>)
+0|avon-bot |     at __awaiter (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Kazagumo.js:4:12)
+0|avon-bot |     at Shoukaku.createPlayer (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Kazagumo.js:100:16)
+0|avon-bot |     at Play.run (/home/ubuntu/CognitoPostAuthenticationTrig/src/commands/music/Play.js:62:44)
+0|avon-bot |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+0|avon-bot |   code: 3
+0|avon-bot | }
+0|avon-bot | [Play] KazagumoError: No node found
+0|avon-bot |     at Shoukaku.<anonymous> (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Kazagumo.js:117:23)
+0|avon-bot |     at Generator.next (<anonymous>)
+0|avon-bot |     at /home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Kazagumo.js:8:71
+0|avon-bot |     at new Promise (<anonymous>)
+0|avon-bot |     at __awaiter (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Kazagumo.js:4:12)
+0|avon-bot |     at Shoukaku.createPlayer (/home/ubuntu/CognitoPostAuthenticationTrig/node_modules/kazagumo/dist/Kazagumo.js:100:16)
+0|avon-bot |     at Play.run (/home/ubuntu/CognitoPostAuthenticationTrig/src/commands/music/Play.js:62:44)
+0|avon-bot |     at process.processTicksAndRejections (node:internal/process/task_queues:95:5) {
+0|avon-bot |   code: 3
+0|avon-bot | }
+
+/home/ubuntu/.pm2/logs/lavalink-out.log last 30 lines:
+1|lavalink | 2026-06-17T05:23:33.860Z  INFO 653945 --- [Lavalink] [           main] lavalink.server.Launcher                 : No active profile set, falling back to 1 default profile: "default"
+1|lavalink | 2026-06-17T05:23:35.647Z  INFO 653945 --- [Lavalink] [           main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=3d6bf653-92ea-3fde-943a-10b9f8cd696e
+1|lavalink | 2026-06-17T05:23:36.420Z  INFO 653945 --- [Lavalink] [           main] l.server.bootstrap.PluginManager         : Found plugin 'youtube-plugin' version '1.18.1'
+1|lavalink | 2026-06-17T05:23:37.936Z  INFO 653945 --- [Lavalink] [           main] l.server.bootstrap.PluginManager         : Loaded 'youtube-plugin-1.18.1.jar' (17 classes)
+1|lavalink | 2026-06-17T05:23:38.481Z  INFO 653945 --- [Lavalink] [           main] lavalink.server.Launcher                 : Started Launcher in 5.794 seconds (process running for 7.123)
+1|lavalink | 2026-06-17T05:23:38.628Z  INFO 653945 --- [Lavalink] [           main] lavalink.server.Launcher                 :
+1|lavalink |
+1|lavalink |        .   _                  _ _       _    __ _ _
+1|lavalink |       /\\ | | __ ___   ____ _| (_)_ __ | | __\ \ \ \
+1|lavalink |      ( ( )| |/ _` \ \ / / _` | | | '_ \| |/ / \ \ \ \
+1|lavalink |       \\/ | | (_| |\ V / (_| | | | | | |   <   ) ) ) )
+1|lavalink |        '  |_|\__,_| \_/ \__,_|_|_|_| |_|_|\_\ / / / /
+1|lavalink |     =========================================/_/_/_/
+1|lavalink |
+1|lavalink |    Version:        4.2.2
+1|lavalink |    Build time:     06.03.2026 23:24:16 UTC
+1|lavalink |    Branch          HEAD
+1|lavalink |    Commit:         e8503fd
+1|lavalink |    Commit time:    06.03.2026 23:21:15 UTC
+1|lavalink |    JVM:            17.0.19
+1|lavalink |    Lavaplayer      2.2.6
+1|lavalink |
+1|lavalink | 2026-06-17T05:23:38.657Z  INFO 653945 --- [Lavalink] [           main] lavalink.server.Launcher                 : No active profile set, falling back to 1 default profile: "default"
+1|lavalink | 2026-06-17T05:23:40.106Z  WARN 653945 --- [Lavalink] [           main] io.undertow.websockets.jsr               : UT026010: Buffer pool was not set on WebSocketDeploymentInfo, the default pool will be used
+1|lavalink | 2026-06-17T05:23:40.157Z  INFO 653945 --- [Lavalink] [           main] io.undertow.servlet                      : Initializing Spring embedded WebApplicationContext
+1|lavalink | 2026-06-17T05:23:40.160Z  INFO 653945 --- [Lavalink] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1485 ms
+1|lavalink | 2026-06-17T05:23:40.701Z  INFO 653945 --- [Lavalink] [           main] c.s.d.l.tools.GarbageCollectionMonitor   : GC monitoring enabled, reporting results every 2 minutes.
+1|lavalink | 2026-06-17T05:23:41.332Z  WARN 653945 --- [Lavalink] [           main] d.l.youtube.plugin.ClientProvider        : Failed to resolve TVHTML5EMBEDDED into a Client
+1|lavalink | 2026-06-17T05:23:41.392Z  INFO 653945 --- [Lavalink] [           main] d.l.youtube.plugin.YoutubePluginLoader   : YouTube source initialised with clients: WEB_REMIX, WEB
+1|lavalink | 2026-06-17T05:23:41.413Z  WARN 653945 --- [Lavalink] [           main] l.server.config.SentryConfiguration      : Turning off sentry
+
+ubuntu@ip-172-31-37-67:~/CognitoPostAuthenticationTrig$
