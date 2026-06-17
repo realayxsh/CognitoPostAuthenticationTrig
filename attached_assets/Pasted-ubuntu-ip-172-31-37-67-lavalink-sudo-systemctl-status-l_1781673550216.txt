@@ -1,0 +1,78 @@
+ubuntu@ip-172-31-37-67:~/lavalink$ sudo systemctl status lavalink
+● lavalink.service - Lavalink Audio Server
+     Loaded: loaded (/etc/systemd/system/lavalink.service; enabled; preset: enabled)
+     Active: active (running) since Wed 2026-06-17 05:17:14 UTC; 6s ago
+ Invocation: 52981bd7d81f479bb7f6234f9f36a9a8
+   Main PID: 653038 (java)
+      Tasks: 14 (limit: 627)
+     Memory: 149.2M (peak: 149.4M)
+        CPU: 9.478s
+     CGroup: /system.slice/lavalink.service
+             └─653038 /usr/bin/java -Xmx512m -jar /home/ubuntu/lavalink/Lavalink.jar
+
+Jun 17 05:17:04 ip-172-31-37-67 systemd[1]: lavalink.service: Failed with result 'exit-code'.
+Jun 17 05:17:04 ip-172-31-37-67 systemd[1]: lavalink.service: Consumed 19.489s CPU time over 19.107s wall clock time, 2>
+Jun 17 05:17:14 ip-172-31-37-67 systemd[1]: lavalink.service: Scheduled restart job, restart counter is at 7.
+Jun 17 05:17:14 ip-172-31-37-67 systemd[1]: Started lavalink.service - Lavalink Audio Server.
+Jun 17 05:17:16 ip-172-31-37-67 lavalink[653038]: 2026-06-17T05:17:16.828Z  INFO 653038 --- [Lavalink] [           main>
+Jun 17 05:17:16 ip-172-31-37-67 lavalink[653038]: 2026-06-17T05:17:16.836Z  INFO 653038 --- [Lavalink] [           main>
+Jun 17 05:17:18 ip-172-31-37-67 lavalink[653038]: 2026-06-17T05:17:18.465Z  INFO 653038 --- [Lavalink] [           main>
+Jun 17 05:17:19 ip-172-31-37-67 lavalink[653038]: 2026-06-17T05:17:19.239Z  INFO 653038 --- [Lavalink] [           main>
+lines 1-19/19 (END)...skipping...
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+~
+● lavalink.service - Lavalink Audio Server
+     Loaded: loaded (/etc/systemd/system/lavalink.service; enabled; preset: enabled)
+     Active: active (running) since Wed 2026-06-17 05:17:14 UTC; 6s ago
+ Invocation: 52981bd7d81f479bb7f6234f9f36a9a8
+   Main PID: 653038 (java)
+      Tasks: 14 (limit: 627)
+     Memory: 149.2M (peak: 149.4M)
+        CPU: 9.478s
+     CGroup: /system.slice/lavalink.service
+             └─653038 /usr/bin/java -Xmx512m -jar /home/ubuntu/lavalink/Lavalink.jar
+
+Jun 17 05:17:04 ip-172-31-37-67 systemd[1]: lavalink.service: Failed with result 'exit-code'.
+Jun 17 05:17:04 ip-172-31-37-67 systemd[1]: lavalink.service: Consumed 19.489s CPU time over 19.107s wall clock time, 2>
+Jun 17 05:17:14 ip-172-31-37-67 systemd[1]: lavalink.service: Scheduled restart job, restart counter is at 7.
+Jun 17 05:17:14 ip-172-31-37-67 systemd[1]: Started lavalink.service - Lavalink Audio Server.
+Jun 17 05:17:16 ip-172-31-37-67 lavalink[653038]: 2026-06-17T05:17:16.828Z  INFO 653038 --- [Lavalink] [           main>
+Jun 17 05:17:16 ip-172-31-37-67 lavalink[653038]: 2026-06-17T05:17:16.836Z  INFO 653038 --- [Lavalink] [           main>
+Jun 17 05:17:18 ip-172-31-37-67 lavalink[653038]: 2026-06-17T05:17:18.465Z  INFO 653038 --- [Lavalink] [           main>
+Jun 17 05:17:19 ip-172-31-37-67 lavalink[653038]: 2026-06-17T05:17:19.239Z  INFO 653038 --- [Lavalink] [           main>
+Waiting for data... (^X or interrupt to abort)
