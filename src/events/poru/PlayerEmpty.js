@@ -40,9 +40,11 @@ class PlayerEmpty extends AvonClientEvent{
 
         if(db === `enabled`){
             try {
-                const prev = player.data.get('previousTrack') || player.queue.previous;
+                const prev = player.data.get('previousTrack') || (Array.isArray(player.queue.previous) ? player.queue.previous[0] : player.queue.previous);
                 const title  = prev?.title  || '';
                 const author = prev?.author || '';
+
+                console.log(`[Autoplay] Guild: ${player.guildId} | Prev: "${title}" by "${author}"`);
 
                 // Add the last played track to history so it doesn't repeat
                 if (prev) addToHistory(player, prev);
@@ -51,18 +53,19 @@ class PlayerEmpty extends AvonClientEvent{
                 // uses a different angle but stays in the same genre/language.
                 const queries = [];
                 if (author && title) {
-                    queries.push(`${author} - ${title} radio`);   // most specific
-                    queries.push(`${author} mix`);                  // same artist variety
-                    queries.push(`${title} similar songs`);         // title-based related
+                    queries.push(`${author} - ${title} radio`);
+                    queries.push(`${author} mix`);
+                    queries.push(`${title} similar songs`);
                 }
                 if (author) queries.push(`${author} songs`);
                 if (title)  queries.push(`${title} mix`);
-                queries.push('popular songs');                      // last-resort fallback
+                queries.push('popular songs');
 
                 // Rotate query index so repeated autoplay doesn't always use the same query
                 const qIdx = (player.data.get('apQueryIdx') || 0) % queries.length;
                 player.data.set('apQueryIdx', qIdx + 1);
                 const query = queries[qIdx];
+                console.log(`[Autoplay] Query: "${query}"`);
 
                 // Try YouTube Music first, then plain YouTube as fallback
                 // Valid Kazagumo engine names: 'youtube_music', 'youtube', 'soundcloud'
@@ -72,6 +75,7 @@ class PlayerEmpty extends AvonClientEvent{
                 for (const engine of engines) {
                     try {
                         const result = await player.search(query, { engine, requester: this.client.user });
+                        console.log(`[Autoplay][${engine}] Results: ${result?.tracks?.length ?? 0}`);
                         if (!result || !result.tracks.length) continue;
 
                         // Filter out songs already played this session
@@ -79,23 +83,27 @@ class PlayerEmpty extends AvonClientEvent{
                         const pool = fresh.length ? fresh : result.tracks.filter(t => {
                             const id = t.uri || t.title;
                             const prev_id = prev ? (prev.uri || prev.title) : null;
-                            return id !== prev_id; // at minimum avoid exact same song
+                            return id !== prev_id;
                         });
 
                         if (pool.length) {
-                            // Pick randomly from up to first 8 results for variety
                             picked = pool[Math.floor(Math.random() * Math.min(pool.length, 8))];
+                            console.log(`[Autoplay] Picked: "${picked.title}" via ${engine}`);
                             break;
                         }
-                    } catch(e) { console.error(`[Autoplay][${engine}]`, e); }
+                    } catch(e) { console.error(`[Autoplay][${engine}] Search error:`, e.message); }
                 }
 
                 if (picked) {
                     player.queue.add(picked);
-                    player.play();
+                    console.log(`[Autoplay] Calling play()...`);
+                    await player.play().catch(e => console.error('[Autoplay] play() error:', e.message));
+                    console.log(`[Autoplay] play() completed`);
                     return;
                 }
-            } catch(e) { console.error('[Autoplay]', e); }
+
+                console.warn(`[Autoplay] No track found for query: "${query}"`);
+            } catch(e) { console.error('[Autoplay] Outer error:', e.message, e.stack); }
         }
 
         if(db !== `enabled` && !is247){
