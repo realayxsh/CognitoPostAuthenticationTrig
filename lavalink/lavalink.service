@@ -1,0 +1,17 @@
+[Unit]
+Description=Lavalink Audio Server
+After=network.target
+Wants=network-online.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/lavalink
+ExecStart=/usr/bin/java -Xmx512m -jar /home/ubuntu/lavalink/Lavalink.jar
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=lavalink
+
+[Install]
+WantedBy=multi-user.target

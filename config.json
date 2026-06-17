@@ -21,33 +21,27 @@
     "mongourl6" : "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0",
     "nodes" : [
         {
-            "name" : "Lavalink1",
-            "url" : "lavalink.devz.cloud:80",
-            "auth" : "horizxon.xyz",
+            "name" : "SelfHosted",
+            "url" : "localhost:2333",
+            "auth" : "avonmusic2024",
             "secure" : false
         },
         {
-            "name" : "Lavalink2",
+            "name" : "Jirayu",
             "url" : "lavalink.jirayu.net:13592",
             "auth" : "youshallnotpass",
             "secure" : false
         },
         {
-            "name" : "Lavalink3",
-            "url" : "lavalink.lewdhutao.my.eu.org:443",
-            "auth" : "cat",
+            "name" : "JirayuSecure",
+            "url" : "lavalink.jirayu.net:443",
+            "auth" : "youshallnotpass",
             "secure" : true
         },
         {
-            "name" : "Lavalink4",
-            "url" : "lava.link:80",
-            "auth" : "dismusic",
-            "secure" : false
-        },
-        {
-            "name" : "Lavalink5",
-            "url" : "lavalink.darrennathanael.com:443",
-            "auth" : "itsmegathanael",
+            "name" : "Serenetia",
+            "url" : "lavalinkv4.serenetia.com:443",
+            "auth" : "youshallnotpass",
             "secure" : true
         }
     ]
