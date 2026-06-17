@@ -37,7 +37,7 @@ lavalink:
     - dependency: "com.github.topi314.lavasrc:lavasrc-plugin:4.3.0"
       snapshot: false
   server:
-    password: "avonmusic2024"
+    password: "youshallnotpass"
     sources:
       youtube: false
       bandcamp: true

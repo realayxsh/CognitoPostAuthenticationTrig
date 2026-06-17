@@ -23,7 +23,7 @@
         {
             "name" : "SelfHosted",
             "url" : "localhost:2333",
-            "auth" : "avonmusic2024",
+            "auth" : "youshallnotpass",
             "secure" : false
         }
     ]
