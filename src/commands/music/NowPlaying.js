@@ -24,7 +24,7 @@ const FILTERS = [
     { label: 'Clear Filters',value: 'clearfilters',  description: 'Remove all active filters',        key: null,           emoji: FILTER_EMOJI },
 ];
 
-why const Q_EQ = [
+const Q_EQ = [
     {band:0,gain:-0.05},{band:1,gain:0.00},{band:2,gain:0.03},{band:3,gain:0.05},
     {band:4,gain:0.04},{band:5,gain:0.00},{band:6,gain:-0.03},{band:7,gain:0.00},
     {band:8,gain:0.03},{band:9,gain:0.04},{band:10,gain:0.04},{band:11,gain:0.03},
