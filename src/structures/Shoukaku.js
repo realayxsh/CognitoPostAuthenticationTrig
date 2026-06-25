@@ -15,11 +15,11 @@ class Shoukaku extends Kazagumo{
                 new Spotify({
                     clientId : config.spotifyId,
                     clientSecret : config.spotifySecret,
-                    playlistPageLimit : 5,
-                    albumPageLimit : 5,
-                    searchLimit : 50,
-                    searchMarket : "IN",
-                    searchPlatform : "spsearch"
+                    playlistPageLimit : 10,
+                    albumPageLimit    : 10,
+                    searchLimit       : 100,
+                    searchMarket      : "US",
+                    searchPlatform    : "spsearch"
                 }),
                 new Deezer({
                     playlistLimit : 20
@@ -30,13 +30,13 @@ class Shoukaku extends Kazagumo{
         new Connectors.DiscordJS(client),
         config.nodes,
         {
-            resumeByLibrary       : false,
-            resumeTimeout         : 30,
-            reconnectTries        : 10,
-            reconnectInterval     : 3000,
-            restTimeout           : 10000,
+            resumeByLibrary       : true,
+            resumeTimeout         : 60,
+            reconnectTries        : 20,
+            reconnectInterval     : 2000,
+            restTimeout           : 20000,
             moveOnDisconnect      : true,
-            voiceConnectionTimeout: 15000,
+            voiceConnectionTimeout: 30000,
         }
         )
     }

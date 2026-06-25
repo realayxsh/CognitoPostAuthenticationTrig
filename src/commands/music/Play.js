@@ -115,33 +115,56 @@ class Play extends AvonCommand {
                 }
             }
 
-            // Search directly on Spotify — no engine selector needed
-            try {
+            // Search Spotify with up to 2 retries, then fallback to SoundCloud
+            {
                 let p = client.poru.players.get(message.guild.id);
                 if (!p) {
                     return editMsg(searchingMsg, `**| ${client.emoji.cross} | Player no longer exists. Please run the command again.**`);
                 }
 
-                let result = await p.search(query, { engine: 'spotify', requester: message.author });
+                let result = null;
+                let usedEngine = 'spotify';
+
+                // Try Spotify up to 3 attempts
+                for (let attempt = 1; attempt <= 3; attempt++) {
+                    try {
+                        const res = await p.search(query, { engine: 'spotify', requester: message.author });
+                        if (res && res.tracks.length) { result = res; break; }
+                        console.warn(`[Play] Spotify attempt ${attempt} returned no tracks for: ${query}`);
+                    } catch (e) {
+                        console.error(`[Play] Spotify attempt ${attempt} error:`, e.message);
+                    }
+                    if (attempt < 3) await new Promise(r => setTimeout(r, 800 * attempt));
+                }
+
+                // Fallback to SoundCloud if Spotify gives nothing
+                if (!result || !result.tracks.length) {
+                    try {
+                        console.warn(`[Play] Spotify exhausted, falling back to SoundCloud for: ${query}`);
+                        const res = await p.search(query, { engine: 'soundcloud', requester: message.author });
+                        if (res && res.tracks.length) { result = res; usedEngine = 'soundcloud'; }
+                    } catch (e) {
+                        console.error('[Play] SoundCloud fallback error:', e.message);
+                    }
+                }
 
                 if (!result || !result.tracks.length) {
-                    return editMsg(searchingMsg, `**| No results were found on Spotify for \`${query}\`**`);
+                    return editMsg(searchingMsg, `**| ${client.emoji.cross} | No results found for \`${query}\`. Try a different search term.**`);
                 }
+
+                const engineNote = usedEngine === 'soundcloud' ? ' *(via SoundCloud)*' : '';
 
                 if (result.type === `PLAYLIST`) {
                     for (let track of result.tracks) {
-                        p.queue.add(new KazagumoTrack(track.getRaw(), message.author));
+                        p.queue.add(usedEngine === 'spotify' ? new KazagumoTrack(track.getRaw(), message.author) : track);
                     }
                     if (!p.playing && !p.paused) p.play();
-                    return editMsg(searchingMsg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``);
+                    return editMsg(searchingMsg, `**| Added Playlist to Queue**${engineNote}\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``);
                 } else {
-                    p.queue.add(new KazagumoTrack(result.tracks[0].getRaw(), message.author));
+                    p.queue.add(usedEngine === 'spotify' ? new KazagumoTrack(result.tracks[0].getRaw(), message.author) : result.tracks[0]);
                     if (!p.playing && !p.paused) p.play();
-                    return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
+                    return editMsg(searchingMsg, `**| Added Song to Queue**${engineNote}\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
                 }
-            } catch (e) {
-                console.error('[Play Spotify Search]', e);
-                return editMsg(searchingMsg, `**| ${client.emoji.cross} | Something went wrong while searching Spotify. Please try again.**`);
             }
 
         } catch (e) {
