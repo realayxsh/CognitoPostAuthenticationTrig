@@ -18,7 +18,7 @@ class Shoukaku extends Kazagumo{
                     albumPageLimit    : 10,
                     searchLimit       : 100,
                     searchMarket      : "US",
-                    searchPlatform    : "spsearch"
+                    searchPlatform    : "ytmsearch"
                 }),
                 new Plugins.PlayerMoved(client)
             ]

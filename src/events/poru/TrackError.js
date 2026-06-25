@@ -1,5 +1,4 @@
 const { ContainerBuilder, TextDisplayBuilder, MessageFlags } = require("discord.js");
-const { KazagumoTrack } = require("kazagumo");
 const AvonClientEvent = require("../../structures/Eventhandler");
 
 class TrackError extends AvonClientEvent {
@@ -16,8 +15,7 @@ class TrackError extends AvonClientEvent {
                     const query = track.author ? `${track.author} - ${track.title}` : track.title;
                     const result = await player.search(query, { engine: 'spotify', requester: track.requester || this.client.user });
                     if (result && result.tracks.length) {
-                        const replacement = new KazagumoTrack(result.tracks[0].getRaw(), track.requester || this.client.user);
-                        player.queue.unshift(replacement);
+                        player.queue.unshift(result.tracks[0]);
                         console.log(`[TrackError] Re-queued via Spotify: "${result.tracks[0].title}"`);
                         player.stop();
                         return;

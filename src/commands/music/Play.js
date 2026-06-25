@@ -1,6 +1,5 @@
 const { ContainerBuilder, TextDisplayBuilder, SectionBuilder, ThumbnailBuilder, MessageFlags } = require("discord.js");
 const ms = require("ms");
-const { KazagumoTrack } = require(`kazagumo`);
 const AvonCommand = require(`../../structures/avonCommand`);
 
 class Play extends AvonCommand {
@@ -120,13 +119,11 @@ class Play extends AvonCommand {
                 }
 
                 if (result.type === `PLAYLIST`) {
-                    for (let track of result.tracks) {
-                        p.queue.add(new KazagumoTrack(track.getRaw(), message.author));
-                    }
+                    for (let track of result.tracks) p.queue.add(track);
                     if (!p.playing && !p.paused) p.play();
                     return editMsg(searchingMsg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``);
                 } else {
-                    p.queue.add(new KazagumoTrack(result.tracks[0].getRaw(), message.author));
+                    p.queue.add(result.tracks[0]);
                     if (!p.playing && !p.paused) p.play();
                     return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
                 }
