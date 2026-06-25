@@ -72,50 +72,31 @@ class Play extends AvonCommand {
             player.setTextChannel(message.channel.id);
 
             if (query.startsWith('https://')) {
-                if (query.includes(`youtube`) || query.includes(`youtu.be`)) {
-                    return editMsg(searchingMsg, `**| I don't resolve YouTube links anymore due to YouTube's TOS**`);
+                if (!query.includes('spotify')) {
+                    return editMsg(searchingMsg, `**| ${client.emoji.cross} | Only Spotify links are supported. Please paste a Spotify track, album, or playlist URL.**`);
                 }
 
-                if (query.includes(`spotify`)) {
-                    try {
-                        let result = await player.search(query, { requester: message.author });
-                        if (!result || !result.tracks.length) {
-                            return editMsg(searchingMsg, `**| ${client.emoji.cross} | No results found for that Spotify link**`);
-                        }
-                        if (result.type === `PLAYLIST`) {
-                            for (let track of result.tracks) player.queue.add(track);
-                            if (!player.playing && !player.paused) player.play();
-                            return editMsg(searchingMsg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.tracks.reduce((a, v) => a + (v.length || 0), 0))}\``);
-                        } else {
-                            player.queue.add(result.tracks[0]);
-                            if (!player.playing && !player.paused) player.play();
-                            return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
-                        }
-                    } catch (e) {
-                        console.error('[Play Spotify]', e);
-                        return editMsg(searchingMsg, `**| ${client.emoji.cross} | Failed to load that Spotify link. Make sure the link is valid and public.**`);
+                try {
+                    let result = await player.search(query, { requester: message.author });
+                    if (!result || !result.tracks.length) {
+                        return editMsg(searchingMsg, `**| ${client.emoji.cross} | No results found for that Spotify link. Make sure it is valid and public.**`);
                     }
-                } else {
-                    try {
-                        let result = await player.search(query, { requester: message.author });
-                        if (!result || !result.tracks.length) return editMsg(searchingMsg, `**| No results were found**`);
-                        if (result.type === `PLAYLIST`) {
-                            for (let track of result.tracks) player.queue.add(track);
-                            if (!player.playing && !player.paused) player.play();
-                            return editMsg(searchingMsg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``);
-                        } else {
-                            player.queue.add(result.tracks[0]);
-                            if (!player.playing && !player.paused) player.play();
-                            return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
-                        }
-                    } catch (e) {
-                        console.error('[Play URL]', e);
-                        return editMsg(searchingMsg, `**| ${client.emoji.cross} | Failed to load that link**`);
+                    if (result.type === `PLAYLIST`) {
+                        for (let track of result.tracks) player.queue.add(track);
+                        if (!player.playing && !player.paused) player.play();
+                        return editMsg(searchingMsg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.tracks.reduce((a, v) => a + (v.length || 0), 0))}\``);
+                    } else {
+                        player.queue.add(result.tracks[0]);
+                        if (!player.playing && !player.paused) player.play();
+                        return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
                     }
+                } catch (e) {
+                    console.error('[Play Spotify URL]', e);
+                    return editMsg(searchingMsg, `**| ${client.emoji.cross} | Failed to load that Spotify link. Make sure it is valid and public.**`);
                 }
             }
 
-            // Search Spotify with up to 2 retries, then fallback to SoundCloud
+            // Search Spotify with up to 3 attempts — no other platforms
             {
                 let p = client.poru.players.get(message.guild.id);
                 if (!p) {
@@ -123,9 +104,6 @@ class Play extends AvonCommand {
                 }
 
                 let result = null;
-                let usedEngine = 'spotify';
-
-                // Try Spotify up to 3 attempts
                 for (let attempt = 1; attempt <= 3; attempt++) {
                     try {
                         const res = await p.search(query, { engine: 'spotify', requester: message.author });
@@ -137,33 +115,20 @@ class Play extends AvonCommand {
                     if (attempt < 3) await new Promise(r => setTimeout(r, 800 * attempt));
                 }
 
-                // Fallback to SoundCloud if Spotify gives nothing
                 if (!result || !result.tracks.length) {
-                    try {
-                        console.warn(`[Play] Spotify exhausted, falling back to SoundCloud for: ${query}`);
-                        const res = await p.search(query, { engine: 'soundcloud', requester: message.author });
-                        if (res && res.tracks.length) { result = res; usedEngine = 'soundcloud'; }
-                    } catch (e) {
-                        console.error('[Play] SoundCloud fallback error:', e.message);
-                    }
+                    return editMsg(searchingMsg, `**| ${client.emoji.cross} | No results found on Spotify for \`${query}\`. Try a different search term.**`);
                 }
-
-                if (!result || !result.tracks.length) {
-                    return editMsg(searchingMsg, `**| ${client.emoji.cross} | No results found for \`${query}\`. Try a different search term.**`);
-                }
-
-                const engineNote = usedEngine === 'soundcloud' ? ' *(via SoundCloud)*' : '';
 
                 if (result.type === `PLAYLIST`) {
                     for (let track of result.tracks) {
-                        p.queue.add(usedEngine === 'spotify' ? new KazagumoTrack(track.getRaw(), message.author) : track);
+                        p.queue.add(new KazagumoTrack(track.getRaw(), message.author));
                     }
                     if (!p.playing && !p.paused) p.play();
-                    return editMsg(searchingMsg, `**| Added Playlist to Queue**${engineNote}\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``);
+                    return editMsg(searchingMsg, `**| Added Playlist to Queue**\n\n${client.emoji.queue} **Added** \`${result.tracks.length}\` songs from *${result.playlistName}*\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** \`${ms(result.playlistInfo?.length ?? 0)}\``);
                 } else {
-                    p.queue.add(usedEngine === 'spotify' ? new KazagumoTrack(result.tracks[0].getRaw(), message.author) : result.tracks[0]);
+                    p.queue.add(new KazagumoTrack(result.tracks[0].getRaw(), message.author));
                     if (!p.playing && !p.paused) p.play();
-                    return editMsg(searchingMsg, `**| Added Song to Queue**${engineNote}\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
+                    return editMsg(searchingMsg, `**| Added Song to Queue**\n\n${client.emoji.queue} **Added** [${result.tracks[0].title}](${result.tracks[0].uri || client.config.server})\n${client.emoji.users} **Requester:** ${message.author}\n${client.emoji.time} **Duration:** ${ms(result.tracks[0].length)}`);
                 }
             }
 

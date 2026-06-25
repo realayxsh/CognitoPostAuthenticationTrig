@@ -9,7 +9,7 @@ class Sources extends AvonCommand{
     async run(client, message, args, prefix){
         const container = new ContainerBuilder()
             .addTextDisplayComponents(new TextDisplayBuilder().setContent(
-                `**__Supported Sources__**\n\n\`Spotify\`, \`SoundCloud\``
+                `**__Supported Sources__**\n\n\`Spotify\``
             ));
         return message.channel.send({ flags: [MessageFlags.IsComponentsV2], components: [container] });
     }

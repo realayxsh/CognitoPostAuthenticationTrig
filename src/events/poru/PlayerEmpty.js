@@ -135,40 +135,34 @@ class PlayerEmpty extends AvonClientEvent{
                 const query = queries[qIdx];
                 console.log(`[Autoplay] Query: "${query}"`);
 
-                // Try Spotify first (up to 2 attempts), then SoundCloud as fallback
-                const engines = ['spotify', 'soundcloud'];
+                // Spotify only — up to 3 attempts
                 let picked = null;
 
-                for (const engine of engines) {
-                    const attempts = engine === 'spotify' ? 2 : 1;
-                    for (let attempt = 1; attempt <= attempts; attempt++) {
-                        try {
-                            const result = await player.search(query, { engine, requester: this.client.user });
-                            console.log(`[Autoplay][${engine}] attempt ${attempt} Results: ${result?.tracks?.length ?? 0}`);
-                            if (!result || !result.tracks.length) {
-                                if (attempt < attempts) await new Promise(r => setTimeout(r, 600));
-                                continue;
-                            }
-
-                            // Filter out songs already played this session
-                            const fresh = filterNew(result.tracks, player);
-                            const pool = fresh.length ? fresh : result.tracks.filter(t => {
-                                const id = t.uri || t.title;
-                                const prev_id = prev ? (prev.uri || prev.title) : null;
-                                return id !== prev_id;
-                            });
-
-                            if (pool.length) {
-                                picked = pool[Math.floor(Math.random() * Math.min(pool.length, 8))];
-                                console.log(`[Autoplay] Picked: "${picked.title}" via ${engine}`);
-                                break;
-                            }
-                        } catch(e) {
-                            console.error(`[Autoplay][${engine}] attempt ${attempt} error:`, e.message);
-                            if (attempt < attempts) await new Promise(r => setTimeout(r, 600));
+                for (let attempt = 1; attempt <= 3; attempt++) {
+                    try {
+                        const result = await player.search(query, { engine: 'spotify', requester: this.client.user });
+                        console.log(`[Autoplay][spotify] attempt ${attempt} Results: ${result?.tracks?.length ?? 0}`);
+                        if (!result || !result.tracks.length) {
+                            if (attempt < 3) await new Promise(r => setTimeout(r, 600));
+                            continue;
                         }
+
+                        const fresh = filterNew(result.tracks, player);
+                        const pool = fresh.length ? fresh : result.tracks.filter(t => {
+                            const id = t.uri || t.title;
+                            const prev_id = prev ? (prev.uri || prev.title) : null;
+                            return id !== prev_id;
+                        });
+
+                        if (pool.length) {
+                            picked = pool[Math.floor(Math.random() * Math.min(pool.length, 8))];
+                            console.log(`[Autoplay] Picked: "${picked.title}"`);
+                            break;
+                        }
+                    } catch(e) {
+                        console.error(`[Autoplay][spotify] attempt ${attempt} error:`, e.message);
+                        if (attempt < 3) await new Promise(r => setTimeout(r, 600));
                     }
-                    if (picked) break;
                 }
 
                 if (picked) {
