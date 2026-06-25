@@ -7,7 +7,6 @@ const AvonEvents = require("./avonEvents");
 const AvonCommands = require("./CommandHandler");
 const config = require(`../config.js`);
 const Shoukaku = require("./Shoukaku");
-const Lavasfy = require("./Lavasfy");
 const wh = require("./webhook");
 
 class Avon extends Client {
@@ -33,7 +32,6 @@ class Avon extends Client {
         this.data6 = new Database(config.mongourl6, { writeConcern: { w: 'majority' } });
         this.data6.connect();
         this.poru = new Shoukaku(this);
-        this.lavasfy = new Lavasfy(this);
 
         this.poru.shoukaku.on('ready', (name) => {
             console.log(`[SHOUKAKU] => Node ${name} is connected`);
