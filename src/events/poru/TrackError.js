@@ -13,7 +13,7 @@ class TrackError extends AvonClientEvent {
             if (track?.title) {
                 try {
                     const query = track.author ? `${track.author} - ${track.title}` : track.title;
-                    const result = await player.search(query, { engine: 'spotify', requester: track.requester || this.client.user });
+                    const result = await player.search(`spsearch:${query}`, { requester: track.requester || this.client.user });
                     if (result && result.tracks.length) {
                         player.queue.unshift(result.tracks[0]);
                         console.log(`[TrackError] Re-queued via Spotify: "${result.tracks[0].title}"`);

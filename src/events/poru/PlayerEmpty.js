@@ -140,8 +140,8 @@ class PlayerEmpty extends AvonClientEvent{
 
                 for (let attempt = 1; attempt <= 3; attempt++) {
                     try {
-                        const result = await player.search(query, { engine: 'spotify', requester: this.client.user });
-                        console.log(`[Autoplay][spotify] attempt ${attempt} Results: ${result?.tracks?.length ?? 0}`);
+                        const result = await player.search(`spsearch:${query}`, { requester: this.client.user });
+                        console.log(`[Autoplay][spsearch] attempt ${attempt} Results: ${result?.tracks?.length ?? 0}`);
                         if (!result || !result.tracks.length) {
                             if (attempt < 3) await new Promise(r => setTimeout(r, 600));
                             continue;

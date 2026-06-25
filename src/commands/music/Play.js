@@ -105,11 +105,11 @@ class Play extends AvonCommand {
                 let result = null;
                 for (let attempt = 1; attempt <= 3; attempt++) {
                     try {
-                        const res = await p.search(query, { engine: 'spotify', requester: message.author });
+                        const res = await p.search(`spsearch:${query}`, { requester: message.author });
                         if (res && res.tracks.length) { result = res; break; }
-                        console.warn(`[Play] Spotify attempt ${attempt} returned no tracks for: ${query}`);
+                        console.warn(`[Play] spsearch attempt ${attempt} returned no tracks for: ${query}`);
                     } catch (e) {
-                        console.error(`[Play] Spotify attempt ${attempt} error:`, e.message);
+                        console.error(`[Play] spsearch attempt ${attempt} error:`, e.message);
                     }
                     if (attempt < 3) await new Promise(r => setTimeout(r, 800 * attempt));
                 }
