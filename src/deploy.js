@@ -38,6 +38,7 @@ const commands = [
             { name: 'Vibrato',      value: 'vibrato'     },
             { name: 'Clear Filters',value: 'clearfilters'}
         )),
+    new SlashCommandBuilder().setName('search').setDescription('Search Spotify and pick a song to play').addStringOption(o => o.setName('query').setDescription('Song name to search on Spotify').setRequired(true)),
     new SlashCommandBuilder().setName('nowplaying').setDescription('Show the currently playing track with live progress bar'),
     new SlashCommandBuilder().setName('help').setDescription('Show all commands and help menu'),
     new SlashCommandBuilder().setName('ping').setDescription('Check the bot latency'),

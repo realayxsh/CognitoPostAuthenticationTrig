@@ -21,13 +21,13 @@
     "mongourl6" : "mongodb+srv://ayxsh:ayxsh@cluster0.n3opc6g.mongodb.net/?appName=Cluster0",
     "nodes" : [
         {
-            "name" : "Jirayu",
+            "name" : "Jirayu-1",
             "url" : "lavalink.jirayu.net:13592",
             "auth" : "youshallnotpass",
             "secure" : false
         },
         {
-            "name" : "JirayuSecure",
+            "name" : "Jirayu-2",
             "url" : "lavalink.jirayu.net:443",
             "auth" : "youshallnotpass",
             "secure" : true
@@ -45,9 +45,15 @@
             "secure" : true
         },
         {
-            "name" : "Thyarmageddon",
-            "url" : "lavalink.thyarmageddon.me:443",
-            "auth" : "thurmites4life",
+            "name" : "Freelink",
+            "url" : "freelink.gleeze.com:443",
+            "auth" : "freelink",
+            "secure" : true
+        },
+        {
+            "name" : "Horizxon",
+            "url" : "lavalink.horizxon.studio:443",
+            "auth" : "horizxon.studio",
             "secure" : true
         }
     ]
