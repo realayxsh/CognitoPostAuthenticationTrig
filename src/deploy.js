@@ -3,7 +3,7 @@ const { REST, Routes, SlashCommandBuilder } = require('discord.js');
 const config = require('./config.js');
 
 const commands = [
-    new SlashCommandBuilder().setName('play').setDescription('Play a song or playlist').addStringOption(o => o.setName('query').setDescription('Song name, Spotify/Deezer/SoundCloud URL').setRequired(true)),
+    new SlashCommandBuilder().setName('play').setDescription('Play a song or playlist').addStringOption(o => o.setName('query').setDescription('Song name or Spotify URL').setRequired(true)),
     new SlashCommandBuilder().setName('skip').setDescription('Skip the current song'),
     new SlashCommandBuilder().setName('stop').setDescription('Stop the music and clear the queue'),
     new SlashCommandBuilder().setName('pause').setDescription('Pause the music'),

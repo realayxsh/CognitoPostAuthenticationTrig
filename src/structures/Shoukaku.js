@@ -1,6 +1,5 @@
 const { Kazagumo, Plugins } = require("kazagumo");
 const Spotify = require(`kazagumo-spotify`);
-const Deezer = require(`kazagumo-deezer`);
 const config = require(`../config.js`);
 const { Connectors } = require(`shoukaku`);
 class Shoukaku extends Kazagumo{
@@ -20,9 +19,6 @@ class Shoukaku extends Kazagumo{
                     searchLimit       : 100,
                     searchMarket      : "US",
                     searchPlatform    : "spsearch"
-                }),
-                new Deezer({
-                    playlistLimit : 20
                 }),
                 new Plugins.PlayerMoved(client)
             ]
