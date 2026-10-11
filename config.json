@@ -22,9 +22,9 @@
     "nodes" : [
         {
             "name" : "Jirayu",
-            "url" : "lavalink.jirayu.net:443",
-            "auth" : "youshallnotpass",
-            "secure" : true
+            "url" : "127.0.0.1:2333",
+            "auth" : "f151ed27acfd7e4e044326cbdc1b5c0d447c01ce72ce6bf4ed33dba4f6a9c5d7",
+            "secure" : false
         }
     ]
 }
