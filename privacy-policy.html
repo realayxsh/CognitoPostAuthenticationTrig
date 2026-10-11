@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Privacy policy for the Radio Discord music bot.">
+  <title>Radio Bot Privacy Policy</title>
+  <style>
+    :root { color-scheme: dark; font-family: system-ui, sans-serif; }
+    body { max-width: 760px; margin: 0 auto; padding: 2rem 1.25rem 4rem; line-height: 1.65; color: #e6e8eb; background: #17191c; }
+    h1, h2 { line-height: 1.25; color: #fff; }
+    a { color: #8ab4ff; }
+    li { margin: .4rem 0; }
+    .updated { color: #b9c0c9; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Radio Bot Privacy Policy</h1>
+    <p class="updated"><strong>Effective date:</strong> October 12, 2026</p>
+    <p>Radio is a Discord music bot that provides music search and playback, queue controls, audio filters, and server settings. This policy explains what information Radio processes, how it is used, and how to make a deletion request.</p>
+
+    <h2>Information Radio processes</h2>
+    <ul>
+      <li><strong>Discord identifiers and server information:</strong> user IDs and usernames; server and channel IDs and names; and, for server join/leave operations, the owner ID and available member count.</li>
+      <li><strong>Command information:</strong> Radio reads message text to identify and parse prefix commands directed to it. Its operational command logs record the command name and associated user, server, and channel; raw message bodies are not intentionally written to those command logs or to Radio's MongoDB settings.</li>
+      <li><strong>Music requests:</strong> search terms, track information, and the requesting user's Discord identity are used to find and play requested tracks.</li>
+      <li><strong>Settings and feature records:</strong> server prefixes, playback and channel settings, custom server branding, and limited user/server IDs used for access lists and premium features.</li>
+    </ul>
+
+    <h2>How information is used and shared</h2>
+    <p>Radio uses this information to respond to commands, provide music features, apply server settings and access controls, and operate and troubleshoot the bot. Radio does not use message content to train AI or machine-learning models, sell personal information, or build advertising profiles.</p>
+    <p>Information is processed by Discord to operate the bot and deliver its log messages; MongoDB to store settings and related records; and the configured Lavalink and music-search providers to search for and play tracks. Radio may also send a user ID to Top.gg when checking vote status, and a lyrics query to LRCLIB or Some Random API when a lyrics feature is used. These providers process information under their own terms and privacy policies; their independent retention is not controlled by Radio.</p>
+    <p>Radio's operational logs are sent to a bot-controlled Discord log channel. They include command metadata and service diagnostics; join/leave notices can include server and owner information and member counts. Radio does not intentionally include the full body of user messages in command-usage logs.</p>
+
+    <h2>Retention and deletion</h2>
+    <p>Server settings are kept while Radio is installed in the server and are removed when no longer needed. Some settings are automatically deleted when Radio leaves a server; if any associated record remains, a server administrator can request its deletion. Operational command and service logs are manually reviewed and removed within 90 days. Information needed to handle a deletion request may be retained until that request is completed.</p>
+    <p>To request access to, correction of, or deletion of information associated with your account or server, contact the Radio team through the <a href="https://discord.gg/yawr">Radio support Discord server</a>. We will respond and, where the information is under our control, complete a deletion request within 30 days. Include the relevant user or server ID and describe the request. Do not post passwords, bot tokens, or other credentials. Copies held by Discord or other independent providers are subject to those providers' own policies and controls.</p>
+
+    <h2>Your choices</h2>
+    <p>You can choose not to send commands to Radio, and a server administrator can remove Radio from a server. Radio does not currently provide a separate per-user opt-out for command processing while continuing to use prefix commands. The bot does not request the Server Members or Presence privileged intents.</p>
+
+    <h2>Security and changes</h2>
+    <p>Reasonable measures are used to protect information under Radio's control, but no online service can guarantee absolute security. This policy will be updated if Radio's features or data practices materially change. The current version will be available at this public URL.</p>
+
+    <h2>Contact</h2>
+    <p>For privacy questions or data requests, contact the Radio team in the <a href="https://discord.gg/yawr">support Discord server</a>.</p>
+  </main>
+</body>
+</html>
